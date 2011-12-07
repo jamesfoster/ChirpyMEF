@@ -1,7 +1,6 @@
 namespace Chirpy
 {
 	using System;
-	using System.Collections.Generic;
 	using System.ComponentModel.Composition;
 	using System.ComponentModel.Composition.Hosting;
 	using System.Linq;
@@ -12,12 +11,8 @@ namespace Chirpy
 		[Import]
 		protected IEngineResolver EngineResolver { get; set; }
 
-		protected IDictionary<string, string> ExtensionMap { get; set; }
-
 		public Chirp()
 		{
-			ExtensionMap = new Dictionary<string, string>();
-
 			ComposeEngines();
 		}
 
