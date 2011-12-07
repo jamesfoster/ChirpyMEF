@@ -74,10 +74,12 @@ namespace Chirpy
 			catch (ChirpyException e)
 			{
 				// output well formatted TaskList item
+				Console.WriteLine("{0}:{1} - {2}\n{3}", e.Message, e.FileName, e.LineNumber, e.Line);
 			}
 			catch (Exception e)
 			{
 				// output generic error
+				Console.WriteLine("{0}", e.Message);
 			}
 
 			return null;

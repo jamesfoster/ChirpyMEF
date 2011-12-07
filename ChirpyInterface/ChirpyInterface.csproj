@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChirpyEngineMetadataAttribute.cs" />
+    <Compile Include="ChirpyException.cs" />
     <Compile Include="IEngineResolver.cs" />
     <Compile Include="IChirpyEngine.cs" />
     <Compile Include="IChirpyEngineMetadata.cs" />
