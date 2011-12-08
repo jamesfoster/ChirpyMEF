@@ -12,9 +12,12 @@ namespace Chirpy
 		[Import] protected IProjectItemManager ProjectItemManager { get; set; }
 		[Import] protected IFileHandler FileHandler { get; set; }
 
-		public Chirp(IEngineResolver engineResolver)
+		public Chirp(IEngineResolver engineResolver, ITaskList taskList, IProjectItemManager projectItemManager, IFileHandler fileHandler)
 		{
 			EngineResolver = engineResolver;
+			TaskList = taskList;
+			ProjectItemManager = projectItemManager;
+			FileHandler = fileHandler;
 		}
 
 		internal Chirp()

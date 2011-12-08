@@ -1,6 +1,7 @@
 namespace ChirpyTest.ChirpSepcs
 {
 	using System;
+	using System.Collections;
 	using System.Collections.Generic;
 	using System.Linq;
 	using Chirpy;
@@ -12,20 +13,31 @@ namespace ChirpyTest.ChirpSepcs
 	{
 		protected static Chirp Chirp;
 		protected static Mock<IEngineResolver> EngineResolverMock;
-		protected static string Contents;
+		protected static Mock<ITaskList> TaskListMock;
+		protected static Mock<IProjectItemManager> ProjectItemManagerMock;
+		protected static Mock<IFileHandler> FileHandlerMock;
 		protected static string Filename;
 		protected static string Category;
 		protected static string SubCategory;
 		protected static string Result;
 		static IList<Lazy<IChirpyEngine, IChirpyEngineMetadata>> engines;
+		static IDictionary<string, string> files;
 
 		Establish context = () =>
 			{
 				EngineResolverMock = new Mock<IEngineResolver>();
+				FileHandlerMock = new Mock<IFileHandler>();
+				TaskListMock = new Mock<ITaskList>();
+				ProjectItemManagerMock = new Mock<IProjectItemManager>();
 
 				engines = new List<Lazy<IChirpyEngine, IChirpyEngineMetadata>>();
+				files  = new Dictionary<string, string>();
 
-				Chirp = new Chirp(EngineResolverMock.Object);
+				FileHandlerMock
+					.Setup(h => h.GetContents(Moq.It.IsAny<string>()))
+					.Returns<string>(s => files.ContainsKey(s) ? files[s] : null);
+
+				Chirp = new Chirp(EngineResolverMock.Object, TaskListMock.Object, ProjectItemManagerMock.Object, FileHandlerMock.Object);
 
 				EngineResolverMock
 					.Setup(r => r.GetEngine(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
@@ -36,6 +48,11 @@ namespace ChirpyTest.ChirpSepcs
 							.Where(e => e.Metadata.SubCategory.Equals(subCat, StringComparison.InvariantCultureIgnoreCase))
 							));
 			};
+
+		protected static void AddFile(string contents, string filename)
+		{
+			files[filename] = contents;
+		}
 
 		protected static Mock<IChirpyEngine> AddEngine(string name, string category, string subCategory = "")
 		{

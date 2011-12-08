@@ -12,8 +12,9 @@ namespace ChirpyTest.ChirpSepcs
 
 				Category = "abc";
 				SubCategory = "def";
-				Contents = "ghi";
 				Filename = "jkl";
+
+				AddFile("ghi", Filename);
 			};
 
 		Because of = () => Chirp.Run(Category, SubCategory, Filename);

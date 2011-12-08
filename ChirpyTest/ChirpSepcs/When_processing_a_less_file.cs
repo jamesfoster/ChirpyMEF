@@ -17,8 +17,9 @@
 
 				Category = "abc";
 				SubCategory = "def";
-				Contents = "ghi";
 				Filename = "jkl";
+
+				AddFile("ghi", Filename);
 
 				engineMock
 					.Setup(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
