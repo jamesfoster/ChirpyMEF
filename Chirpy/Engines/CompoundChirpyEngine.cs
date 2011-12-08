@@ -1,4 +1,4 @@
-namespace Chirpy.Examples
+namespace Chirpy.Engines
 {
 	using System.Collections.Generic;
 	using System.ComponentModel.Composition;

@@ -44,9 +44,9 @@
   <ItemGroup>
     <Compile Include="Chirp.cs" />
     <Compile Include="ChirpyEngineResolver.cs" />
-    <Compile Include="Examples\CompoundChirpyEngine.cs" />
-    <Compile Include="Examples\DotlessChirpyEngine.cs" />
-    <Compile Include="LazyCompoundEngine.cs" />
+    <Compile Include="Engines\CompoundChirpyEngine.cs" />
+    <Compile Include="Engines\DotlessChirpyEngine.cs" />
+    <Compile Include="LazyMefEngine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

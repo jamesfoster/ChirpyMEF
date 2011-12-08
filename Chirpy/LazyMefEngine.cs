@@ -5,11 +5,11 @@ namespace Chirpy
 	using System.Linq;
 	using ChirpyInterface;
 
-	public class LazyCompoundEngine : IChirpyEngine
+	public class LazyMefEngine : IChirpyEngine
 	{
 		public IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> Engines { get; set; }
 
-		public LazyCompoundEngine(IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> engines)
+		public LazyMefEngine(IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> engines)
 		{
 			Engines = engines;
 		}

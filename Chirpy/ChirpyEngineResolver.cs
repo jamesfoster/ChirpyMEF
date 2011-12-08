@@ -23,7 +23,7 @@ namespace Chirpy
 		{
 			var engines = Engines.Where(e => e.Metadata.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
-			return new LazyCompoundEngine(engines);
+			return new LazyMefEngine(engines);
 		}
 	}
 }
