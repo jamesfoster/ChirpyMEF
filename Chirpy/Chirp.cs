@@ -27,9 +27,9 @@ namespace Chirpy
 			container.ComposeParts(this);
 		}
 
-		public string Run(string category, string contents, string filename)
+		public string Run(string category, string subCategory, string contents, string filename)
 		{
-			var engineGroups = EngineResolver.GetEngines(category, filename)
+			var engineGroups = EngineResolver.GetEngines(category, subCategory)
 				.GroupBy(e => e.Metadata.Name);
 
 			var result = contents;

@@ -5,7 +5,7 @@ namespace Chirpy.Engines
 	using ChirpyInterface;
 
 	[Export(typeof(IChirpyEngine))]
-	[ChirpyEngineMetadata("Dotless", "less", ".chirp.less", true)]
+	[ChirpyEngineMetadata("Dotless", "less", true)]
 	public class DotlessChirpyEngine : IChirpyEngine
 	{
 		public List<string> GetDependancies(string contents, string filename)

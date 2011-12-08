@@ -4,7 +4,7 @@ namespace ChirpyInterface
 	{
 		string Name { get; }
 		string Category { get; }
+		string SubCategory { get; }
 		bool Internal { get; }
-		string DefaultExtension { get; }
 	}
 }

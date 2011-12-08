@@ -40,12 +40,18 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chirp.cs" />
-    <Compile Include="ChirpyEngineResolver.cs" />
+    <Compile Include="Exports\ChirpyEngineResolver.cs" />
     <Compile Include="Engines\CompoundChirpyEngine.cs" />
+    <Compile Include="Engines\ConfigChirpyEngine.cs" />
     <Compile Include="Engines\DotlessChirpyEngine.cs" />
+    <Compile Include="Exports\ChirpyFileHandler.cs" />
+    <Compile Include="Exports\ChirpyProjectItemManager.cs" />
+    <Compile Include="Exports\ChirpyTaskList.cs" />
     <Compile Include="LazyMefEngine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

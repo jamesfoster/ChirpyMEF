@@ -9,7 +9,7 @@
 	using Core.Stylizers;
 
 	[Export(typeof (IChirpyEngine))]
-	[ChirpyEngineMetadata("Dotless", "less", ".chirp.less")]
+	[ChirpyEngineMetadata("Dotless", "less")]
 	public class DotlessChirpyEngine : IChirpyEngine
 	{
 		public List<string> GetDependancies(string contents, string filename)

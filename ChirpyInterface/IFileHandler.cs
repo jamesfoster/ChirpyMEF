@@ -1,5 +1,7 @@
 ﻿namespace ChirpyInterface
 {
+	using System.Collections.Generic;
+
 	public interface IFileHandler
 	{
 		/// <summary>
@@ -29,5 +31,11 @@
 		/// </summary>
 		/// <param name="filename">The file name.</param>
 		void Refresh(string filename);
+
+		/// <summary>
+		/// Adds the specified files into a queue to be refreshed
+		/// </summary>
+		/// <param name="filenames">The files to be refreshed.</param>
+		void RefreshMany(List<string> filenames);
 	}
 }
