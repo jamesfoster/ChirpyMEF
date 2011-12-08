@@ -43,6 +43,9 @@
     <Compile Include="IEngineResolver.cs" />
     <Compile Include="IChirpyEngine.cs" />
     <Compile Include="IChirpyEngineMetadata.cs" />
+    <Compile Include="IFileHandler.cs" />
+    <Compile Include="IProjectItemManager.cs" />
+    <Compile Include="ITaskList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
