@@ -16,10 +16,10 @@ namespace ChirpyTest.ChirpSepcs
 				Filename = "jkl";
 			};
 
-		Because of = () => { Result = Chirp.Run(Category, SubCategory, Contents, Filename); };
+		Because of = () => Chirp.Run(Category, SubCategory, Filename);
 
 		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngine("abc", "def"));
 
-		It should_return_null = () => Result.ShouldEqual(null);
+		It should_return_null; // = () => Result.ShouldEqual(null);
 	}
 }

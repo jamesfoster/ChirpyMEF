@@ -64,7 +64,6 @@
     <Compile Include="Exports\ChirpyProjectItemManager.cs" />
     <Compile Include="Exports\ChirpyTaskList.cs" />
     <Compile Include="LazyMefEngine.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

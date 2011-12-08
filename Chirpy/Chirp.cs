@@ -3,13 +3,14 @@ namespace Chirpy
 	using System;
 	using System.ComponentModel.Composition;
 	using System.ComponentModel.Composition.Hosting;
-	using System.Linq;
 	using ChirpyInterface;
 
 	public class Chirp
 	{
-		[Import]
-		protected IEngineResolver EngineResolver { get; set; }
+		[Import] protected IEngineResolver EngineResolver { get; set; }
+		[Import] protected ITaskList TaskList { get; set; }
+		[Import] protected IProjectItemManager ProjectItemManager { get; set; }
+		[Import] protected IFileHandler FileHandler { get; set; }
 
 		public Chirp(IEngineResolver engineResolver)
 		{
@@ -32,34 +33,33 @@ namespace Chirpy
 			container.ComposeParts(this);
 		}
 
-		public string Run(string category, string subCategory, string contents, string filename)
+		public void Run(string category, string subCategory, string filename)
 		{
 			var engine = EngineResolver.GetEngine(category, subCategory);
 
 			if (engine == null)
-				return null;
+				return;
 
-			return RunEngine(contents, filename, engine);
-		}
-
-		static string RunEngine(string contents, string filename, IChirpyEngine engine)
-		{
 			try
 			{
-				return engine.Process(contents, filename);
+				var contents = FileHandler.GetContents(filename);
+
+				var result = engine.Process(contents, filename);
+
+				// ProjectItemManager.AddFile(newFilename, filename);
 			}
 			catch (ChirpyException e)
 			{
-				// output well formatted TaskList item
+				// TaskList.Add(e);
+
 				Console.WriteLine("{0}:{1} - {2}\n{3}", e.Message, e.FileName, e.LineNumber, e.Line);
 			}
 			catch (Exception e)
 			{
-				// output generic error
+				// TaskList.Add(filename, e.Message);
+
 				Console.WriteLine("{0}", e.Message);
 			}
-
-			return null;
 		}
 	}
 }
