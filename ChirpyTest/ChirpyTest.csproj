@@ -52,6 +52,8 @@
     <Compile Include="ChirpSepcs\Chirp_context.cs" />
     <Compile Include="ChirpSepcs\When_processing_a_file_with_no_matching_engine.cs" />
     <Compile Include="ChirpSepcs\When_processing_a_less_file.cs" />
+    <Compile Include="ContainerSpecs\ListExportProvider.cs" />
+    <Compile Include="ContainerSpecs\When_composing_a_Chirp_object.cs" />
     <Compile Include="EngineSpecs\ConfigChirpyEngineSpecs\ConfigChirpyEngine_context.cs" />
     <Compile Include="EngineSpecs\ConfigChirpyEngineSpecs\When_processing_a_simple_config_file.cs" />
     <Compile Include="EngineSpecs\DotlessChirpyEngineSpecs\When_processing_a_simple_less_file.cs" />

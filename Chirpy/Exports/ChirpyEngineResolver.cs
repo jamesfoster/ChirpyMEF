@@ -10,7 +10,7 @@ namespace Chirpy.Exports
 	public class ChirpyEngineResolver : IEngineResolver
 	{
 		[ImportMany]
-		protected IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> Engines { get; set; }
+		public IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> Engines { get; set; }
 
 		protected Dictionary<string, LazyMefEngine> EngineCache { get; set; } 
 

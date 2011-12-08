@@ -5,12 +5,13 @@ namespace Chirpy
 	using System.ComponentModel.Composition.Hosting;
 	using ChirpyInterface;
 
+	[Export]
 	public class Chirp
 	{
-		[Import] protected IEngineResolver EngineResolver { get; set; }
-		[Import] protected ITaskList TaskList { get; set; }
-		[Import] protected IProjectItemManager ProjectItemManager { get; set; }
-		[Import] protected IFileHandler FileHandler { get; set; }
+		[Import] public IEngineResolver EngineResolver { get; set; }
+		[Import] public ITaskList TaskList { get; set; }
+		[Import] public IProjectItemManager ProjectItemManager { get; set; }
+		[Import] public IFileHandler FileHandler { get; set; }
 
 		public Chirp(IEngineResolver engineResolver, ITaskList taskList, IProjectItemManager projectItemManager, IFileHandler fileHandler)
 		{
@@ -20,12 +21,20 @@ namespace Chirpy
 			FileHandler = fileHandler;
 		}
 
-		internal Chirp()
+		Chirp()
 		{
-			ComposeEngines();
 		}
 
-		void ComposeEngines()
+		internal static Chirp Create()
+		{
+			var chirp = new Chirp();
+
+			chirp.Compose();
+
+			return chirp;
+		}
+
+		void Compose()
 		{
 			var assemblyCatalog = new AssemblyCatalog(typeof (Chirp).Assembly);
 			var directoryCatalog = new DirectoryCatalog(AppDomain.CurrentDomain.BaseDirectory);
