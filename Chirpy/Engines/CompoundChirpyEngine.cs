@@ -13,14 +13,14 @@ namespace Chirpy.Engines
 
 		public List<string> GetDependancies(string contents, string filename)
 		{
-			var dotlessEngine = EngineResolver.GetEngine("Dotless");
+			var dotlessEngine = EngineResolver.GetEngineByName("Dotless");
 
 			return dotlessEngine.GetDependancies(contents, filename);
 		}
 
 		public string Process(string contents, string filename)
 		{
-			var dotlessEngine = EngineResolver.GetEngine("Dotless");
+			var dotlessEngine = EngineResolver.GetEngineByName("Dotless");
 
 			var css = dotlessEngine.Process(contents, filename);
 

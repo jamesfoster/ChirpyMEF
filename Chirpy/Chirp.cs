@@ -34,40 +34,12 @@ namespace Chirpy
 
 		public string Run(string category, string subCategory, string contents, string filename)
 		{
-			var engineGroups = EngineResolver.GetEngines(category, subCategory)
-				.GroupBy(e => e.Metadata.Name);
+			var engine = EngineResolver.GetEngine(category, subCategory);
 
-			var result = contents;
+			if (engine == null)
+				return null;
 
-			foreach (var engineGroup in engineGroups)
-			{
-				// try external engine first
-				var engine = engineGroup.FirstOrDefault(e => !e.Metadata.Internal);
-
-				if (engine != null)
-				{
-					result = RunEngine(result, filename, engine.Value);
-
-					// an error occurred
-					if (result == null)
-						return null;
-
-					continue;
-				}
-
-				// try internal engine if no external engine or error occurred
-				engine = engineGroup.FirstOrDefault(e => e.Metadata.Internal);
-				if (engine != null)
-				{
-					result = RunEngine(result, filename, engine.Value);
-
-					// an error occurred
-					if (result == null)
-						return null;
-				}
-			}
-
-			return result;
+			return RunEngine(contents, filename, engine);
 		}
 
 		static string RunEngine(string contents, string filename, IChirpyEngine engine)

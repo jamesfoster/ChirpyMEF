@@ -28,13 +28,13 @@ namespace ChirpyTest.ChirpSepcs
 				Chirp = new Chirp(EngineResolverMock.Object);
 
 				EngineResolverMock
-					.Setup(r => r.GetEngines(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
+					.Setup(r => r.GetEngine(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
 					.Returns<string, string>(
-						(cat, subCat) =>
+						(cat, subCat) => new LazyMefEngine(
 							engines
 							.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase))
 							.Where(e => e.Metadata.SubCategory.Equals(subCat, StringComparison.InvariantCultureIgnoreCase))
-							);
+							));
 			};
 
 		protected static Mock<IChirpyEngine> AddEngine(string name, string category, string subCategory = "")

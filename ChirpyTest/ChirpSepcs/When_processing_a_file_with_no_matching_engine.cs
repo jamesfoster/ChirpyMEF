@@ -18,8 +18,8 @@ namespace ChirpyTest.ChirpSepcs
 
 		Because of = () => { Result = Chirp.Run(Category, SubCategory, Contents, Filename); };
 
-		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngines("abc", "def"));
+		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngine("abc", "def"));
 
-		It should_return_the_input = () => Result.ShouldEqual("ghi");
+		It should_return_null = () => Result.ShouldEqual(null);
 	}
 }
