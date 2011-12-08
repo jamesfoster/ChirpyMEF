@@ -39,15 +39,23 @@
     <Reference Include="dotless.Core">
       <HintPath>..\packages\dotless.1.2.1.0\lib\dotless.Core.dll</HintPath>
     </Reference>
+    <Reference Include="EcmaScript.NET.modified">
+      <HintPath>..\packages\YUICompressor.NET.1.6.0.2\lib\net35\EcmaScript.NET.modified.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Yahoo.Yui.Compressor">
+      <HintPath>..\packages\YUICompressor.NET.1.6.0.2\lib\net35\Yahoo.Yui.Compressor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chirp.cs" />
+    <Compile Include="Engines\YuiCssCompressorEngine.cs" />
+    <Compile Include="Engines\YuiJavascriptCompressorEngine.cs" />
     <Compile Include="Exports\ChirpyEngineResolver.cs" />
     <Compile Include="Engines\CompoundChirpyEngine.cs" />
     <Compile Include="Engines\ConfigChirpyEngine.cs" />
