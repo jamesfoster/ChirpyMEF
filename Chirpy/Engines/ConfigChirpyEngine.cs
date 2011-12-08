@@ -53,7 +53,7 @@ namespace Chirpy.Engines
 					                  	.Select(file => FileHandler.GetFileName(file, filename))
 					                  	.Select(path => FileHandler.GetContents(path)));
 
-				return fileGroupContents;
+				return fileGroupContents; // DELETE ME (debug purposes only)
 
 				// var engine = EngineResolver.GetEngineForFile(fileGroupPath);
 

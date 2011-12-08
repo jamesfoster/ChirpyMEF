@@ -11,7 +11,12 @@ namespace Chirpy
 		[Import]
 		protected IEngineResolver EngineResolver { get; set; }
 
-		public Chirp()
+		public Chirp(IEngineResolver engineResolver)
+		{
+			EngineResolver = engineResolver;
+		}
+
+		internal Chirp()
 		{
 			ComposeEngines();
 		}

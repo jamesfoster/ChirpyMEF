@@ -1,0 +1,68 @@
+<Configuration>
+  <SharedSolutionTemplateManager>
+    <LiveTemplates>
+      <Template uid="d549d3ca-bdf4-45d9-9426-e6e0ede98b05" shortcut="_" description="replace invalide characters with underscores" text="$_$" reformat="True" shortenQualifiedReferences="True">
+        <Scopes>
+          <Scope type="InCSharpFile" minimumLanguageVersion="2.0" />
+        </Scopes>
+        <Categories>
+          <Category name="MSpec" />
+        </Categories>
+        <Variables>
+          <Variable name="_" expression="JoarOyenLiveTemplateMacros.ValidIdentifier()" initialRange="0" />
+        </Variables>
+        <CustomProperties />
+      </Template>
+      <Template uid="cc167f37-e397-4ed6-9799-15089acc6944" shortcut="establish" description="" text="Machine.Specifications.Establish context = () =&gt; {$END$};" reformat="True" shortenQualifiedReferences="True">
+        <Scopes>
+          <Scope type="InCSharpTypeMember" minimumLanguageVersion="3.0" />
+        </Scopes>
+        <Categories>
+          <Category name="MSpec" />
+        </Categories>
+        <Variables />
+        <CustomProperties />
+      </Template>
+      <Template uid="39d96e79-ce7f-464d-ac1a-8a4ec0ea7f6f" shortcut="because" description="" text="Machine.Specifications.Because of = () =&gt; $END$;" reformat="True" shortenQualifiedReferences="True">
+        <Scopes>
+          <Scope type="InCSharpTypeMember" minimumLanguageVersion="3.0" />
+        </Scopes>
+        <Categories>
+          <Category name="MSpec" />
+        </Categories>
+        <Variables />
+        <CustomProperties />
+      </Template>
+      <Template uid="832caf0b-e822-4c60-9b65-b37f85070284" shortcut="it" description="" text="Machine.Specifications.It $should$ = () =&gt; $END$;" reformat="True" shortenQualifiedReferences="True">
+        <Scopes>
+          <Scope type="InCSharpTypeMember" minimumLanguageVersion="3.0" />
+        </Scopes>
+        <Categories>
+          <Category name="MSpec" />
+        </Categories>
+        <Variables>
+          <Variable name="should" expression="JoarOyenLiveTemplateMacros.ValidIdentifier()" initialRange="0" />
+        </Variables>
+        <CustomProperties />
+      </Template>
+    </LiveTemplates>
+    <FileTemplates>
+      <Template uid="66f7a52d-eefd-4e60-8bf2-31d41d287e55" shortcut="" description="Spec" text="$HEADER$namespace $NAMESPACE$&#xD;&#xA;{&#xD;&#xA;	public class $CLASS$ {&#xD;&#xA;		$END$&#xD;&#xA;	}&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">
+        <Scopes>
+          <Scope type="InCSharpProjectFile" />
+        </Scopes>
+        <Categories />
+        <Variables>
+          <Variable name="HEADER" expression="fileheader()" initialRange="-1" />
+          <Variable name="NAMESPACE" expression="fileDefaultNamespace()" initialRange="-1" />
+          <Variable name="CLASS" expression="JoarOyenLiveTemplateMacros.ValidIdentifier()" initialRange="0" />
+        </Variables>
+        <CustomProperties>
+          <Property key="FileName" value="Spec" />
+          <Property key="Extension" value="cs" />
+          <Property key="ValidateFileName" value="False" />
+        </CustomProperties>
+      </Template>
+    </FileTemplates>
+  </SharedSolutionTemplateManager>
+</Configuration>

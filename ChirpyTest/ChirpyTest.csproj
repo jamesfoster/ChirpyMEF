@@ -2,18 +2,16 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BFCA9AAB-6C33-4482-8ED8-0ABF42CB7D0F}</ProjectGuid>
+    <ProjectGuid>{8D185998-E2DD-46F5-A5D2-2ADEDFC6A3B2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chirpy</RootNamespace>
-    <AssemblyName>Chirpy</AssemblyName>
+    <RootNamespace>ChirpyTest</RootNamespace>
+    <AssemblyName>ChirpyTest</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,38 +30,42 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Machine.Specifications">
+      <HintPath>..\packages\Machine.Specifications-Signed.0.5.0.0\lib\Machine.Specifications.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chirp.cs" />
-    <Compile Include="Exports\ChirpyEngineResolver.cs" />
-    <Compile Include="Engines\CompoundChirpyEngine.cs" />
-    <Compile Include="Engines\ConfigChirpyEngine.cs" />
-    <Compile Include="Engines\DotlessChirpyEngine.cs" />
-    <Compile Include="Exports\ChirpyFileHandler.cs" />
-    <Compile Include="Exports\ChirpyProjectItemManager.cs" />
-    <Compile Include="Exports\ChirpyTaskList.cs" />
-    <Compile Include="LazyMefEngine.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="ChirpSepcs\Chirp_context.cs" />
+    <Compile Include="ChirpSepcs\When_processing_a_file_with_no_matching_engine.cs" />
+    <Compile Include="ChirpSepcs\When_processing_a_less_file.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChirpyInterface\ChirpyInterface.csproj">
       <Project>{1F5FBC99-08C3-4105-A60E-D1879D20106E}</Project>
       <Name>ChirpyInterface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chirpy\Chirpy.csproj">
+      <Project>{BFCA9AAB-6C33-4482-8ED8-0ABF42CB7D0F}</Project>
+      <Name>Chirpy</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
