@@ -1,16 +1,11 @@
-namespace ChirpyTest
+namespace ChirpyTest.ChirpSepcs
 {
 	using Chirpy;
-	using ChirpyInterface;
 	using Machine.Specifications;
-	using Moq;
-	using It = Machine.Specifications.It;
 
 	[Subject(typeof (Chirp))]
 	public class When_processing_a_file_with_no_matching_engine : Chirp_context
 	{
-		static Mock<IChirpyEngine> engineMock;
-
 		Establish context = () =>
 			{
 				AddEngine("DemoEngine", "xxx", "xxx");

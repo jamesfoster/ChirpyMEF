@@ -1,4 +1,4 @@
-﻿namespace ChirpyTest
+﻿namespace ChirpyTest.ChirpSepcs
 {
 	using Chirpy;
 	using ChirpyInterface;

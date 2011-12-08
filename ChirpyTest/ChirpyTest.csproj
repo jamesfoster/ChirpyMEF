@@ -50,6 +50,9 @@
     <Compile Include="ChirpSepcs\Chirp_context.cs" />
     <Compile Include="ChirpSepcs\When_processing_a_file_with_no_matching_engine.cs" />
     <Compile Include="ChirpSepcs\When_processing_a_less_file.cs" />
+    <Compile Include="EngineSpecs\ConfigChirpyEngineSpecs\ConfigChirpyEngine_context.cs" />
+    <Compile Include="EngineSpecs\ConfigChirpyEngineSpecs\When_processing_a_simple_config_file.cs" />
+    <Compile Include="EngineSpecs\DotlessChirpyEngineSpecs\When_processing_a_simple_less_file.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +67,9 @@
       <Project>{BFCA9AAB-6C33-4482-8ED8-0ABF42CB7D0F}</Project>
       <Name>Chirpy</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ChirpyEngineResolverSpecs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

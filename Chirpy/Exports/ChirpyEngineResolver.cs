@@ -1,4 +1,4 @@
-namespace Chirpy
+namespace Chirpy.Exports
 {
 	using System;
 	using System.Collections.Generic;
