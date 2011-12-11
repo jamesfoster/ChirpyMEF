@@ -6,14 +6,14 @@ namespace ChirpyInterface
 	[MetadataAttribute]
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Module,
 		AllowMultiple = false)]
-	public class ChirpyEngineMetadataAttribute : Attribute, IChirpyEngineMetadata
+	public class EngineMetadataAttribute : Attribute, IEngineMetadata
 	{
-		public ChirpyEngineMetadataAttribute(string name, string category, string outputCategory)
+		public EngineMetadataAttribute(string name, string category, string outputCategory)
 			: this(name, category, outputCategory, false)
 		{
 		}
 
-		internal ChirpyEngineMetadataAttribute(string name, string category, string outputCategory, bool @internal)
+		internal EngineMetadataAttribute(string name, string category, string outputCategory, bool @internal)
 		{
 			Name = name;
 			Category = category;

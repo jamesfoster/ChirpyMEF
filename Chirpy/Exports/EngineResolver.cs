@@ -8,17 +8,17 @@ namespace Chirpy.Exports
 	using Imports;
 
 	[Export(typeof (IEngineResolver))]
-	public class ChirpyEngineResolver : IEngineResolver
+	public class EngineResolver : IEngineResolver
 	{
 		[ImportMany]
-		public IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> Engines { get; set; }
+		public IEnumerable<Lazy<IEngine, IEngineMetadata>> Engines { get; set; }
 
 		[Import]
-		internal IExtensionResolver ExtensionResolver { get; set; }
+		public IExtensionResolver ExtensionResolver { get; set; }
 
-		protected Dictionary<string, LazyMefEngine> EngineCache { get; set; } 
+		protected Dictionary<string, EngineContainer> EngineCache { get; set; } 
 
-		public IChirpyEngine GetEngine(string category)
+		public IEngine GetEngine(string category)
 		{
 			var engine = LoadFromCacheByCategory(category);
 
@@ -46,7 +46,7 @@ namespace Chirpy.Exports
 			return SaveCacheByCategory(category, engines);
 		}
 
-		public IChirpyEngine GetEngineByName(string name)
+		public IEngine GetEngineByName(string name)
 		{
 			var engine = LoadFromCache(name);
 
@@ -74,9 +74,9 @@ namespace Chirpy.Exports
 			return SaveCache(name, engines);
 		}
 
-		public IChirpyEngine GetEngineForFile(string filename)
+		public IEngine GetEngineForFile(string filename)
 		{
-			Func<Lazy<IChirpyEngine, IChirpyEngineMetadata>, bool> categoryMatchesFile = 
+			Func<Lazy<IEngine, IEngineMetadata>, bool> categoryMatchesFile = 
 				e => filename.EndsWith(ExtensionResolver.GetExtensionFromCategory(e.Metadata.Category));
 
 			var engines = Engines
@@ -86,8 +86,12 @@ namespace Chirpy.Exports
 
 			if (!engines.Any())
 				engines = Engines
+					.Where(e => !e.Metadata.Category.Contains("."))
 					.Where(categoryMatchesFile)
 					.ToList();
+
+			if (!engines.Any())
+				return null;
 
 			if (!CheckEngines(engines))
 			{
@@ -103,14 +107,14 @@ namespace Chirpy.Exports
 			return GetEngineByName(engines.First().Metadata.Name);
 		}
 
-		LazyMefEngine LoadFromCacheByCategory(string category)
+		EngineContainer LoadFromCacheByCategory(string category)
 		{
 			var key = GetCategoryKey(category);
 
 			return LoadFromCache(key);
 		}
 
-		LazyMefEngine LoadFromCache(string key)
+		EngineContainer LoadFromCache(string key)
 		{
 			if (EngineCache == null || !EngineCache.ContainsKey(key))
 				return null;
@@ -118,19 +122,19 @@ namespace Chirpy.Exports
 			return EngineCache[key];
 		}
 
-		LazyMefEngine SaveCacheByCategory(string category, IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> engines)
+		EngineContainer SaveCacheByCategory(string category, IEnumerable<Lazy<IEngine, IEngineMetadata>> engines)
 		{
 			var key = GetCategoryKey(category);
 
 			return SaveCache(key, engines);
 		}
 
-		LazyMefEngine SaveCache(string key, IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> engines)
+		EngineContainer SaveCache(string key, IEnumerable<Lazy<IEngine, IEngineMetadata>> engines)
 		{
 			if (EngineCache == null)
-				EngineCache = new Dictionary<string, LazyMefEngine>();
+				EngineCache = new Dictionary<string, EngineContainer>();
 
-			return EngineCache[key] = new LazyMefEngine(engines);
+			return EngineCache[key] = new EngineContainer(engines);
 		}
 
 		static string GetCategoryKey(string category)
@@ -139,7 +143,7 @@ namespace Chirpy.Exports
 			return key;
 		}
 
-		bool CheckEngines(IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> engines)
+		bool CheckEngines(IEnumerable<Lazy<IEngine, IEngineMetadata>> engines)
 		{
 			var engineList = engines.ToList();
 

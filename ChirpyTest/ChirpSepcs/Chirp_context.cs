@@ -18,7 +18,7 @@ namespace ChirpyTest.ChirpSepcs
 		protected static string Filename;
 		protected static string Category;
 		protected static string SubCategory;
-		static IList<Lazy<IChirpyEngine, IChirpyEngineMetadata>> engines;
+		static IList<Lazy<IEngine, IEngineMetadata>> engines;
 		static IDictionary<string, string> files;
 
 		Establish context = () =>
@@ -28,7 +28,7 @@ namespace ChirpyTest.ChirpSepcs
 				TaskListMock = new Mock<ITaskList>();
 				ProjectItemManagerMock = new Mock<IProjectItemManager>();
 
-				engines = new List<Lazy<IChirpyEngine, IChirpyEngineMetadata>>();
+				engines = new List<Lazy<IEngine, IEngineMetadata>>();
 				files  = new Dictionary<string, string>();
 
 				FileHandlerMock
@@ -40,7 +40,7 @@ namespace ChirpyTest.ChirpSepcs
 				EngineResolverMock
 					.Setup(r => r.GetEngine(Moq.It.IsAny<string>()))
 					.Returns<string>(
-						cat => new LazyMefEngine(
+						cat => new EngineContainer(
 							engines
 							.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase))
 							));
@@ -51,7 +51,7 @@ namespace ChirpyTest.ChirpSepcs
 						fn =>
 							{
 								var cat = fn.Substring(fn.IndexOf('.') + 1);
-								return new LazyMefEngine(
+								return new EngineContainer(
 									engines.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase))
 									);
 							});
@@ -62,12 +62,12 @@ namespace ChirpyTest.ChirpSepcs
 			files[filename] = contents;
 		}
 
-		protected static Mock<IChirpyEngine> AddEngine(string name, string category, string outputCategory)
+		protected static Mock<IEngine> AddEngine(string name, string category, string outputCategory)
 		{
-			var engineMock = new Mock<IChirpyEngine>();
-			var metadata = new ChirpyEngineMetadataAttribute(name, category, outputCategory);
+			var engineMock = new Mock<IEngine>();
+			var metadata = new EngineMetadataAttribute(name, category, outputCategory);
 
-			engines.Add(new Lazy<IChirpyEngine, IChirpyEngineMetadata>(() => engineMock.Object, metadata));
+			engines.Add(new Lazy<IEngine, IEngineMetadata>(() => engineMock.Object, metadata));
 
 			return engineMock;
 		}

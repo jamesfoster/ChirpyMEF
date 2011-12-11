@@ -1,16 +1,16 @@
-namespace Chirpy.Engines
+﻿namespace dotless.Chirpy
 {
 	using System;
 	using System.Collections.Generic;
 	using System.ComponentModel.Composition;
 	using ChirpyInterface;
-	using dotless.Core.Importers;
-	using dotless.Core.Parser;
-	using dotless.Core.Stylizers;
+	using Core.Importers;
+	using Core.Parser;
+	using Core.Stylizers;
 
-	[Export(typeof (IChirpyEngine))]
-	[ChirpyEngineMetadata("Dotless", "less", "css", true)]
-	public class DotlessChirpyEngine : IChirpyEngine
+	[Export(typeof (IEngine))]
+	[EngineMetadata("Dotless", "less", "css")]
+	public class DotlessEngine : IEngine
 	{
 		public List<string> GetDependancies(string contents, string filename)
 		{

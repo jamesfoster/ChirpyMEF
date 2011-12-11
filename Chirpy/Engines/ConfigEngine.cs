@@ -6,9 +6,9 @@ namespace Chirpy.Engines
 	using System.Xml.Linq;
 	using ChirpyInterface;
 
-	[Export(typeof(IChirpyEngine))]
-	[ChirpyEngineMetadata("Config", "config", "", true)]
-	public class ConfigChirpyEngine : IChirpyEngine
+	[Export(typeof(IEngine))]
+	[EngineMetadata("Config", "config", "", true)]
+	public class ConfigEngine : IEngine
 	{
 		[Import] public ITaskList TaskList { get; set; }
 		[Import] public IProjectItemManager ProjectItemManager { get; set; }

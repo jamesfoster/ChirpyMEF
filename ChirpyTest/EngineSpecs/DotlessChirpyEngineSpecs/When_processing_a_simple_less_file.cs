@@ -4,17 +4,17 @@
 	using ChirpyInterface;
 	using Machine.Specifications;
 
-	[Subject(typeof(DotlessChirpyEngine))]
+	[Subject(typeof(DotlessEngine))]
 	public class When_processing_a_simple_less_file
 	{
-		static IChirpyEngine engine;
+		static IEngine engine;
 		static string contents;
 		static string filename;
 		static string result;
 
 		Establish context = () =>
 			{
-				engine = new DotlessChirpyEngine();
+				engine = new DotlessEngine();
 
 				contents = @"
 @abc: 123px;

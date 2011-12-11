@@ -9,7 +9,7 @@ namespace ChirpyTest.ChirpSepcs
 	[Subject(typeof (Chirp))]
 	public class When_processing_a_file_with_no_matching_engine : Chirp_context
 	{
-		static Mock<IChirpyEngine> engineMock;
+		static Mock<IEngine> engineMock;
 
 		Establish context = () =>
 			{

@@ -1,6 +1,6 @@
 namespace ChirpyInterface
 {
-	public interface IChirpyEngineMetadata
+	public interface IEngineMetadata
 	{
 		string Name { get; }
 		string Category { get; }

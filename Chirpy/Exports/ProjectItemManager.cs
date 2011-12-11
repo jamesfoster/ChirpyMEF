@@ -4,7 +4,7 @@ namespace Chirpy.Exports
 	using ChirpyInterface;
 
 	[Export(typeof(IProjectItemManager))]
-	public class ChirpyProjectItemManager : IProjectItemManager
+	public class ProjectItemManager : IProjectItemManager
 	{
 		public void AddFile(string filename, string dependsUpon)
 		{

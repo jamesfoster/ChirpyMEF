@@ -4,7 +4,7 @@ namespace Chirpy.Exports
 	using ChirpyInterface;
 
 	[Export(typeof(ITaskList))]
-	public class ChirpyTaskList : ITaskList
+	public class TaskList : ITaskList
 	{
 		public void Add(string filename)
 		{

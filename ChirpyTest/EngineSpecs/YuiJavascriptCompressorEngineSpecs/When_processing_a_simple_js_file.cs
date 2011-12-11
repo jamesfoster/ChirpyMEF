@@ -7,7 +7,7 @@ namespace ChirpyTest.EngineSpecs.YuiJavascriptCompressorEngineSpecs
 	[Subject(typeof(YuiJavascriptCompressorEngine))]
 	public class When_processing_a_simple_js_file
 	{
-		static IChirpyEngine engine;
+		static IEngine engine;
 		static string contents;
 		static string filename;
 		static string result;

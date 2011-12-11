@@ -7,7 +7,7 @@
 	[Subject(typeof(YuiCssCompressorEngine))]
 	public class When_processing_a_simple_css_file
 	{
-		static IChirpyEngine engine;
+		static IEngine engine;
 		static string contents;
 		static string filename;
 		static string result;

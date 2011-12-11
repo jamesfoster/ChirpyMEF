@@ -5,13 +5,31 @@ namespace Chirpy
 	using System.Linq;
 	using ChirpyInterface;
 
-	public class LazyMefEngine : IChirpyEngine
+	public class EngineContainer : IEngine
 	{
-		public IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> Engines { get; set; }
+		public IEnumerable<Lazy<IEngine, IEngineMetadata>> Engines { get; set; }
 
-		public LazyMefEngine(IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> engines)
+		public string Name { get; private set; }
+		public string Category { get; private set; }
+		public string OutputCategory { get; private set; }
+		public bool[] Internal { get; private set; }
+		public bool Minifier { get; private set; }
+
+		public EngineContainer(IEnumerable<Lazy<IEngine, IEngineMetadata>> engines)
 		{
 			Engines = engines;
+
+			if(!engines.Any())
+				return;
+
+			var metadata = engines.First().Metadata;
+
+			Name = metadata.Name;
+			Category = metadata.Category;
+			OutputCategory = metadata.OutputCategory;
+			Minifier = metadata.Minifier;
+
+			Internal = engines.Select(e => e.Metadata.Internal).ToArray();
 		}
 
 		public List<string> GetDependancies(string contents, string filename)
@@ -34,7 +52,7 @@ namespace Chirpy
 			return null;
 		}
 
-		IChirpyEngine GetEngine()
+		IEngine GetEngine()
 		{
 			// try external first
 			var engine = Engines.FirstOrDefault(e => !e.Metadata.Internal);

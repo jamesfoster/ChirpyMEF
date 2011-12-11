@@ -1,12 +1,9 @@
 ﻿namespace ChirpyInterface
 {
-	using System;
-	using System.Collections.Generic;
-
 	public interface IEngineResolver
 	{
-		IChirpyEngine GetEngine(string category);
-		IChirpyEngine GetEngineByName(string name);
-		IChirpyEngine GetEngineForFile(string filename);
+		IEngine GetEngine(string category);
+		IEngine GetEngineByName(string name);
+		IEngine GetEngineForFile(string filename);
 	}
 }

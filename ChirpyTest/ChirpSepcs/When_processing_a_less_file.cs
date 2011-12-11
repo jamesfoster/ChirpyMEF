@@ -9,7 +9,7 @@
 	[Subject(typeof (Chirp))]
 	public class When_processing_a_file : Chirp_context
 	{
-		static Mock<IChirpyEngine> engineMock;
+		static Mock<IEngine> engineMock;
 
 		Establish context = () =>
 			{

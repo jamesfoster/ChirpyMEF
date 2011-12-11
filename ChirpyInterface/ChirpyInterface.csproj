@@ -38,11 +38,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChirpyEngineMetadataAttribute.cs" />
+    <Compile Include="EngineMetadataAttribute.cs" />
     <Compile Include="ChirpyException.cs" />
     <Compile Include="IEngineResolver.cs" />
-    <Compile Include="IChirpyEngine.cs" />
-    <Compile Include="IChirpyEngineMetadata.cs" />
+    <Compile Include="IEngine.cs" />
+    <Compile Include="IEngineMetadata.cs" />
     <Compile Include="IFileHandler.cs" />
     <Compile Include="IProjectItemManager.cs" />
     <Compile Include="ITaskList.cs" />

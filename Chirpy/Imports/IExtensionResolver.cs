@@ -1,6 +1,6 @@
 ﻿namespace Chirpy.Imports
 {
-	internal interface IExtensionResolver
+	public interface IExtensionResolver
 	{
 		string GetExtensionFromCategory(string category);
 		string GetCategoryFromExtension(string extension);

@@ -14,7 +14,7 @@ namespace ChirpyTest.ContainerSpecs
 	{
 		static Chirp chirp;
 		static CompositionContainer compositionContainer;
-		static ChirpyEngineResolver engineResolver;
+		static EngineResolver engineResolver;
 		static IEnumerable<Type> engines;
 
 		Establish context = () =>
@@ -26,9 +26,9 @@ namespace ChirpyTest.ContainerSpecs
 				compositionContainer = new CompositionContainer(catelog);
 
 				engines = assembly.GetExportedTypes()
-					.Where(t => typeof (IChirpyEngine).IsAssignableFrom(t))
+					.Where(t => typeof (IEngine).IsAssignableFrom(t))
 					.Where(t => !t.IsAbstract)
-					.Where(t => t != typeof (LazyMefEngine));
+					.Where(t => t != typeof (EngineContainer));
 			};
 
 		Because of = () =>
@@ -37,7 +37,7 @@ namespace ChirpyTest.ContainerSpecs
 
 				chirp = compositionContainer.GetExportedValue<Chirp>();
 
-				engineResolver = chirp.EngineResolver as ChirpyEngineResolver;
+				engineResolver = chirp.EngineResolver as EngineResolver;
 			};
 
 		It the_EngineResolver_should_not_be_null = () => chirp.EngineResolver.ShouldNotBeNull();

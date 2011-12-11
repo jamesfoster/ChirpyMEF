@@ -56,16 +56,16 @@
     <Compile Include="Chirp.cs" />
     <Compile Include="Engines\YuiCssCompressorEngine.cs" />
     <Compile Include="Engines\YuiJavascriptCompressorEngine.cs" />
-    <Compile Include="Exports\ChirpyEngineResolver.cs" />
-    <Compile Include="Engines\CompoundChirpyEngine.cs" />
-    <Compile Include="Engines\ConfigChirpyEngine.cs" />
-    <Compile Include="Engines\DotlessChirpyEngine.cs" />
-    <Compile Include="Exports\ChirpyFileHandler.cs" />
-    <Compile Include="Exports\ChirpyProjectItemManager.cs" />
-    <Compile Include="Exports\ChirpyTaskList.cs" />
+    <Compile Include="Exports\EngineResolver.cs" />
+    <Compile Include="Engines\CompoundEngine.cs" />
+    <Compile Include="Engines\ConfigEngine.cs" />
+    <Compile Include="Engines\DotlessEngine.cs" />
+    <Compile Include="Exports\FileHandler.cs" />
+    <Compile Include="Exports\ProjectItemManager.cs" />
+    <Compile Include="Exports\TaskList.cs" />
     <Compile Include="Exports\ExtensionResolver.cs" />
     <Compile Include="Imports\IExtensionResolver.cs" />
-    <Compile Include="LazyMefEngine.cs" />
+    <Compile Include="EngineContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@ namespace Chirpy.Exports
 	using ChirpyInterface;
 
 	[Export(typeof(IFileHandler))]
-	public class ChirpyFileHandler : IFileHandler
+	public class FileHandler : IFileHandler
 	{
 		public string GetContents(string filename)
 		{

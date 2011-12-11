@@ -4,9 +4,9 @@ namespace Chirpy.Engines
 	using System.ComponentModel.Composition;
 	using ChirpyInterface;
 
-	[Export(typeof(IChirpyEngine))]
-	[ChirpyEngineMetadata("NewDotless", "my.less", "css", true)]
-	public class CompoundChirpyEngine : IChirpyEngine
+	[Export(typeof(IEngine))]
+	[EngineMetadata("NewDotless", "my.less", "css", true)]
+	public class CompoundEngine : IEngine
 	{
 		[Import]
 		public IEngineResolver EngineResolver { get; set; }

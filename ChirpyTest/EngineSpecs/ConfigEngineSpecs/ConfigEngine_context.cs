@@ -5,9 +5,9 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 	using Machine.Specifications;
 	using Moq;
 
-	public class ConfigChirpyEngine_context
+	public class ConfigEngine_context
 	{
-		protected static IChirpyEngine Engine;
+		protected static IEngine Engine;
 		protected static Mock<IEngineResolver> EngineResolverMock;
 		protected static Mock<IFileHandler> FileHandlerMock;
 		protected static Mock<IProjectItemManager> ProjectItemManagerMock;
@@ -18,7 +18,7 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 
 		Establish context = () =>
 			{
-				var configEngine = new ConfigChirpyEngine();
+				var configEngine = new ConfigEngine();
 				Engine = configEngine;
 
 				EngineResolverMock = new Mock<IEngineResolver>();
