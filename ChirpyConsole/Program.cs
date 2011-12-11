@@ -17,7 +17,7 @@
 				path = Path.Combine(currentDirectory, args[0]);
 			}
 			else
-				path = "test.less";
+				path = "test.my.less";
 
 			var chirp = Chirp.Create();
 

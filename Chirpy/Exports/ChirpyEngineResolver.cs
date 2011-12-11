@@ -76,11 +76,18 @@ namespace Chirpy.Exports
 
 		public IChirpyEngine GetEngineForFile(string filename)
 		{
+			Func<Lazy<IChirpyEngine, IChirpyEngineMetadata>, bool> categoryMatchesFile = 
+				e => filename.EndsWith(ExtensionResolver.GetExtensionFromCategory(e.Metadata.Category));
+
 			var engines = Engines
-				.Where(e => filename.EndsWith(ExtensionResolver.GetExtensionFromCategory(e.Metadata.Category)));
+				.Where(e => e.Metadata.Category.Contains("."))
+				.Where(categoryMatchesFile)
+				.ToList();
 
 			if (!engines.Any())
-				return null;
+				engines = Engines
+					.Where(categoryMatchesFile)
+					.ToList();
 
 			if (!CheckEngines(engines))
 			{
