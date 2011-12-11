@@ -45,9 +45,9 @@ namespace Chirpy
 			container.ComposeParts(this);
 		}
 
-		public void Run(string category, string subCategory, string filename)
+		public void Run(string category, string filename)
 		{
-			var engine = EngineResolver.GetEngine(category, subCategory);
+			var engine = EngineResolver.GetEngine(category);
 
 			if (engine == null)
 				return;

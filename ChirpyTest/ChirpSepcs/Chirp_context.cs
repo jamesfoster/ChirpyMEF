@@ -40,12 +40,11 @@ namespace ChirpyTest.ChirpSepcs
 				Chirp = new Chirp(EngineResolverMock.Object, TaskListMock.Object, ProjectItemManagerMock.Object, FileHandlerMock.Object);
 
 				EngineResolverMock
-					.Setup(r => r.GetEngine(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
-					.Returns<string, string>(
-						(cat, subCat) => new LazyMefEngine(
+					.Setup(r => r.GetEngine(Moq.It.IsAny<string>()))
+					.Returns<string>(
+						cat => new LazyMefEngine(
 							engines
 							.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase))
-							.Where(e => e.Metadata.SubCategory.Equals(subCat, StringComparison.InvariantCultureIgnoreCase))
 							));
 			};
 
@@ -54,10 +53,10 @@ namespace ChirpyTest.ChirpSepcs
 			files[filename] = contents;
 		}
 
-		protected static Mock<IChirpyEngine> AddEngine(string name, string category, string subCategory = "")
+		protected static Mock<IChirpyEngine> AddEngine(string name, string category, string outputCategory)
 		{
 			var engineMock = new Mock<IChirpyEngine>();
-			var metadata = new ChirpyEngineMetadataAttribute(name, category, subCategory);
+			var metadata = new ChirpyEngineMetadataAttribute(name, category, outputCategory);
 
 			engines.Add(new Lazy<IChirpyEngine, IChirpyEngineMetadata>(() => engineMock.Object, metadata));
 

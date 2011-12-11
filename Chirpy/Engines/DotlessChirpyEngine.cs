@@ -9,7 +9,7 @@ namespace Chirpy.Engines
 	using dotless.Core.Stylizers;
 
 	[Export(typeof (IChirpyEngine))]
-	[ChirpyEngineMetadata("Dotless", "less", true)]
+	[ChirpyEngineMetadata("Dotless", "less", "css", true)]
 	public class DotlessChirpyEngine : IChirpyEngine
 	{
 		public List<string> GetDependancies(string contents, string filename)

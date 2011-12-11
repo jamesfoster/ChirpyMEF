@@ -5,7 +5,7 @@ namespace Chirpy.Engines
 	using ChirpyInterface;
 
 	[Export(typeof (IChirpyEngine))]
-	[ChirpyEngineMetadata("YUI Javascript Compressor", "js", "yui", true)]
+	[ChirpyEngineMetadata("YUI Javascript Compressor", "yui.js", "js", true, Minifier = true)]
 	public class YuiJavascriptCompressorEngine : IChirpyEngine
 	{
 		public List<string> GetDependancies(string contents, string filename)

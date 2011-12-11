@@ -5,7 +5,7 @@
 
 	public interface IEngineResolver
 	{
-		IChirpyEngine GetEngine(string category, string subCategory);
+		IChirpyEngine GetEngine(string category);
 		IChirpyEngine GetEngineByName(string name);
 		IChirpyEngine GetEngineForFile(string filename);
 	}

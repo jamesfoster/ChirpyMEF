@@ -8,18 +8,17 @@ namespace ChirpyTest.ChirpSepcs
 	{
 		Establish context = () =>
 			{
-				AddEngine("DemoEngine", "xxx", "xxx");
+				AddEngine("DemoEngine", "xxx.xxx", "xyz");
 
-				Category = "abc";
-				SubCategory = "def";
+				Category = "abc.def";
 				Filename = "jkl";
 
 				AddFile("ghi", Filename);
 			};
 
-		Because of = () => Chirp.Run(Category, SubCategory, Filename);
+		Because of = () => Chirp.Run(Category, Filename);
 
-		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngine("abc", "def"));
+		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngine("abc.def"));
 
 		It should_return_null; // = () => Result.ShouldEqual(null);
 	}

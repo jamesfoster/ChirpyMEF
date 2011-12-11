@@ -13,10 +13,9 @@
 
 		Establish context = () =>
 			{
-				engineMock = AddEngine("DemoEngine", "abc", "def");
+				engineMock = AddEngine("DemoEngine", "abc.def", "xyz");
 
-				Category = "abc";
-				SubCategory = "def";
+				Category = "abc.def";
 				Filename = "jkl";
 
 				AddFile("ghi", Filename);
@@ -26,9 +25,9 @@
 					.Returns("mno");
 			};
 
-		Because of = () => Chirp.Run(Category, SubCategory, Filename);
+		Because of = () => Chirp.Run(Category, Filename);
 
-		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngine("abc", "def"));
+		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngine("abc.def"));
 		It should_call_Engine_Process = () => engineMock.Verify(e => e.Process("ghi", "jkl"));
 
 		It should_return_the_output_of_the_engine; // = () => Result.ShouldEqual("mno");

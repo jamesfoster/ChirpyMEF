@@ -4,7 +4,8 @@ namespace ChirpyInterface
 	{
 		string Name { get; }
 		string Category { get; }
-		string SubCategory { get; }
+		string OutputCategory { get; }
 		bool Internal { get; }
+		bool Minifier { get; }
 	}
 }

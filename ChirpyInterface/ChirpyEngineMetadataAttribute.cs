@@ -8,32 +8,23 @@ namespace ChirpyInterface
 		AllowMultiple = false)]
 	public class ChirpyEngineMetadataAttribute : Attribute, IChirpyEngineMetadata
 	{
-		public ChirpyEngineMetadataAttribute(string name, string category)
-			: this(name, category, "", false)
+		public ChirpyEngineMetadataAttribute(string name, string category, string outputCategory)
+			: this(name, category, outputCategory, false)
 		{
 		}
 
-		public ChirpyEngineMetadataAttribute(string name, string category, string subCategory)
-			: this(name, category, subCategory, false)
-		{
-		}
-
-		internal ChirpyEngineMetadataAttribute(string name, string category, bool @internal)
-			: this(name, category, "", @internal)
-		{
-		}
-
-		internal ChirpyEngineMetadataAttribute(string name, string category, string subCategory, bool @internal)
+		internal ChirpyEngineMetadataAttribute(string name, string category, string outputCategory, bool @internal)
 		{
 			Name = name;
 			Category = category;
-			SubCategory = subCategory;
+			OutputCategory = outputCategory;
 			Internal = @internal;
 		}
 
 		public string Name { get; private set; }
 		public string Category { get; private set; }
-		public string SubCategory { get; set; }
+		public string OutputCategory { get; private set; }
 		public bool Internal { get; private set; }
+		public bool Minifier { get; set; }
 	}
 }

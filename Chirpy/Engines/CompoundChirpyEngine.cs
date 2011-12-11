@@ -5,7 +5,7 @@ namespace Chirpy.Engines
 	using ChirpyInterface;
 
 	[Export(typeof(IChirpyEngine))]
-	[ChirpyEngineMetadata("NewDotless", "less", "my", true)]
+	[ChirpyEngineMetadata("NewDotless", "my.less", "css", true)]
 	public class CompoundChirpyEngine : IChirpyEngine
 	{
 		[Import]

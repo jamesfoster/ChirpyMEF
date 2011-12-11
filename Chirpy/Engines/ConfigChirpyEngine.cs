@@ -7,7 +7,7 @@ namespace Chirpy.Engines
 	using ChirpyInterface;
 
 	[Export(typeof(IChirpyEngine))]
-	[ChirpyEngineMetadata("Config", "config", true)]
+	[ChirpyEngineMetadata("Config", "config", "", true)]
 	public class ConfigChirpyEngine : IChirpyEngine
 	{
 		[Import] public ITaskList TaskList { get; set; }

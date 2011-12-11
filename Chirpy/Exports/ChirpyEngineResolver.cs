@@ -14,16 +14,15 @@ namespace Chirpy.Exports
 
 		protected Dictionary<string, LazyMefEngine> EngineCache { get; set; } 
 
-		public IChirpyEngine GetEngine(string category, string subCategory)
+		public IChirpyEngine GetEngine(string category)
 		{
-			var engine = LoadFromCache(category, subCategory);
+			var engine = LoadFromCacheByCategory(category);
 
 			if(engine != null)
 				return engine;
 
 			var engines = Engines
 				.Where(e => e.Metadata.Category.Equals(category, StringComparison.InvariantCultureIgnoreCase))
-				.Where(e => e.Metadata.SubCategory.Equals(subCategory, StringComparison.InvariantCultureIgnoreCase))
 				.ToList();
 
 			if (!engines.Any())
@@ -34,14 +33,13 @@ namespace Chirpy.Exports
 				var engineNames = engines.Select(e => string.Format("{0} ({1})",
 				                                                    e.Metadata.Name,
 				                                                    e.Metadata.Internal ? "Internal" : "External"));
-				var message = string.Format("There are multiple engines defined for the category {0}:{1}\n{2}",
+				var message = string.Format("There are multiple engines defined for the category {0}\n{1}",
 				                            category,
-				                            subCategory,
 				                            string.Join(", ", engineNames));
 				throw new InvalidOperationException(message);
 			}
 
-			return SaveCache(category,subCategory,engines);
+			return SaveCacheByCategory(category, engines);
 		}
 
 		public IChirpyEngine GetEngineByName(string name)
@@ -77,9 +75,9 @@ namespace Chirpy.Exports
 			throw new NotImplementedException();
 		}
 
-		LazyMefEngine LoadFromCache(string category, string subCategory)
+		LazyMefEngine LoadFromCacheByCategory(string category)
 		{
-			var key = GetCategoryKey(category, subCategory);
+			var key = GetCategoryKey(category);
 
 			return LoadFromCache(key);
 		}
@@ -92,9 +90,9 @@ namespace Chirpy.Exports
 			return EngineCache[key];
 		}
 
-		LazyMefEngine SaveCache(string category, string subCategory,IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> engines)
+		LazyMefEngine SaveCacheByCategory(string category, IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> engines)
 		{
-			var key = GetCategoryKey(category, subCategory);
+			var key = GetCategoryKey(category);
 
 			return SaveCache(key, engines);
 		}
@@ -107,9 +105,9 @@ namespace Chirpy.Exports
 			return EngineCache[key] = new LazyMefEngine(engines);
 		}
 
-		static string GetCategoryKey(string category, string subCategory)
+		static string GetCategoryKey(string category)
 		{
-			var key = string.Format(">>{0}:{1}<<", category, subCategory);
+			var key = string.Format("Category::{0}", category);
 			return key;
 		}
 
