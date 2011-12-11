@@ -15,7 +15,7 @@
 				AddCategory("cat", ".cat");
 			};
 
-		Because of = () => { result = engineResolver.GetEngineForFile("demo.cat"); };
+		Because of = () => { result = engineResolver.GetEngineByFilename("demo.cat"); };
 
 		It should_not_be_null = () => result.ShouldNotBeNull();
 

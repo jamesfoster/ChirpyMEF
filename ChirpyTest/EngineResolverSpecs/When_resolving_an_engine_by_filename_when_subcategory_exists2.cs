@@ -20,7 +20,7 @@ namespace ChirpyTest.EngineResolverSpecs
 				AddCategory("awesome.cat", ".awe.cat");
 			};
 
-		Because of = () => { result = engineResolver.GetEngineForFile("demo.awe.cat"); };
+		Because of = () => { result = engineResolver.GetEngineByFilename("demo.awe.cat"); };
 
 		It should_not_be_null = () => result.ShouldNotBeNull();
 		It should_be_an_EngineContainer = () => result.ShouldBeOfType<EngineContainer>();

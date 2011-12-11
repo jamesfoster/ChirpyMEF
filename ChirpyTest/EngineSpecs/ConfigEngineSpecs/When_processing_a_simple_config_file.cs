@@ -2,6 +2,7 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 {
 	using Chirpy.Engines;
 	using Machine.Specifications;
+	using Moq;
 	using It = Machine.Specifications.It;
 
 	[Subject(typeof(ConfigEngine))]
@@ -11,9 +12,12 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 			{
 				Contents = @"
 <Root>
-	<FileGroup Path='demo.js'>
+	<FileGroup Path='demo1.js'>
 		<File Path='abc.js' />
 		<File Path='def.js' />
+	</FileGroup>
+	<FileGroup Path='demo2.js'>
+		<File Path='ghi.js' />
 	</FileGroup>
 </Root>
 ";
@@ -22,11 +26,12 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 
 		Because of = () => { Result = Engine.Process(Contents, Filename); };
 
-		// DELETE THIS TEST
-		It should_return_the_contents_of_the_files = () => Result.ShouldEqual("contents of 'abc.js'\ncontents of 'def.js'");
+		It should_add_a_new_project_item1 = () =>
+			ProjectItemManagerMock.Verify(m => m.AddFile("demo1.js", "demo.chirp.config", "contents of 'abc.js'\ncontents of 'def.js'"), Times.Once());
 
-		It should_add_a_new_project_item; //= () =>
-			//ProjectItemManagerMock.Verify(m => m.AddFile("demo.js", "demo.chirp.config", "contents of 'abc.js'\ncontents of 'def.js'"));
-		It should_bypass_default_processing; //= () => result.ShouldEqual(null);
+		It should_add_a_new_project_item2 = () =>
+			ProjectItemManagerMock.Verify(m => m.AddFile("demo2.js", "demo.chirp.config", "contents of 'ghi.js'"), Times.Once());
+
+		It should_bypass_default_processing = () => Result.ShouldEqual(null);
 	}
 }

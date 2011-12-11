@@ -74,7 +74,7 @@ namespace Chirpy.Exports
 			return SaveCache(name, engines);
 		}
 
-		public IEngine GetEngineForFile(string filename)
+		public IEngine GetEngineByFilename(string filename)
 		{
 			Func<Lazy<IEngine, IEngineMetadata>, bool> categoryMatchesFile = 
 				e => filename.EndsWith(ExtensionResolver.GetExtensionFromCategory(e.Metadata.Category));

@@ -4,6 +4,6 @@
 	{
 		IEngine GetEngine(string category);
 		IEngine GetEngineByName(string name);
-		IEngine GetEngineForFile(string filename);
+		IEngine GetEngineByFilename(string filename);
 	}
 }

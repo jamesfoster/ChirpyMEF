@@ -46,7 +46,7 @@ namespace ChirpyTest.ChirpSepcs
 							));
 
 				EngineResolverMock
-					.Setup(r => r.GetEngineForFile(Moq.It.IsAny<string>()))
+					.Setup(r => r.GetEngineByFilename(Moq.It.IsAny<string>()))
 					.Returns<string>(
 						fn =>
 							{

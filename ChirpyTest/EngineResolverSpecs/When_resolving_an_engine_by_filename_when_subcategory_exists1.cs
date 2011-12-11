@@ -7,7 +7,7 @@ namespace ChirpyTest.EngineResolverSpecs
 	using Moq;
 	using It = Machine.Specifications.It;
 
-	public class When_resolving_an_engine_by_filename_when_subcategory_exists : EngineResolver_context
+	public class When_resolving_an_engine_by_filename_when_subcategory_exists1 : EngineResolver_context
 	{
 		static IEngine result;
 
@@ -20,7 +20,7 @@ namespace ChirpyTest.EngineResolverSpecs
 				AddCategory("awesome.cat", ".awe.cat");
 			};
 
-		Because of = () => { result = engineResolver.GetEngineForFile("demo.cat"); };
+		Because of = () => { result = engineResolver.GetEngineByFilename("demo.cat"); };
 
 		It should_not_be_null = () => result.ShouldNotBeNull();
 		It should_be_an_EngineContainer = () => result.ShouldBeOfType<EngineContainer>();

@@ -53,7 +53,7 @@ namespace Chirpy
 
 		public string Run(string filename)
 		{
-			var engine = EngineResolver.GetEngineForFile(filename);
+			var engine = EngineResolver.GetEngineByFilename(filename);
 
 			if (engine == null)
 				return null;

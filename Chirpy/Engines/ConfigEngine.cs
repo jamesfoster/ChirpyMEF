@@ -53,16 +53,14 @@ namespace Chirpy.Engines
 					                  	.Select(file => FileHandler.GetFileName(file, filename))
 					                  	.Select(path => FileHandler.GetContents(path)));
 
-				return fileGroupContents; // DELETE ME (debug purposes only)
-
-				// var engine = EngineResolver.GetEngineForFile(fileGroupPath);
+				// var engine = EngineResolver.GetEngineByFilename(fileGroupPath);
 
 				// var dependancies = engine.GetDependancies(fileGroupContents, fileGroupPath);
 				// FileHandler.RefreshMany(dependancies);
 
 				// fileGroupContents = engine.Process(fileGroupContents, fileGroupPath);
 
-				// ProjectItemManager.AddFile(fileGroupPath, filename, fileGroupContents);
+				ProjectItemManager.AddFile(fileGroupPath, filename, fileGroupContents);
 			}
 
 			return null; // bypass normal processing
