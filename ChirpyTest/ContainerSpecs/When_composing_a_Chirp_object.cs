@@ -9,6 +9,7 @@ namespace ChirpyTest.ContainerSpecs
 	using ChirpyInterface;
 	using Machine.Specifications;
 
+	[Subject(typeof(Chirp))]
 	public class When_composing_a_Chirp_object
 	{
 		static Chirp chirp;

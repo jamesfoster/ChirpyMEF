@@ -1,7 +1,6 @@
 namespace ChirpyTest.ChirpSepcs
 {
 	using System;
-	using System.Collections;
 	using System.Collections.Generic;
 	using System.Linq;
 	using Chirpy;
@@ -19,7 +18,6 @@ namespace ChirpyTest.ChirpSepcs
 		protected static string Filename;
 		protected static string Category;
 		protected static string SubCategory;
-		protected static string Result;
 		static IList<Lazy<IChirpyEngine, IChirpyEngineMetadata>> engines;
 		static IDictionary<string, string> files;
 
@@ -46,6 +44,17 @@ namespace ChirpyTest.ChirpSepcs
 							engines
 							.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase))
 							));
+
+				EngineResolverMock
+					.Setup(r => r.GetEngineForFile(Moq.It.IsAny<string>()))
+					.Returns<string>(
+						fn =>
+							{
+								var cat = fn.Substring(fn.IndexOf('.') + 1);
+								return new LazyMefEngine(
+									engines.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase))
+									);
+							});
 			};
 
 		protected static void AddFile(string contents, string filename)

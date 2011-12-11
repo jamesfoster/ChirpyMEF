@@ -4,6 +4,7 @@ namespace ChirpyTest.EngineSpecs.YuiJavascriptCompressorEngineSpecs
 	using ChirpyInterface;
 	using Machine.Specifications;
 
+	[Subject(typeof(YuiJavascriptCompressorEngine))]
 	public class When_processing_a_simple_js_file
 	{
 		static IChirpyEngine engine;

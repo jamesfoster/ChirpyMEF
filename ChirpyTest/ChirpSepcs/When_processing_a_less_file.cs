@@ -16,7 +16,7 @@
 				engineMock = AddEngine("DemoEngine", "abc.def", "xyz");
 
 				Category = "abc.def";
-				Filename = "jkl";
+				Filename = "jkl.abc.def";
 
 				AddFile("ghi", Filename);
 
@@ -25,11 +25,9 @@
 					.Returns("mno");
 			};
 
-		Because of = () => Chirp.Run(Category, Filename);
+		Because of = () => Chirp.Run(Filename);
 
-		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngine("abc.def"));
-		It should_call_Engine_Process = () => engineMock.Verify(e => e.Process("ghi", "jkl"));
-
-		It should_return_the_output_of_the_engine; // = () => Result.ShouldEqual("mno");
+		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngineForFile("jkl.abc.def"));
+		It should_call_Engine_Process = () => engineMock.Verify(e => e.Process("ghi", "jkl.abc.def"));
 	}
 }

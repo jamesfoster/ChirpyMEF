@@ -4,6 +4,7 @@
 	using ChirpyInterface;
 	using Machine.Specifications;
 
+	[Subject(typeof(DotlessChirpyEngine))]
 	public class When_processing_a_simple_less_file
 	{
 		static IChirpyEngine engine;

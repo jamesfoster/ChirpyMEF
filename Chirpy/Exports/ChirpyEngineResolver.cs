@@ -5,12 +5,16 @@ namespace Chirpy.Exports
 	using System.ComponentModel.Composition;
 	using System.Linq;
 	using ChirpyInterface;
+	using Imports;
 
 	[Export(typeof (IEngineResolver))]
 	public class ChirpyEngineResolver : IEngineResolver
 	{
 		[ImportMany]
 		public IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> Engines { get; set; }
+
+		[Import]
+		internal IExtensionResolver ExtensionResolver { get; set; }
 
 		protected Dictionary<string, LazyMefEngine> EngineCache { get; set; } 
 
@@ -72,7 +76,24 @@ namespace Chirpy.Exports
 
 		public IChirpyEngine GetEngineForFile(string filename)
 		{
-			throw new NotImplementedException();
+			var engines = Engines
+				.Where(e => filename.EndsWith(ExtensionResolver.GetExtensionFromCategory(e.Metadata.Category)));
+
+			if (!engines.Any())
+				return null;
+
+			if (!CheckEngines(engines))
+			{
+				var engineNames = engines.Select(e => string.Format("{0} ({1})",
+				                                                    e.Metadata.Name,
+				                                                    e.Metadata.Internal ? "Internal" : "External"));
+				var message = string.Format("There are multiple engines which can handle '{0}'\n{1}",
+				                            filename,
+				                            string.Join(", ", engineNames));
+				throw new InvalidOperationException(message);
+			}
+
+			return GetEngineByName(engines.First().Metadata.Name);
 		}
 
 		LazyMefEngine LoadFromCacheByCategory(string category)
@@ -113,19 +134,21 @@ namespace Chirpy.Exports
 
 		bool CheckEngines(IEnumerable<Lazy<IChirpyEngine, IChirpyEngineMetadata>> engines)
 		{
-			var names = engines.Select(e => e.Metadata.Name.ToLowerInvariant()).Distinct().ToList();
+			var engineList = engines.ToList();
 
-			if (names.Count > 1)
+			var names = engineList.Select(e => e.Metadata.Name.ToLowerInvariant()).Distinct();
+
+			if (names.Count() > 1)
 				return false;
 
-			var internalEngines = engines.Where(e => e.Metadata.Internal).ToList();
+			var internalEngines = engineList.Where(e => e.Metadata.Internal);
 
-			if (internalEngines.Count > 1)
+			if (internalEngines.Count() > 1)
 				return false;
 
-			var externalEngines = engines.Where(e => !e.Metadata.Internal).ToList();
+			var externalEngines = engineList.Where(e => !e.Metadata.Internal);
 
-			if (externalEngines.Count > 1)
+			if (externalEngines.Count() > 1)
 				return false;
 
 			return true;

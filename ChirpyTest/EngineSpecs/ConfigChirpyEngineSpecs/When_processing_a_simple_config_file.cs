@@ -1,9 +1,11 @@
 namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 {
+	using Chirpy.Engines;
 	using Machine.Specifications;
 	using It = Machine.Specifications.It;
 
-	public class ConfigFile : ConfigChirpyEngine_context
+	[Subject(typeof(ConfigChirpyEngine))]
+	public class When_processing_a_simple_config_file : ConfigChirpyEngine_context
 	{
 		Establish context = () =>
 			{

@@ -63,6 +63,8 @@
     <Compile Include="Exports\ChirpyFileHandler.cs" />
     <Compile Include="Exports\ChirpyProjectItemManager.cs" />
     <Compile Include="Exports\ChirpyTaskList.cs" />
+    <Compile Include="Exports\ExtensionResolver.cs" />
+    <Compile Include="Imports\IExtensionResolver.cs" />
     <Compile Include="LazyMefEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

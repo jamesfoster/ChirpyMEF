@@ -3,6 +3,7 @@ namespace Chirpy
 	using System;
 	using System.ComponentModel.Composition;
 	using System.ComponentModel.Composition.Hosting;
+	using System.IO;
 	using ChirpyInterface;
 
 	[Export]
@@ -36,8 +37,13 @@ namespace Chirpy
 
 		void Compose()
 		{
+			var pluginDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins");
+
+			if(!Directory.Exists(pluginDirectory))
+				Directory.CreateDirectory(pluginDirectory);
+
 			var assemblyCatalog = new AssemblyCatalog(typeof (Chirp).Assembly);
-			var directoryCatalog = new DirectoryCatalog(AppDomain.CurrentDomain.BaseDirectory);
+			var directoryCatalog = new DirectoryCatalog(pluginDirectory);
 			var catalog = new AggregateCatalog(assemblyCatalog, directoryCatalog);
 
 			var container = new CompositionContainer(catalog);
@@ -45,12 +51,12 @@ namespace Chirpy
 			container.ComposeParts(this);
 		}
 
-		public void Run(string category, string filename)
+		public string Run(string filename)
 		{
-			var engine = EngineResolver.GetEngine(category);
+			var engine = EngineResolver.GetEngineForFile(filename);
 
 			if (engine == null)
-				return;
+				return null;
 
 			try
 			{
@@ -58,6 +64,7 @@ namespace Chirpy
 
 				var result = engine.Process(contents, filename);
 
+				return result;
 				// ProjectItemManager.AddFile(newFilename, filename);
 			}
 			catch (ChirpyException e)
@@ -72,6 +79,7 @@ namespace Chirpy
 
 				Console.WriteLine("{0}", e.Message);
 			}
+			return null;
 		}
 	}
 }

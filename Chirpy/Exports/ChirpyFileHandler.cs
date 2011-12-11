@@ -10,7 +10,10 @@ namespace Chirpy.Exports
 	{
 		public string GetContents(string filename)
 		{
-			return string.Format("contents of '{0}'", filename);
+			if(!File.Exists(filename))
+				return null;
+
+			return File.ReadAllText(filename);
 		}
 
 		public string GetFileName(string path, string relativeTo)
