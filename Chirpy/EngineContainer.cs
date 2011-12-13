@@ -34,36 +34,62 @@ namespace Chirpy
 
 		public List<string> GetDependancies(string contents, string filename)
 		{
-			var engine = GetEngine();
-
-			if (engine != null)
-				return engine.GetDependancies(contents, filename);
-
-			return null;
+			return Execute(e => e.GetDependancies(contents, filename));
 		}
 
 		public string Process(string contents, string filename)
 		{
-			var engine = GetEngine();
-
-			if (engine != null)
-				return engine.Process(contents, filename);
-
-			return null;
+			return Execute(e => e.Process(contents, filename));
 		}
 
-		IEngine GetEngine()
+		T Execute<T>(Func<IEngine, T> action)
 		{
 			// try external first
 			var engine = Engines.FirstOrDefault(e => !e.Metadata.Internal);
 
-			if (engine == null)
+			T result;
+
+			var success = Try(action, engine, out result);
+
+			// try internal
+			if (!success)
 				engine = Engines.FirstOrDefault(e => e.Metadata.Internal);
 
-			if (engine != null)
-				return engine.Value;
+			Try(action, engine, out result);
 
-			return null;
+			return result;
+		}
+
+		bool Try<T>(Func<IEngine, T> action, Lazy<IEngine, IEngineMetadata> engine, out T result)
+		{
+			if(engine == null)
+			{
+				result = default(T);
+				return false;
+			}
+
+			try
+			{
+				result = action(engine.Value);
+				return true;
+			}
+			catch (ChirpyException e)
+			{
+//				if(Internal.Length == 1 || engine.Metadata.Internal)
+//				{
+//					// Log exception
+//				}
+			}
+			catch (Exception e)
+			{
+//				if(Internal.Length == 1 || engine.Metadata.Internal)
+//				{
+//					// Log exception
+//				}
+			}
+
+			result = default(T);
+			return false;
 		}
 	}
 }
