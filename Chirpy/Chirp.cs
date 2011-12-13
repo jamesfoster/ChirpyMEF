@@ -26,16 +26,34 @@ namespace Chirpy
 		{
 		}
 
-		internal static Chirp Create()
+		internal static Chirp CreateWithPlugins()
+		{
+			try
+			{
+				var chirp = new Chirp();
+
+				chirp.ComposeWithPlugins();
+
+				return chirp;
+			}
+			catch (Exception)
+			{
+				// Log exception
+
+				return CreateWithoutPlugins();
+			}
+		}
+
+		internal static Chirp CreateWithoutPlugins()
 		{
 			var chirp = new Chirp();
 
-			chirp.Compose();
+			chirp.ComposeWithoutPlugins();
 
 			return chirp;
 		}
 
-		void Compose()
+		void ComposeWithPlugins()
 		{
 			var pluginDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins");
 
@@ -46,6 +64,14 @@ namespace Chirpy
 			var directoryCatalog = new DirectoryCatalog(pluginDirectory);
 			var catalog = new AggregateCatalog(assemblyCatalog, directoryCatalog);
 
+			var container = new CompositionContainer(catalog);
+
+			container.ComposeParts(this);
+		}
+
+		void ComposeWithoutPlugins()
+		{
+			var catalog = new AssemblyCatalog(typeof (Chirp).Assembly);
 			var container = new CompositionContainer(catalog);
 
 			container.ComposeParts(this);

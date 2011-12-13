@@ -19,7 +19,7 @@
 			else
 				path = "test.my.less";
 
-			var chirp = Chirp.Create();
+			var chirp = Chirp.CreateWithPlugins();
 
 			Console.WriteLine(chirp.Run(path));
 		}
