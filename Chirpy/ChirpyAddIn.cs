@@ -56,6 +56,8 @@
 
 		void ComposeChirp()
 		{
+			AppPart.App = App; // store in static property
+
 			try
 			{
 				Chirp = Chirp.CreateWithPlugins();

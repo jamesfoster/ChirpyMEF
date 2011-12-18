@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Chirp.cs" />
     <Compile Include="ChirpyAddIn.cs" />
+    <Compile Include="AppPart.cs" />
     <Compile Include="Engines\YuiCssCompressorEngine.cs" />
     <Compile Include="Engines\YuiJavascriptCompressorEngine.cs" />
     <Compile Include="Exports\EngineResolver.cs" />

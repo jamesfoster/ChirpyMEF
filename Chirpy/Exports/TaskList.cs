@@ -2,10 +2,13 @@ namespace Chirpy.Exports
 {
 	using System.ComponentModel.Composition;
 	using ChirpyInterface;
+	using EnvDTE80;
 
 	[Export(typeof(ITaskList))]
 	public class TaskList : ITaskList
 	{
+		[Import] public DTE2 App { get; set; }
+
 		public void Add(string filename)
 		{
 			throw new System.NotImplementedException();
