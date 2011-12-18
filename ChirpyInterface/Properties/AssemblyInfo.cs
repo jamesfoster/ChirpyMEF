@@ -37,3 +37,4 @@ using System.Runtime.InteropServices;
 
 // TODO: use strong name here
 [assembly:InternalsVisibleTo("Chirpy")]
+[assembly:InternalsVisibleTo("ChirpyTest")]

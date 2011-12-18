@@ -2,11 +2,13 @@ namespace ChirpyTest.EngineResolverSpecs
 {
 	using System.Linq;
 	using Chirpy;
+	using Chirpy.Exports;
 	using ChirpyInterface;
 	using Machine.Specifications;
 	using Moq;
 	using It = Machine.Specifications.It;
 
+	[Subject(typeof(EngineResolver))]
 	public class When_resolving_an_engine_by_filename_when_subcategory_exists2 : EngineResolver_context
 	{
 		static IEngine result;

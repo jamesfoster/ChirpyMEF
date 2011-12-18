@@ -53,9 +53,11 @@ namespace Chirpy
 
 			// try internal
 			if (!success)
+			{
 				engine = Engines.FirstOrDefault(e => e.Metadata.Internal);
 
-			Try(action, engine, out result);
+				Try(action, engine, out result);
+			}
 
 			return result;
 		}

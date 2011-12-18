@@ -40,8 +40,13 @@ namespace ChirpyTest.EngineResolverSpecs
 
 		protected static Mock<IEngine> AddEngine(string name, string category, string outputCategory)
 		{
+			return AddEngine(name, category, outputCategory, false);
+		}
+
+		protected static Mock<IEngine> AddEngine(string name, string category, string outputCategory, bool @internal)
+		{
 			var engineMock = new Mock<IEngine>();
-			var metadata = new EngineMetadataAttribute(name, category, outputCategory);
+			var metadata = new EngineMetadataAttribute(name, category, outputCategory, @internal);
 
 			engines.Add(new Lazy<IEngine, IEngineMetadata>(() => engineMock.Object, metadata));
 
