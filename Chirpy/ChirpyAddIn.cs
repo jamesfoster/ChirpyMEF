@@ -8,6 +8,7 @@
 	using EnvDTE80;
 	using Exports;
 	using Extensibility;
+	using Extensions;
 
 	public class ChirpyAddIn : IDTExtensibility2
 	{
@@ -56,7 +57,7 @@
 
 		void ComposeChirp()
 		{
-			AppPart.App = App; // store in static property
+			StaticPart.App = App; // store in static property
 
 			try
 			{
@@ -124,7 +125,7 @@
 
 			Events.BuildEvents.OnBuildDone += BuildDone;
 
-			Events.DocumentEvents.DocumentSaved += DocumentSaved;
+			Events.DocumentEvents.DocumentSaved += ItemSaved;
 		}
 
 		/// <summary>
@@ -182,9 +183,15 @@
 			
 		}
 
-		void ItemAdded(ProjectItem projectitem)
+		void ItemAdded(ProjectItem projectItem)
 		{
-			
+			// load dependancies
+
+			// enqueue file?
+
+			var output = Chirp.Run(projectItem.FileName());
+
+			WriteToOutputWindow(output ?? "[null]");
 		}
 
 		void ItemRemoved(ProjectItem projectitem)
@@ -202,9 +209,9 @@
 			
 		}
 
-		void DocumentSaved(Document document)
+		void ItemSaved(Document document)
 		{
-			
+			ItemAdded(document.ProjectItem);
 		}
 
 		void SetupOutputWindow()

@@ -65,11 +65,11 @@
   <ItemGroup>
     <Compile Include="Chirp.cs" />
     <Compile Include="ChirpyAddIn.cs" />
-    <Compile Include="AppPart.cs" />
+    <Compile Include="Extensions\ProjectItemExtensions.cs" />
+    <Compile Include="StaticPart.cs" />
     <Compile Include="Engines\YuiCssCompressorEngine.cs" />
     <Compile Include="Engines\YuiJavascriptCompressorEngine.cs" />
     <Compile Include="Exports\EngineResolver.cs" />
-    <Compile Include="Engines\CompoundEngine.cs" />
     <Compile Include="Engines\ConfigEngine.cs" />
     <Compile Include="Engines\DotlessEngine.cs" />
     <Compile Include="Exports\FileHandler.cs" />
