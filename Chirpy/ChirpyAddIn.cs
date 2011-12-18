@@ -6,6 +6,7 @@
 	using System.Windows.Forms;
 	using EnvDTE;
 	using EnvDTE80;
+	using Exports;
 	using Extensibility;
 
 	public class ChirpyAddIn : IDTExtensibility2
@@ -40,16 +41,88 @@
 
 			WriteToOutputWindow("Loading...");
 
+			ComposeChirp();
+
+			if(Chirp == null)
+			{
+				WriteToOutputWindow("Unable to load.");
+				return;
+			}
+
+			PrintLoadedEngines();
+
+			WriteToOutputWindow("Ready");
+		}
+
+		void ComposeChirp()
+		{
 			try
 			{
 				Chirp = Chirp.CreateWithPlugins();
 			}
-			catch(Exception)
+			catch (Exception ex)
 			{
-				Chirp = Chirp.CreateWithoutPlugins();
-			}
+				WriteToOutputWindow(string.Format("Error loading with plugins: {0}", ex.Message));
 
-			WriteToOutputWindow("Ready");
+				if (Chirp != null)
+					Chirp.Dispose();
+
+				try
+				{
+					WriteToOutputWindow("Loading without plugins.");
+					Chirp = Chirp.CreateWithoutPlugins();
+				}
+				catch (Exception ex2)
+				{
+					WriteToOutputWindow(string.Format("Error loading: {0}", ex2.Message));
+
+					if (Chirp != null)
+						Chirp.Dispose();
+
+					Chirp = null;
+				}
+			}
+		}
+
+		void PrintLoadedEngines()
+		{
+			var engineResolver = Chirp.EngineResolver as EngineResolver;
+			if (engineResolver == null)
+				return;
+
+			WriteToOutputWindow("Loaded Engines:");
+
+			engineResolver.Engines
+				.Select(e => string.Format("\t{0}", e.Metadata.Name))
+				.Distinct()
+				.OrderBy(s => s)
+				.ToList()
+				.ForEach(WriteToOutputWindow);
+		}
+
+		/// <summary>
+		/// Implements the OnStartupComplete method of the IDTExtensibility2 interface. 
+		/// Occurs when the host application has completed loading.
+		/// </summary>
+		/// <param name="custom">Array of parameters that are host application specific.</param>
+		/// <seealso cref="IDTExtensibility2"/>
+		public void OnStartupComplete(ref Array custom)
+		{
+			if(Chirp == null)
+				return; // failed to load
+
+			Events.SolutionEvents.Opened += SolutionOpened;
+			Events.SolutionEvents.ProjectAdded += ProjectAdded;
+			Events.SolutionEvents.ProjectRemoved += ProjectRemoved;
+			Events.SolutionEvents.AfterClosing += SolutionClosed;
+
+			Events.ProjectItemsEvents.ItemAdded += ItemAdded;
+			Events.ProjectItemsEvents.ItemRemoved += ItemRemoved;
+			Events.ProjectItemsEvents.ItemRenamed += ItemRenamed;
+
+			Events.BuildEvents.OnBuildDone += BuildDone;
+
+			Events.DocumentEvents.DocumentSaved += DocumentSaved;
 		}
 
 		/// <summary>
@@ -61,16 +134,10 @@
 		/// <seealso cref="IDTExtensibility2"/>
 		public void OnDisconnection(ext_DisconnectMode disconnectMode, ref Array custom)
 		{
-		}
+			if (Chirp != null)
+				Chirp.Dispose();
 
-		/// <summary>
-		/// Implements the OnStartupComplete method of the IDTExtensibility2 interface. 
-		/// Occurs when the host application has completed loading.
-		/// </summary>
-		/// <param name="custom">Array of parameters that are host application specific.</param>
-		/// <seealso cref="IDTExtensibility2"/>
-		public void OnStartupComplete(ref Array custom)
-		{
+			WriteToOutputWindow("Goodbye!");
 		}
 
 		/// <summary>
@@ -91,6 +158,51 @@
 		/// <seealso cref="IDTExtensibility2"/>
 		public void OnBeginShutdown(ref Array custom)
 		{
+		}
+
+		void SolutionOpened()
+		{
+			
+		}
+
+		void ProjectAdded(Project project)
+		{
+			
+		}
+
+		void ProjectRemoved(Project project)
+		{
+			
+		}
+
+		void SolutionClosed()
+		{
+			
+		}
+
+		void ItemAdded(ProjectItem projectitem)
+		{
+			
+		}
+
+		void ItemRemoved(ProjectItem projectitem)
+		{
+			
+		}
+
+		void ItemRenamed(ProjectItem projectitem, string oldname)
+		{
+			
+		}
+
+		void BuildDone(vsBuildScope scope, vsBuildAction action)
+		{
+			
+		}
+
+		void DocumentSaved(Document document)
+		{
+			
 		}
 
 		void SetupOutputWindow()

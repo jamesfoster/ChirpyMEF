@@ -7,8 +7,10 @@ namespace Chirpy
 	using ChirpyInterface;
 
 	[Export]
-	public class Chirp
+	public class Chirp : IDisposable
 	{
+		protected CompositionContainer Container;
+
 		[Import] public IEngineResolver EngineResolver { get; set; }
 		[Import] public ITaskList TaskList { get; set; }
 		[Import] public IProjectItemManager ProjectItemManager { get; set; }
@@ -28,32 +30,23 @@ namespace Chirpy
 
 		internal static Chirp CreateWithPlugins()
 		{
-			try
-			{
-				var chirp = new Chirp();
+			var chirp = new Chirp();
 
-				chirp.ComposeWithPlugins();
+			ComposeWithPlugins(chirp);
 
-				return chirp;
-			}
-			catch (Exception)
-			{
-				// Log exception
-
-				return CreateWithoutPlugins();
-			}
+			return chirp;
 		}
 
 		internal static Chirp CreateWithoutPlugins()
 		{
 			var chirp = new Chirp();
 
-			chirp.ComposeWithoutPlugins();
+			ComposeWithoutPlugins(chirp);
 
 			return chirp;
 		}
 
-		void ComposeWithPlugins()
+		static void ComposeWithPlugins(Chirp chirp)
 		{
 			var pluginDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins");
 
@@ -64,17 +57,18 @@ namespace Chirpy
 			var directoryCatalog = new DirectoryCatalog(pluginDirectory);
 			var catalog = new AggregateCatalog(assemblyCatalog, directoryCatalog);
 
-			var container = new CompositionContainer(catalog);
+			chirp.Container = new CompositionContainer(catalog);
 
-			container.ComposeParts(this);
+			chirp.Container.ComposeParts(chirp);
 		}
 
-		void ComposeWithoutPlugins()
+		static void ComposeWithoutPlugins(Chirp chirp)
 		{
 			var catalog = new AssemblyCatalog(typeof (Chirp).Assembly);
-			var container = new CompositionContainer(catalog);
 
-			container.ComposeParts(this);
+			chirp.Container = new CompositionContainer(catalog);
+
+			chirp.Container.ComposeParts(chirp);
 		}
 
 		public string Run(string filename)
@@ -106,6 +100,21 @@ namespace Chirpy
 				Console.WriteLine("{0}", e.Message);
 			}
 			return null;
+		}
+
+		protected bool IsDisposed { get; set; }
+
+		public void Dispose()
+		{
+			lock(this)
+			{
+				if (!IsDisposed)
+				{
+					IsDisposed = true;
+					if(Container != null)
+						Container.Dispose();
+				}
+			}
 		}
 	}
 }
