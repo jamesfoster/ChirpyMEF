@@ -4,6 +4,7 @@ namespace Chirpy
 	using System.ComponentModel.Composition;
 	using System.ComponentModel.Composition.Hosting;
 	using System.IO;
+	using System.Reflection;
 	using ChirpyInterface;
 
 	[Export]
@@ -48,7 +49,8 @@ namespace Chirpy
 
 		static void ComposeWithPlugins(Chirp chirp)
 		{
-			var pluginDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins");
+			var assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			var pluginDirectory = Path.Combine(assemblyDirectory, "Plugins");
 
 			if(!Directory.Exists(pluginDirectory))
 				Directory.CreateDirectory(pluginDirectory);
