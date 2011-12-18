@@ -21,6 +21,11 @@
 		protected Events2 Events { get; set; }
 		protected Chirp Chirp { get; set; }
 
+		protected DocumentEvents DocumentEvents { get; set; }
+		protected BuildEvents BuildEvents { get; set; }
+		protected ProjectItemsEvents ProjectItemsEvents { get; set; }
+		protected SolutionEvents SolutionEvents { get; set; }
+
 		OutputWindowPane outputWindowPane;
 
 		/// <summary>
@@ -113,6 +118,12 @@
 		{
 			if(Chirp == null)
 				return; // failed to load
+
+			// hold a reference to the event objects to prevent them being garbage collected
+			SolutionEvents = Events.SolutionEvents;
+			ProjectItemsEvents = Events.ProjectItemsEvents;
+			BuildEvents = Events.BuildEvents;
+			DocumentEvents = Events.DocumentEvents;
 
 			Events.SolutionEvents.Opened += SolutionOpened;
 			Events.SolutionEvents.ProjectAdded += ProjectAdded;
