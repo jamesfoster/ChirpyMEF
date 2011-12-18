@@ -12,6 +12,8 @@
 	{
 		const string OutputWindowName = "Chirpy";
 
+		static readonly object @lock = new object();
+
 		protected DTE2 App { get; set; }
 		protected AddIn Instance { get; set; }
 		protected Events2 Events { get; set; }
@@ -107,7 +109,15 @@
 			try
 			{
 				if (outputWindowPane == null)
-					SetupOutputWindow();
+				{
+					lock (@lock)
+					{
+						if (outputWindowPane == null)
+						{
+							SetupOutputWindow();
+						}
+					}
+				}
 
 				Debug.Assert(outputWindowPane != null);
 
