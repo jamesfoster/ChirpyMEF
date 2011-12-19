@@ -26,6 +26,8 @@
 		protected ProjectItemsEvents ProjectItemsEvents { get; set; }
 		protected SolutionEvents SolutionEvents { get; set; }
 
+		public bool HasBoundEvents { get; set; }
+
 		OutputWindowPane outputWindowPane;
 
 		/// <summary>
@@ -54,6 +56,8 @@
 				WriteToOutputWindow("Unable to load.");
 				return;
 			}
+
+			BindEvents();
 
 			PrintLoadedEngines();
 
@@ -116,8 +120,15 @@
 		/// <seealso cref="IDTExtensibility2"/>
 		public void OnStartupComplete(ref Array custom)
 		{
-			if(Chirp == null)
-				return; // failed to load
+			BindEvents();
+		}
+
+		void BindEvents()
+		{
+			if (Chirp == null || HasBoundEvents)
+				return;
+
+			HasBoundEvents = true;
 
 			// hold a reference to the event objects to prevent them being garbage collected
 			SolutionEvents = Events.SolutionEvents;
@@ -136,7 +147,7 @@
 
 			Events.BuildEvents.OnBuildDone += BuildDone;
 
-			Events.DocumentEvents.DocumentSaved += ItemSaved;
+			Events.DocumentEvents.DocumentSaved += DocumentSaved;
 		}
 
 		/// <summary>
@@ -220,7 +231,7 @@
 			
 		}
 
-		void ItemSaved(Document document)
+		void DocumentSaved(Document document)
 		{
 			ItemAdded(document.ProjectItem);
 		}
