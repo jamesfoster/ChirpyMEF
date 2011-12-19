@@ -20,7 +20,10 @@ namespace Chirpy
 			Engines = engines;
 
 			if(!engines.Any())
+			{
+				Internal = new bool[0];
 				return;
+			}
 
 			var metadata = engines.First().Metadata;
 
@@ -29,7 +32,9 @@ namespace Chirpy
 			OutputCategory = metadata.OutputCategory;
 			Minifier = metadata.Minifier;
 
-			Internal = engines.Select(e => e.Metadata.Internal).ToArray();
+			Internal = engines.Select(e => e.Metadata.Internal)
+				.Distinct()
+				.ToArray();
 		}
 
 		public List<string> GetDependancies(string contents, string filename)
@@ -44,15 +49,20 @@ namespace Chirpy
 
 		T Execute<T>(Func<IEngine, T> action)
 		{
+			Lazy<IEngine, IEngineMetadata> engine;
+			var success = false;
+			var result = default(T);
+
 			// try external first
-			var engine = Engines.FirstOrDefault(e => !e.Metadata.Internal);
+			if(HasExternalEngine())
+			{
+				engine = Engines.FirstOrDefault(e => !e.Metadata.Internal);
 
-			T result;
-
-			var success = Try(action, engine, out result);
+				success = Try(action, engine, out result);
+			}
 
 			// try internal
-			if (!success)
+			if (!success && HasInternalEngine())
 			{
 				engine = Engines.FirstOrDefault(e => e.Metadata.Internal);
 
@@ -60,6 +70,20 @@ namespace Chirpy
 			}
 
 			return result;
+		}
+
+		bool HasInternalEngine()
+		{
+			if(Internal.Length == 0) return false;
+
+			return Internal.Length == 2 || Internal[0];
+		}
+
+		bool HasExternalEngine()
+		{
+			if(Internal.Length == 0) return false;
+
+			return Internal.Length == 2 || !Internal[0];
 		}
 
 		bool Try<T>(Func<IEngine, T> action, Lazy<IEngine, IEngineMetadata> engine, out T result)
