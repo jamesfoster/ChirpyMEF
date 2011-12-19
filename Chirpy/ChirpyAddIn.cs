@@ -112,7 +112,11 @@
 			WriteToOutputWindow("Loaded Engines:");
 
 			engineResolver.Engines
-				.Select(e => string.Format("\t{0}", e.Metadata.Name))
+				.Select(
+					e => string.Format("\t{0} [{1}]{2}",
+					                   e.Metadata.Name,
+					                   e.Metadata.Version,
+					                   e.Metadata.Internal ? "" : " (plugin)"))
 				.Distinct()
 				.OrderBy(s => s)
 				.ToList()
