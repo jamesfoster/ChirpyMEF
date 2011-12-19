@@ -12,7 +12,7 @@
 
 		Establish context = () =>
 			{
-				AddEngine("DemoEngine", "cat", "txt");
+				AddEngine("DemoEngine", "1.0", "cat", "txt");
 
 				AddCategory("cat", ".cat");
 			};

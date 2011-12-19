@@ -13,7 +13,7 @@
 
 		Establish context = () =>
 			{
-				engineMock = AddEngine("DemoEngine", "abc.def", "xyz");
+				engineMock = AddEngine("DemoEngine", "1.0", "abc.def", "xyz");
 
 				Category = "abc.def";
 				Filename = "jkl.abc.def";

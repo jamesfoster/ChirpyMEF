@@ -17,7 +17,7 @@
 
 		Establish context = () =>
 			{
-				engineMock = AddEngine("DemoEngine", "abc", "def");
+				engineMock = AddEngine("DemoEngine", "1.0", "abc", "def");
 
 				engineMock
 					.Setup(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))

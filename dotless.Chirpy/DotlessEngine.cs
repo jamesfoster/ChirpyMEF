@@ -9,7 +9,7 @@
 	using Core.Stylizers;
 
 	[Export(typeof (IEngine))]
-	[EngineMetadata("Dotless", "less", "css")]
+	[EngineMetadata("Dotless", "1.2.1.0", "less", "css")]
 	public class DotlessEngine : IEngine
 	{
 		public List<string> GetDependancies(string contents, string filename)

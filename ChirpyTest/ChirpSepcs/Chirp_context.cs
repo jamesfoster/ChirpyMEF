@@ -62,10 +62,10 @@ namespace ChirpyTest.ChirpSepcs
 			files[filename] = contents;
 		}
 
-		protected static Mock<IEngine> AddEngine(string name, string category, string outputCategory)
+		protected static Mock<IEngine> AddEngine(string name, string version, string category, string outputCategory)
 		{
 			var engineMock = new Mock<IEngine>();
-			var metadata = new EngineMetadataAttribute(name, category, outputCategory);
+			var metadata = new EngineMetadataAttribute(name, version, category, outputCategory);
 
 			engines.Add(new Lazy<IEngine, IEngineMetadata>(() => engineMock.Object, metadata));
 

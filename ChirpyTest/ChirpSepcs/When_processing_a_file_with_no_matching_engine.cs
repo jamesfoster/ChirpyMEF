@@ -13,7 +13,7 @@ namespace ChirpyTest.ChirpSepcs
 
 		Establish context = () =>
 			{
-				engineMock = AddEngine("DemoEngine", "xxx.xxx", "xyz");
+				engineMock = AddEngine("DemoEngine", "1.0", "xxx.xxx", "xyz");
 
 				Category = "abc.def";
 				Filename = "jkl.abc.def";

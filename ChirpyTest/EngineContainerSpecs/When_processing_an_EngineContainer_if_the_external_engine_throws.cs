@@ -19,8 +19,8 @@ namespace ChirpyTest.EngineContainerSpecs
 
 		Establish context = () =>
 			{
-				internalEngineMock = AddEngine("DemoEngine", "abc", "def", true);
-				externalEngineMock = AddEngine("DemoEngine", "abc", "def", false);
+				internalEngineMock = AddEngine("DemoEngine", "1.0", "abc", "def", true);
+				externalEngineMock = AddEngine("DemoEngine", "1.0", "abc", "def", false);
 
 				internalEngineMock
 					.Setup(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))

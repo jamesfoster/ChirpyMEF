@@ -15,8 +15,8 @@ namespace ChirpyTest.EngineResolverSpecs
 
 		Establish context = () =>
 			{
-				AddEngine("DemoEngine", "cat", "txt");
-				AddEngine("AwesomeEngine", "awesome.cat", "txt");
+				AddEngine("DemoEngine", "1.0", "cat", "txt");
+				AddEngine("AwesomeEngine", "1.0", "awesome.cat", "txt");
 
 				AddCategory("cat", ".cat");
 				AddCategory("awesome.cat", ".awe.cat");

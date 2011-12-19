@@ -5,7 +5,7 @@ namespace Chirpy.Engines
 	using ChirpyInterface;
 
 	[Export(typeof (IEngine))]
-	[EngineMetadata("YUI CSS Compressor", "yui.css", "css", true, Minifier = true)]
+	[EngineMetadata("YUI CSS Compressor", "1.6.0.2", "yui.css", "css", true, Minifier = true)]
 	public class YuiCssCompressorEngine : IEngine
 	{
 		public List<string> GetDependancies(string contents, string filename)
