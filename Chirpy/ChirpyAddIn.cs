@@ -5,6 +5,7 @@
 	using System.Diagnostics;
 	using System.Linq;
 	using System.Windows.Forms;
+	using ChirpyInterface;
 	using EnvDTE;
 	using EnvDTE80;
 	using Exports;
@@ -24,6 +25,8 @@
 		protected MefComposer Composer { get; set; }
 
 		[Import] protected Chirp Chirp { get; set; }
+		[Import] protected IProjectItemManager ProjectItemManager { get; set; }
+		[Import] protected ITaskList TaskList { get; set; }
 
 		protected DocumentEvents DocumentEvents { get; set; }
 		protected BuildEvents BuildEvents { get; set; }
@@ -53,7 +56,7 @@
 
 			WriteToOutputWindow("Loading...");
 
-			ComposeChirp();
+			Compose(); // Do not attempt to use [Import]s before this line!
 
 			if(Chirp == null)
 			{
@@ -68,7 +71,7 @@
 			WriteToOutputWindow("Ready");
 		}
 
-		void ComposeChirp()
+		void Compose()
 		{
 			StaticPart.App = App; // store in static property
 
