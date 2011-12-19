@@ -19,9 +19,13 @@
 			else
 				path = "test.my.less";
 
-			var chirp = Chirp.CreateWithPlugins();
+			var chirp = MefComposer
+				.CreateComposerWithPlugins()
+				.GetExport<Chirp>();
 
-			Console.WriteLine(chirp.Run(path));
+			Console.WriteLine(chirp.Value.Run(path));
+
+			Console.ReadLine();
 		}
 	}
 }

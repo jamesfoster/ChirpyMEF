@@ -1,6 +1,7 @@
 ﻿namespace Chirpy
 {
 	using System;
+	using System.ComponentModel.Composition;
 	using System.Diagnostics;
 	using System.Linq;
 	using System.Windows.Forms;
@@ -19,7 +20,10 @@
 		protected DTE2 App { get; set; }
 		protected AddIn Instance { get; set; }
 		protected Events2 Events { get; set; }
-		protected Chirp Chirp { get; set; }
+
+		protected MefComposer Composer { get; set; }
+
+		[Import] protected Chirp Chirp { get; set; }
 
 		protected DocumentEvents DocumentEvents { get; set; }
 		protected BuildEvents BuildEvents { get; set; }
@@ -70,28 +74,28 @@
 
 			try
 			{
-				Chirp = Chirp.CreateWithPlugins();
+				Composer = MefComposer.ComposeWithPlugins(this);
 			}
 			catch (Exception ex)
 			{
 				WriteToOutputWindow(string.Format("Error loading with plugins: {0}", ex.Message));
 
-				if (Chirp != null)
-					Chirp.Dispose();
+				if (Composer != null)
+					Composer.Dispose();
 
 				try
 				{
 					WriteToOutputWindow("Loading without plugins.");
-					Chirp = Chirp.CreateWithoutPlugins();
+					Composer = MefComposer.ComposeWithoutPlugins(this);
 				}
 				catch (Exception ex2)
 				{
 					WriteToOutputWindow(string.Format("Error loading: {0}", ex2.Message));
 
-					if (Chirp != null)
-						Chirp.Dispose();
+					if (Composer != null)
+						Composer.Dispose();
 
-					Chirp = null;
+					Composer = null;
 				}
 			}
 		}
@@ -130,6 +134,8 @@
 
 			HasBoundEvents = true;
 
+			WriteToOutputWindow("Binging events");
+
 			// hold a reference to the event objects to prevent them being garbage collected
 			SolutionEvents = Events.SolutionEvents;
 			ProjectItemsEvents = Events.ProjectItemsEvents;
@@ -159,8 +165,8 @@
 		/// <seealso cref="IDTExtensibility2"/>
 		public void OnDisconnection(ext_DisconnectMode disconnectMode, ref Array custom)
 		{
-			if (Chirp != null)
-				Chirp.Dispose();
+			if (Composer != null)
+				Composer.Dispose();
 
 			WriteToOutputWindow("Goodbye!");
 		}

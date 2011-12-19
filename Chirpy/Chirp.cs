@@ -7,7 +7,7 @@ namespace Chirpy
 	using ChirpyInterface;
 
 	[Export]
-	public class Chirp : IDisposable
+	public class Chirp
 	{
 		protected CompositionContainer Container;
 
@@ -26,49 +26,6 @@ namespace Chirpy
 
 		Chirp()
 		{
-		}
-
-		internal static Chirp CreateWithPlugins()
-		{
-			var chirp = new Chirp();
-
-			ComposeWithPlugins(chirp);
-
-			return chirp;
-		}
-
-		internal static Chirp CreateWithoutPlugins()
-		{
-			var chirp = new Chirp();
-
-			ComposeWithoutPlugins(chirp);
-
-			return chirp;
-		}
-
-		static void ComposeWithPlugins(Chirp chirp)
-		{
-			var pluginDirectory = StaticPart.PluginDirectory;
-
-			if(!Directory.Exists(pluginDirectory))
-				Directory.CreateDirectory(pluginDirectory);
-
-			var assemblyCatalog = new AssemblyCatalog(typeof (Chirp).Assembly);
-			var directoryCatalog = new DirectoryCatalog(pluginDirectory);
-			var catalog = new AggregateCatalog(assemblyCatalog, directoryCatalog);
-
-			chirp.Container = new CompositionContainer(catalog);
-
-			chirp.Container.ComposeParts(chirp);
-		}
-
-		static void ComposeWithoutPlugins(Chirp chirp)
-		{
-			var catalog = new AssemblyCatalog(typeof (Chirp).Assembly);
-
-			chirp.Container = new CompositionContainer(catalog);
-
-			chirp.Container.ComposeParts(chirp);
 		}
 
 		public string Run(string filename)
@@ -100,21 +57,6 @@ namespace Chirpy
 				Console.WriteLine("{0}", e.Message);
 			}
 			return null;
-		}
-
-		protected bool IsDisposed { get; set; }
-
-		public void Dispose()
-		{
-			lock(this)
-			{
-				if (!IsDisposed)
-				{
-					IsDisposed = true;
-					if(Container != null)
-						Container.Dispose();
-				}
-			}
 		}
 	}
 }
