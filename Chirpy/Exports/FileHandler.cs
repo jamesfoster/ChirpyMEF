@@ -16,6 +16,11 @@ namespace Chirpy.Exports
 			return File.ReadAllText(filename);
 		}
 
+		public void SaveFile(string filename, string contents)
+		{
+			File.WriteAllText(filename, contents);
+		}
+
 		public string GetFileName(string path, string relativeTo)
 		{
 			var relativeDirectory = Path.GetDirectoryName(relativeTo) ?? "";

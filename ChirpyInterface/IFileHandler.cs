@@ -12,6 +12,13 @@
 		string GetContents(string filename);
 
 		/// <summary>
+		/// Saves <paramref name="contents"/> to the specified file.
+		/// </summary>
+		/// <param name="filename">The full path to the file being saved.</param>
+		/// <param name="contents">The contents of the file.</param>
+		void SaveFile(string filename, string contents);
+
+		/// <summary>
 		/// Gets the full file name of the specified path relative to the specified file.
 		/// </summary>
 		/// <param name="path">The path.</param>

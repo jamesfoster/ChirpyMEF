@@ -11,6 +11,7 @@
 	using Exports;
 	using Extensibility;
 	using Extensions;
+	using Imports;
 
 	public class ChirpyAddIn : IDTExtensibility2
 	{
@@ -25,7 +26,7 @@
 		protected MefComposer Composer { get; set; }
 
 		[Import] protected Chirp Chirp { get; set; }
-		[Import] protected IProjectItemManager ProjectItemManager { get; set; }
+		[Import] protected IInternalProjectItemManager ProjectItemManager { get; set; }
 		[Import] protected ITaskList TaskList { get; set; }
 
 		protected DocumentEvents DocumentEvents { get; set; }
@@ -220,13 +221,7 @@
 
 		void ItemAdded(ProjectItem projectItem)
 		{
-			// load dependancies
-
-			// enqueue file?
-
-			var output = Chirp.Run(projectItem.FileName());
-
-			WriteToOutputWindow(output ?? "[null]");
+			ProjectItemManager.ItemSaved(projectItem);
 		}
 
 		void ItemRemoved(ProjectItem projectitem)
