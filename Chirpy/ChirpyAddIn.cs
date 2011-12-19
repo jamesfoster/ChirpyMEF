@@ -28,7 +28,7 @@
 
 		public bool HasBoundEvents { get; set; }
 
-		OutputWindowPane outputWindowPane;
+		volatile OutputWindowPane outputWindowPane;
 
 		/// <summary>
 		/// Implements the OnDisconnection method of the IDTExtensibility2 interface. 
@@ -236,15 +236,17 @@
 			ItemAdded(document.ProjectItem);
 		}
 
-		void SetupOutputWindow()
+		OutputWindowPane SetupOutputWindow()
 		{
-			var outputWindow = App.ToolWindows.OutputWindow;
-			outputWindowPane = outputWindow.OutputWindowPanes.Cast<OutputWindowPane>().FirstOrDefault(x => x.Name == OutputWindowName);
+			var window = App.ToolWindows.OutputWindow;
+			var pane = window.OutputWindowPanes.Cast<OutputWindowPane>().FirstOrDefault(x => x.Name == OutputWindowName);
 
-			if (outputWindowPane == null)
-				outputWindowPane = outputWindow.OutputWindowPanes.Add(OutputWindowName);
+			if (pane == null)
+				pane = window.OutputWindowPanes.Add(OutputWindowName);
 
-			outputWindowPane.Activate();
+			pane.Activate();
+
+			return pane;
 		}
 
 		void WriteToOutputWindow(string messageText)
@@ -257,7 +259,7 @@
 					{
 						if (outputWindowPane == null)
 						{
-							SetupOutputWindow();
+							outputWindowPane = SetupOutputWindow();
 						}
 					}
 				}
