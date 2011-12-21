@@ -70,6 +70,16 @@
 			PrintLoadedEngines();
 
 			WriteToOutputWindow("Ready");
+
+			if(App.Solution.IsOpen)
+			{
+				SolutionOpened();
+
+				foreach (var project in App.Solution.Projects.Cast<Project>())
+				{
+					ProjectAdded(project);
+				}
+			}
 		}
 
 		void Compose()
