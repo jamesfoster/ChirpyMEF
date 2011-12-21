@@ -211,17 +211,17 @@
 
 		void SolutionOpened()
 		{
-			
+			ProjectItemManager.SolutionOpened();
 		}
 
 		void ProjectAdded(Project project)
 		{
-			
+			ProjectItemManager.ProjectAdded(project);
 		}
 
 		void ProjectRemoved(Project project)
 		{
-			
+			ProjectItemManager.ProjectRemoved(project);
 		}
 
 		void SolutionClosed()
@@ -231,17 +231,17 @@
 
 		void ItemAdded(ProjectItem projectItem)
 		{
-			ProjectItemManager.ItemSaved(projectItem);
+			ProjectItemManager.ItemAdded(projectItem);
 		}
 
-		void ItemRemoved(ProjectItem projectitem)
+		void ItemRemoved(ProjectItem projectItem)
 		{
-			
+			ProjectItemManager.ItemRemoved(projectItem);
 		}
 
-		void ItemRenamed(ProjectItem projectitem, string oldname)
+		void ItemRenamed(ProjectItem projectItem, string oldname)
 		{
-			
+			ProjectItemManager.ItemRenamed(projectItem);
 		}
 
 		void BuildDone(vsBuildScope scope, vsBuildAction action)
@@ -251,7 +251,7 @@
 
 		void DocumentSaved(Document document)
 		{
-			ItemAdded(document.ProjectItem);
+			ProjectItemManager.ItemSaved(document.ProjectItem);
 		}
 
 		OutputWindowPane SetupOutputWindow()

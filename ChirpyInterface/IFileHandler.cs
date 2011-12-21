@@ -24,7 +24,7 @@
 		/// <param name="path">The path.</param>
 		/// <param name="relativeTo">The full path to the file which <paramref name="path"/> is relative to.</param>
 		/// <returns></returns>
-		string GetFileName(string path, string relativeTo);
+		string GetAbsoluteFileName(string path, string relativeTo);
 
 		/// <summary>
 		/// Gets the name of the file without the extension.

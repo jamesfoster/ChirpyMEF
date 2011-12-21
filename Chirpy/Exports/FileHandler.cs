@@ -21,7 +21,7 @@ namespace Chirpy.Exports
 			File.WriteAllText(filename, contents);
 		}
 
-		public string GetFileName(string path, string relativeTo)
+		public string GetAbsoluteFileName(string path, string relativeTo)
 		{
 			var relativeDirectory = Path.GetDirectoryName(relativeTo) ?? "";
 

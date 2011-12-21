@@ -50,7 +50,7 @@ namespace Chirpy.Engines
 				// get the contents of all files and join them together
 				var fileGroupContents =
 					string.Join("\n", files
-					                  	.Select(file => FileHandler.GetFileName(file, filename))
+					                  	.Select(file => FileHandler.GetAbsoluteFileName(file, filename))
 					                  	.Select(path => FileHandler.GetContents(path)));
 
 				// var engine = EngineResolver.GetEngineByFilename(fileGroupPath);

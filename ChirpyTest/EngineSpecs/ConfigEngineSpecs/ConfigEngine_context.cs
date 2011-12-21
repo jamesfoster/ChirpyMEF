@@ -32,7 +32,7 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 				configEngine.TaskList = TaskListMock.Object;
 
 				FileHandlerMock
-					.Setup(h => h.GetFileName(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
+					.Setup(h => h.GetAbsoluteFileName(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
 					.Returns<string, string>((f, s) => f);
 
 				FileHandlerMock
