@@ -16,7 +16,29 @@ namespace Chirpy.Exports
 		[Import]
 		public IExtensionResolver ExtensionResolver { get; set; }
 
-		protected Dictionary<string, EngineContainer> EngineCache { get; set; } 
+		protected Dictionary<string, EngineContainer> EngineCache { get; set; }
+
+		Dictionary<string, string> extensions;
+		Dictionary<string, string> Extensions
+		{
+			get
+			{
+				if (extensions == null)
+					extensions = ReloadExtensions();
+
+				return extensions;
+			}
+		}
+
+		Dictionary<string, string> ReloadExtensions()
+		{
+			return Engines
+				.Select(e => e.Metadata.Category)
+				.Distinct()
+				.ToDictionary(
+					e => e,
+					e => ExtensionResolver.GetExtensionFromCategory(e));
+		}
 
 		public IEngine GetEngine(string category)
 		{
@@ -76,25 +98,15 @@ namespace Chirpy.Exports
 
 		public IEngine GetEngineByFilename(string filename)
 		{
-			var extensions = Engines
-				.Select(e => e.Metadata.Category)
-				.Distinct()
-				.ToDictionary(
-					e => e,
-					e => ExtensionResolver.GetExtensionFromCategory(e));
-
-			Func<Lazy<IEngine, IEngineMetadata>, bool> categoryMatchesFile = 
-				e => filename.EndsWith(extensions[e.Metadata.Category]);
-
 			var engines = Engines
 				.Where(e => e.Metadata.Category.Contains("."))
-				.Where(categoryMatchesFile)
+				.Where(e => FileMatchesEngine(filename, e.Metadata))
 				.ToList();
 
 			if (!engines.Any())
 				engines = Engines
 					.Where(e => !e.Metadata.Category.Contains("."))
-					.Where(categoryMatchesFile)
+					.Where(e => FileMatchesEngine(filename, e.Metadata))
 					.ToList();
 
 			if (!engines.Any())
@@ -112,6 +124,11 @@ namespace Chirpy.Exports
 			}
 
 			return GetEngineByName(engines.First().Metadata.Name);
+		}
+
+		bool FileMatchesEngine(string filename, IEngineMetadata metadata)
+		{
+			return filename.EndsWith(Extensions[metadata.Category]);
 		}
 
 		EngineContainer LoadFromCacheByCategory(string category)
