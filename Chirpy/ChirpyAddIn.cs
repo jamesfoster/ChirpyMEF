@@ -2,23 +2,18 @@
 {
 	using System;
 	using System.ComponentModel.Composition;
-	using System.Diagnostics;
 	using System.Linq;
-	using System.Windows.Forms;
 	using ChirpyInterface;
 	using EnvDTE;
 	using EnvDTE80;
 	using Exports;
 	using Extensibility;
-	using Extensions;
 	using Imports;
+	using Logging;
 
 	public class ChirpyAddIn : IDTExtensibility2
 	{
-		const string OutputWindowName = "Chirpy";
-
-		static readonly object @lock = new object();
-
+		protected ILogger Logger { get; set; } 
 		protected DTE2 App { get; set; }
 		protected AddIn Instance { get; set; }
 		protected Events2 Events { get; set; }
@@ -36,8 +31,6 @@
 
 		public bool HasBoundEvents { get; set; }
 
-		volatile OutputWindowPane outputWindowPane;
-
 		/// <summary>
 		/// Implements the OnDisconnection method of the IDTExtensibility2 interface. 
 		/// Occurs when he Add-in is loaded into Visual Studio.
@@ -54,14 +47,15 @@
 			App = (DTE2) application;
 			Instance = (AddIn) instance;
 			Events = App.Events as Events2;
+			Logger = new OutputWindowLogger(App);
 
-			WriteToOutputWindow("Loading...");
+			Logger.Log("Loading...");
 
 			Compose(); // Do not attempt to use [Import]s before this line!
 
 			if(Chirp == null)
 			{
-				WriteToOutputWindow("Unable to load.");
+				Logger.Log("Unable to load.");
 				return;
 			}
 
@@ -69,7 +63,7 @@
 
 			PrintLoadedEngines();
 
-			WriteToOutputWindow("Ready");
+			Logger.Log("Ready");
 
 			if(App.Solution.IsOpen)
 			{
@@ -92,19 +86,19 @@
 			}
 			catch (Exception ex)
 			{
-				WriteToOutputWindow(string.Format("Error loading with plugins: {0}", ex.Message));
+				Logger.Log(string.Format("Error loading with plugins: {0}", ex.Message));
 
 				if (Composer != null)
 					Composer.Dispose();
 
 				try
 				{
-					WriteToOutputWindow("Loading without plugins.");
+					Logger.Log("Loading without plugins.");
 					Composer = MefComposer.ComposeWithoutPlugins(this);
 				}
 				catch (Exception ex2)
 				{
-					WriteToOutputWindow(string.Format("Error loading: {0}", ex2.Message));
+					Logger.Log(string.Format("Error loading: {0}", ex2.Message));
 
 					if (Composer != null)
 						Composer.Dispose();
@@ -120,7 +114,7 @@
 			if (engineResolver == null)
 				return;
 
-			WriteToOutputWindow("Loaded Engines:");
+			Logger.Log("Loaded Engines:");
 
 			engineResolver.Engines
 				.Select(
@@ -131,7 +125,7 @@
 				.Distinct()
 				.OrderBy(s => s)
 				.ToList()
-				.ForEach(WriteToOutputWindow);
+				.ForEach(Logger.Log);
 		}
 
 		/// <summary>
@@ -152,7 +146,7 @@
 
 			HasBoundEvents = true;
 
-			WriteToOutputWindow("Binging events");
+			Logger.Log("Binging events");
 
 			// hold a reference to the event objects to prevent them being garbage collected
 			SolutionEvents = Events.SolutionEvents;
@@ -186,7 +180,7 @@
 			if (Composer != null)
 				Composer.Dispose();
 
-			WriteToOutputWindow("Goodbye!");
+			Logger.Log("Goodbye!");
 		}
 
 		/// <summary>
@@ -252,44 +246,6 @@
 		void DocumentSaved(Document document)
 		{
 			ProjectItemManager.ItemSaved(document.ProjectItem);
-		}
-
-		OutputWindowPane SetupOutputWindow()
-		{
-			var window = App.ToolWindows.OutputWindow;
-			var pane = window.OutputWindowPanes.Cast<OutputWindowPane>().FirstOrDefault(x => x.Name == OutputWindowName);
-
-			if (pane == null)
-				pane = window.OutputWindowPanes.Add(OutputWindowName);
-
-			pane.Activate();
-
-			return pane;
-		}
-
-		void WriteToOutputWindow(string messageText)
-		{
-			try
-			{
-				if (outputWindowPane == null)
-				{
-					lock (@lock)
-					{
-						if (outputWindowPane == null)
-						{
-							outputWindowPane = SetupOutputWindow();
-						}
-					}
-				}
-
-				Debug.Assert(outputWindowPane != null);
-
-				outputWindowPane.OutputString(messageText + Environment.NewLine);
-			}
-			catch (Exception errorThrow)
-			{
-				MessageBox.Show(errorThrow.ToString());
-			}
 		}
 	}
 }
