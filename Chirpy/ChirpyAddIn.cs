@@ -154,18 +154,18 @@
 			BuildEvents = Events.BuildEvents;
 			DocumentEvents = Events.DocumentEvents;
 
-			Events.SolutionEvents.Opened += SolutionOpened;
-			Events.SolutionEvents.ProjectAdded += ProjectAdded;
-			Events.SolutionEvents.ProjectRemoved += ProjectRemoved;
-			Events.SolutionEvents.AfterClosing += SolutionClosed;
+			SolutionEvents.Opened += SolutionOpened;
+			SolutionEvents.ProjectAdded += ProjectAdded;
+			SolutionEvents.ProjectRemoved += ProjectRemoved;
+			SolutionEvents.AfterClosing += SolutionClosed;
 
-			Events.ProjectItemsEvents.ItemAdded += ItemAdded;
-			Events.ProjectItemsEvents.ItemRemoved += ItemRemoved;
-			Events.ProjectItemsEvents.ItemRenamed += ItemRenamed;
+			ProjectItemsEvents.ItemAdded += ItemAdded;
+			ProjectItemsEvents.ItemRemoved += ItemRemoved;
+			ProjectItemsEvents.ItemRenamed += ItemRenamed;
 
-			Events.BuildEvents.OnBuildDone += BuildDone;
+			BuildEvents.OnBuildDone += BuildDone;
 
-			Events.DocumentEvents.DocumentSaved += DocumentSaved;
+			DocumentEvents.DocumentSaved += DocumentSaved;
 		}
 
 		/// <summary>
