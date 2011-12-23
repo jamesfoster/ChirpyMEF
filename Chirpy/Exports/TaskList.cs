@@ -10,38 +10,30 @@ namespace Chirpy.Exports
 	using Imports;
 	using Microsoft.VisualStudio.Shell;
 	using Microsoft.VisualStudio.Shell.Interop;
-	using IServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 	[Export(typeof(ITaskList))]
 	public class TaskList : ITaskList, IPartImportsSatisfiedNotification
 	{
 		[Import] public DTE2 App { get; set; }
 
-		protected ServiceProvider ServiceProvider { get; set; }
-		protected ErrorListProvider ErrorListProvider { get; set; }
+		[Import] public IServiceProvider ServiceProvider { get; set; }
+		[Import] public IErrorListProvider ErrorListProvider { get; set; }
 
 		public List<ErrorTask> Tasks { get; set; }
 		public Dictionary<ErrorTask, Project> TaskProjects { get; set; }
 
-		public void OnImportsSatisfied()
+		public TaskList()
 		{
-			var serviceProvider = App as IServiceProvider;
-
-			if (serviceProvider == null)
-				return; // throw?
-
-			ServiceProvider = new ServiceProvider(serviceProvider);
-
-			ErrorListProvider = new ErrorListProvider(ServiceProvider)
-			                    	{
-			                    		ProviderName = GetType().Assembly.FullName,
-			                    		ProviderGuid = new Guid("F1415C4C-5D67-401F-A81C-71F0721BB6F0")
-			                    	};
-
-			ErrorListProvider.Show();
-
 			Tasks = new List<ErrorTask>();
 			TaskProjects = new Dictionary<ErrorTask, Project>();
+		}
+
+		public void OnImportsSatisfied()
+		{
+			// is this necessary?
+
+			if (ErrorListProvider != null)
+				ErrorListProvider.Show();
 		}
 
 		public void Add(string message, string filename, int line, int column, TaskErrorCategory category)
@@ -91,7 +83,7 @@ namespace Chirpy.Exports
 
 			if (ErrorListProvider != null)
 			{
-				ErrorListProvider.Tasks.Add(task);
+				ErrorListProvider.AddTask(task);
 			}
 
 			Tasks.Add(task);
@@ -146,7 +138,7 @@ namespace Chirpy.Exports
 		void Remove(ErrorTask task)
 		{
 			if (ErrorListProvider != null)
-				ErrorListProvider.Tasks.Remove(task);
+				ErrorListProvider.RemoveTask(task);
 
 			Tasks.Remove(task);
 
@@ -160,7 +152,7 @@ namespace Chirpy.Exports
 		public void RemoveAll()
 		{
 			if (ErrorListProvider != null)
-				ErrorListProvider.Tasks.Clear();
+				ErrorListProvider.ClearTasks();
 
 			Tasks.Clear();
 			TaskProjects.Clear();

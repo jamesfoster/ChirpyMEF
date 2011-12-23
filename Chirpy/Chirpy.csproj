@@ -69,6 +69,8 @@
   <ItemGroup>
     <Compile Include="Chirp.cs" />
     <Compile Include="ChirpyAddIn.cs" />
+    <Compile Include="ErrorListProviderWrapper.cs" />
+    <Compile Include="IErrorListProvider.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Imports\IInternalProjectItemManager.cs" />
     <Compile Include="Imports\ITaskList.cs" />
