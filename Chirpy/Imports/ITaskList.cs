@@ -1,4 +1,4 @@
-namespace ChirpyInterface
+namespace Chirpy.Imports
 {
 	public interface ITaskList
 	{

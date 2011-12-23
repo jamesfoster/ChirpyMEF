@@ -1,8 +1,8 @@
 namespace Chirpy.Exports
 {
 	using System.ComponentModel.Composition;
-	using ChirpyInterface;
 	using EnvDTE80;
+	using Imports;
 
 	[Export(typeof(ITaskList))]
 	public class TaskList : ITaskList

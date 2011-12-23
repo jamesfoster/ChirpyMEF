@@ -45,7 +45,6 @@
     <Compile Include="IEngineMetadata.cs" />
     <Compile Include="IFileHandler.cs" />
     <Compile Include="IProjectItemManager.cs" />
-    <Compile Include="ITaskList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

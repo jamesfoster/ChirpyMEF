@@ -4,6 +4,7 @@ namespace ChirpyTest.ChirpSepcs
 	using System.Collections.Generic;
 	using System.Linq;
 	using Chirpy;
+	using Chirpy.Imports;
 	using ChirpyInterface;
 	using Machine.Specifications;
 	using Moq;

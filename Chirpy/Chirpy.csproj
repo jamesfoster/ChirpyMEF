@@ -66,6 +66,7 @@
     <Compile Include="Chirp.cs" />
     <Compile Include="ChirpyAddIn.cs" />
     <Compile Include="Imports\IInternalProjectItemManager.cs" />
+    <Compile Include="Imports\ITaskList.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\OutputWindowLogger.cs" />
     <Compile Include="MefComposer.cs" />

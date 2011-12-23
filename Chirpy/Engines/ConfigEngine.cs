@@ -10,7 +10,6 @@ namespace Chirpy.Engines
 	[EngineMetadata("Config", "2.0", "config", "", true)]
 	public class ConfigEngine : IEngine
 	{
-		[Import] public ITaskList TaskList { get; set; }
 		[Import] public IProjectItemManager ProjectItemManager { get; set; }
 		[Import] public IFileHandler FileHandler { get; set; }
 		[Import] public IEngineResolver EngineResolver { get; set; }
