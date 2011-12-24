@@ -1,13 +1,12 @@
 ﻿namespace ChirpyTest.EngineSpecs.DotlessChirpyEngineSpecs
 {
 	using Chirpy.Engines;
-	using ChirpyInterface;
 	using Machine.Specifications;
 
 	[Subject(typeof(DotlessEngine))]
 	public class When_processing_a_simple_less_file
 	{
-		static IEngine engine;
+		static DotlessEngine engine;
 		static string contents;
 		static string filename;
 		static string result;

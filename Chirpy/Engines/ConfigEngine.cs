@@ -10,7 +10,6 @@ namespace Chirpy.Engines
 	[EngineMetadata("Config", "2.0", "config", "", true)]
 	public class ConfigEngine : IEngine
 	{
-		[Import] public IProjectItemManager ProjectItemManager { get; set; }
 		[Import] public IFileHandler FileHandler { get; set; }
 		[Import] public IEngineResolver EngineResolver { get; set; }
 
@@ -23,7 +22,7 @@ namespace Chirpy.Engines
 			return paths.ToList();
 		}
 
-		public string Process(string contents, string filename)
+		public List<EngineResult> Process(string contents, string filename)
 		{
 			var doc = GetXml(contents);
 
@@ -32,37 +31,36 @@ namespace Chirpy.Engines
 			if(fileGroups.Count() == 0)
 				fileGroups = new[] {new XElement("FileGroup", new XAttribute("Path", filename), doc)};
 
-			foreach (var fileGroup in fileGroups)
+			return fileGroups
+				.Select(fileGroup => GetEngineResult(fileGroup, filename))
+				.ToList();
+		}
+
+		EngineResult GetEngineResult(XElement fileGroup, string filename)
+		{
+			var fileGroupPath = fileGroup.Attribute("Path") == null ? null : (string) fileGroup.Attribute("Path");
+
+			if (string.IsNullOrEmpty(fileGroupPath))
 			{
-				var fileGroupPath = fileGroup.Attribute("Path") == null ? null : (string) fileGroup.Attribute("Path");
+				// log error
+				// TaskList.Add(filename);
 
-				if(string.IsNullOrEmpty(fileGroupPath))
-				{
-					// log error
-					// TaskList.Add(filename);
-
-					continue;
-				}
-
-				var files = GetFiles(fileGroup);
-
-				// get the contents of all files and join them together
-				var fileGroupContents =
-					string.Join("\n", files
-					                  	.Select(file => FileHandler.GetAbsoluteFileName(file, filename))
-					                  	.Select(path => FileHandler.GetContents(path)));
-
-				// var engine = EngineResolver.GetEngineByFilename(fileGroupPath);
-
-				// var dependancies = engine.GetDependancies(fileGroupContents, fileGroupPath);
-				// FileHandler.RefreshMany(dependancies);
-
-				// fileGroupContents = engine.Process(fileGroupContents, fileGroupPath);
-
-				ProjectItemManager.AddFile(fileGroupPath, filename, fileGroupContents);
+				return null;
 			}
 
-			return null; // bypass normal processing
+			var files = GetFiles(fileGroup);
+
+			// get the contents of all files and join them together
+			var fileGroupContents =
+				string.Join("\n", files
+				                  	.Select(file => FileHandler.GetAbsoluteFileName(file, filename))
+				                  	.Select(path => FileHandler.GetContents(path)));
+
+			return new EngineResult
+			       	{
+			       		FileName = fileGroupPath,
+			       		Contents = fileGroupContents
+			       	};
 		}
 
 		static IEnumerable<string> GetFiles(XElement element)

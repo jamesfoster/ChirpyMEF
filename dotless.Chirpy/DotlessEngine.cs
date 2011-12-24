@@ -10,9 +10,9 @@
 
 	[Export(typeof (IEngine))]
 	[EngineMetadata("Dotless", "1.2.1.0", "less", "css")]
-	public class DotlessEngine : IEngine
+	public class DotlessEngine : SingleEngineBase
 	{
-		public List<string> GetDependancies(string contents, string filename)
+		public override List<string> GetDependancies(string contents, string filename)
 		{
 			return Try(p =>
 				{
@@ -21,7 +21,7 @@
 				});
 		}
 
-		public string Process(string contents, string filename)
+		public override string Process(string contents, string filename)
 		{
 			return Try(p => p.Parse(contents, filename).AppendCSS());
 		}

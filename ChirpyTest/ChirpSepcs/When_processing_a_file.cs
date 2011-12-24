@@ -1,5 +1,6 @@
 ﻿namespace ChirpyTest.ChirpSepcs
 {
+	using System.Collections.Generic;
 	using Chirpy;
 	using ChirpyInterface;
 	using Machine.Specifications;
@@ -22,7 +23,7 @@
 
 				engineMock
 					.Setup(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
-					.Returns("mno");
+					.Returns(new List<EngineResult> {new EngineResult {Contents = "mno"}});
 			};
 
 		Because of = () => Chirp.Run(Filename);

@@ -26,12 +26,16 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 
 		Because of = () => { Result = Engine.Process(Contents, Filename); };
 
-		It should_add_a_new_project_item1 = () =>
-			ProjectItemManagerMock.Verify(m => m.AddFile("demo1.js", "demo.chirp.config", "contents of 'abc.js'\ncontents of 'def.js'"), Times.Once());
+		It should_add_EngineResult_for_demo1_js = () =>
+			Result.ShouldContain(r => r.FileName == "demo1.js");
 
-		It should_add_a_new_project_item2 = () =>
-			ProjectItemManagerMock.Verify(m => m.AddFile("demo2.js", "demo.chirp.config", "contents of 'ghi.js'"), Times.Once());
+		It demo1_should_have_contents_of_abc_and_def = () =>
+			Result.ShouldContain(r => r.FileName == "demo1.js" && r.Contents == "contents of 'abc.js'\ncontents of 'def.js'");
 
-		It should_bypass_default_processing = () => Result.ShouldEqual(null);
+		It should_add_EngineResult_for_demo2_js = () =>
+			Result.ShouldContain(r => r.FileName == "demo2.js");
+
+		It demo2_should_have_contents_of_ghi = () =>
+			Result.ShouldContain(r => r.FileName == "demo2.js" && r.Contents == "contents of 'ghi.js'");
 	}
 }

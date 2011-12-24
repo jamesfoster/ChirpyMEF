@@ -42,7 +42,7 @@ namespace Chirpy
 			return Execute(e => e.GetDependancies(contents, filename));
 		}
 
-		public string Process(string contents, string filename)
+		public List<EngineResult> Process(string contents, string filename)
 		{
 			return Execute(e => e.Process(contents, filename));
 		}

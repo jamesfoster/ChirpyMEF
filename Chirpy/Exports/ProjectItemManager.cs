@@ -14,19 +14,10 @@ namespace Chirpy.Exports
 	[Export(typeof(IInternalProjectItemManager))]
 	public class ProjectItemManager : IInternalProjectItemManager, IProjectItemManager
 	{
-		public Dictionary<string, List<string>> Dependancies { get; set; }
-
 		[Import] public DTE2 App { get; set; }
-		[Import] public IEngineResolver EngineResolver { get; set; }
-		[Import] public IExtensionResolver ExtensionResolver { get; set; }
-		[Import] public IFileHandler FileHandler { get; set; }
+		[Import] public Chirp Chirp { get; set; }
 
 		public List<ProjectItem> HandledFiles { get; set; }
-
-		public ProjectItemManager()
-		{
-			Dependancies = new Dictionary<string, List<string>>();
-		}
 
 		public void AddFile(string filename, string dependsUpon, string contents)
 		{
@@ -40,16 +31,9 @@ namespace Chirpy.Exports
 			foreach (var projectItem in AllProjectItems())
 			{
 				var filename = projectItem.FileName();
-				var engine = EngineResolver.GetEngineByFilename(filename);
 
-				if (engine != null)
-				{
+				if (Chirp.CheckDependancies(filename))
 					HandledFiles.Add(projectItem);
-
-					var contents = FileHandler.GetContents(filename);
-
-					SaveDependancies(filename, contents, engine);
-				}
 			}
 		}
 
@@ -108,20 +92,13 @@ namespace Chirpy.Exports
 		public void ItemSaved(ProjectItem projectItem)
 		{
 			var filename = projectItem.FileName();
-			var engine = GetEngine(filename);
 
-			if (engine == null)
-				return;
+			var files = Chirp.Run(filename);
 
-			var contents = FileHandler.GetContents(filename);
-
-			var output = engine.Process(contents, filename);
-
-			var outputFileName = GetOutputFileName(filename, engine);
-
-			FileHandler.SaveFile(outputFileName, output);
-
-			projectItem.ProjectItems.AddFromFile(outputFileName);
+			foreach (var file in files)
+			{
+				projectItem.ProjectItems.AddFromFile(file);
+			}
 		}
 
 		public void ItemRenamed(ProjectItem projectItem)
@@ -132,50 +109,6 @@ namespace Chirpy.Exports
 		public void ItemRemoved(ProjectItem projectItem)
 		{
 
-		}
-
-		string GetOutputFileName(string filename, IEngine engine)
-		{
-			var engineContainer = engine as EngineContainer;
-			var inputExtension = ExtensionResolver.GetExtensionFromCategory(engineContainer.Category);
-			var outpuExtension = ExtensionResolver.GetExtensionFromCategory(engineContainer.OutputCategory);
-
-			Debug.Assert(filename.EndsWith(inputExtension));
-
-			var outputFileName = filename.Substring(0, filename.Length - inputExtension.Length) + outpuExtension;
-			return outputFileName;
-		}
-
-		void SaveDependancies(string filename, string contents, IEngine engine)
-		{
-			// remove dependancies for file
-			foreach (var key in Dependancies.Keys.ToArray())
-			{
-				var files = Dependancies[key];
-				if(files.Remove(filename) && files.Count == 0)
-					Dependancies.Remove(key);
-			}
-
-			// add dependancies
-			var dependancies = engine.GetDependancies(contents, filename);
-
-			if(dependancies == null)
-				return;
-
-			foreach (var s in dependancies)
-			{
-				var dependancy = FileHandler.GetAbsoluteFileName(s, relativeTo: filename);
-
-				if(Dependancies.ContainsKey(dependancy))
-					Dependancies[dependancy].Add(filename);
-				else
-					Dependancies[dependancy] = new List<string> {filename};
-			}
-		}
-
-		IEngine GetEngine(string filename)
-		{
-			return EngineResolver.GetEngineByFilename(filename);
 		}
 	}
 }

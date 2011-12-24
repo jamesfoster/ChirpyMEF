@@ -13,8 +13,8 @@ namespace ChirpyTest.ChirpSepcs
 	{
 		protected static Chirp Chirp;
 		protected static Mock<IEngineResolver> EngineResolverMock;
+		protected static Mock<IExtensionResolver> ExtensionResolverMock;
 		protected static Mock<ITaskList> TaskListMock;
-		protected static Mock<IProjectItemManager> ProjectItemManagerMock;
 		protected static Mock<IFileHandler> FileHandlerMock;
 		protected static string Filename;
 		protected static string Category;
@@ -25,9 +25,9 @@ namespace ChirpyTest.ChirpSepcs
 		Establish context = () =>
 			{
 				EngineResolverMock = new Mock<IEngineResolver>();
+				ExtensionResolverMock = new Mock<IExtensionResolver>();
 				FileHandlerMock = new Mock<IFileHandler>();
 				TaskListMock = new Mock<ITaskList>();
-				ProjectItemManagerMock = new Mock<IProjectItemManager>();
 
 				engines = new List<Lazy<IEngine, IEngineMetadata>>();
 				files  = new Dictionary<string, string>();
@@ -36,7 +36,7 @@ namespace ChirpyTest.ChirpSepcs
 					.Setup(h => h.GetContents(Moq.It.IsAny<string>()))
 					.Returns<string>(s => files.ContainsKey(s) ? files[s] : null);
 
-				Chirp = new Chirp(EngineResolverMock.Object, TaskListMock.Object, ProjectItemManagerMock.Object, FileHandlerMock.Object);
+				Chirp = new Chirp(EngineResolverMock.Object, TaskListMock.Object, FileHandlerMock.Object, ExtensionResolverMock.Object);
 
 				EngineResolverMock
 					.Setup(r => r.GetEngine(Moq.It.IsAny<string>()))
@@ -56,6 +56,10 @@ namespace ChirpyTest.ChirpSepcs
 									engines.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase))
 									);
 							});
+
+				ExtensionResolverMock
+					.Setup(r => r.GetExtensionFromCategory(Moq.It.IsAny<string>()))
+					.Returns<string>(s => "." + s);
 			};
 
 		protected static void AddFile(string contents, string filename)

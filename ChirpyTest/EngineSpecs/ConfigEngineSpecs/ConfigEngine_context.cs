@@ -1,5 +1,6 @@
 namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 {
+	using System.Collections.Generic;
 	using Chirpy.Engines;
 	using ChirpyInterface;
 	using Machine.Specifications;
@@ -10,10 +11,9 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 		protected static IEngine Engine;
 		protected static Mock<IEngineResolver> EngineResolverMock;
 		protected static Mock<IFileHandler> FileHandlerMock;
-		protected static Mock<IProjectItemManager> ProjectItemManagerMock;
 		protected static string Contents;
 		protected static string Filename;
-		protected static string Result;
+		protected static List<EngineResult> Result;
 
 		Establish context = () =>
 			{
@@ -22,11 +22,9 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 
 				EngineResolverMock = new Mock<IEngineResolver>();
 				FileHandlerMock = new Mock<IFileHandler>();
-				ProjectItemManagerMock = new Mock<IProjectItemManager>();
 
 				configEngine.EngineResolver = EngineResolverMock.Object;
 				configEngine.FileHandler = FileHandlerMock.Object;
-				configEngine.ProjectItemManager = ProjectItemManagerMock.Object;
 
 				FileHandlerMock
 					.Setup(h => h.GetAbsoluteFileName(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))

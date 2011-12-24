@@ -1,6 +1,7 @@
 namespace ChirpyTest.EngineContainerSpecs
 {
 	using System;
+	using System.Collections.Generic;
 	using Chirpy;
 	using ChirpyInterface;
 	using Machine.Specifications;
@@ -15,7 +16,7 @@ namespace ChirpyTest.EngineContainerSpecs
 		static Mock<IEngine> externalEngineMock;
 		static string contents;
 		static string filename;
-		static string result;
+		static List<EngineResult> result;
 
 		Establish context = () =>
 			{
@@ -24,7 +25,7 @@ namespace ChirpyTest.EngineContainerSpecs
 
 				internalEngineMock
 					.Setup(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
-					.Returns("internal");
+					.Returns(new List<EngineResult> {new EngineResult {Contents = "internal"}});
 
 				externalEngineMock
 					.Setup(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
@@ -44,6 +45,6 @@ namespace ChirpyTest.EngineContainerSpecs
 		It should_call_Process_on_the_external_engine = () =>
 			externalEngineMock.Verify(e => e.Process(contents, filename), Times.Once());
 
-		It should_return_the_output_of_the_internal_engine = () => result.ShouldEqual("internal");
+		It should_return_the_output_of_the_internal_engine = () => result[0].Contents.ShouldEqual("internal");
 	}
 }

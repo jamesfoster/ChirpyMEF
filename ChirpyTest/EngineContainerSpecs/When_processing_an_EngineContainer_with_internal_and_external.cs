@@ -1,5 +1,6 @@
 namespace ChirpyTest.EngineContainerSpecs
 {
+	using System.Collections.Generic;
 	using System.Linq;
 	using Chirpy;
 	using ChirpyInterface;
@@ -15,7 +16,7 @@ namespace ChirpyTest.EngineContainerSpecs
 		static Mock<IEngine> externalEngineMock;
 		static string contents;
 		static string filename;
-		static string result;
+		static List<EngineResult> result;
 
 		Establish context = () =>
 			{
@@ -24,11 +25,11 @@ namespace ChirpyTest.EngineContainerSpecs
 
 				internalEngineMock
 					.Setup(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
-					.Returns("internal");
+					.Returns(new List<EngineResult> {new EngineResult {Contents = "internal"}});
 
 				externalEngineMock
 					.Setup(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
-					.Returns("external");
+					.Returns(new List<EngineResult> {new EngineResult {Contents = "external"}});
 
 				engineContainer = new EngineContainer(Engines);
 
@@ -47,6 +48,6 @@ namespace ChirpyTest.EngineContainerSpecs
 		It should_not_evaluate_the_internal_engine = () =>
 			engineContainer.Engines.First(e => e.Metadata.Internal).IsValueCreated.ShouldBeFalse();
 
-		It should_return_the_output_of_the_external_engine = () => result.ShouldEqual("external");
+		It should_return_the_output_of_the_external_engine = () => result[0].Contents.ShouldEqual("external");
 	}
 }

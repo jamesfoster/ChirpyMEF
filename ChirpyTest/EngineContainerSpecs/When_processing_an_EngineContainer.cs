@@ -1,5 +1,6 @@
 ﻿namespace ChirpyTest.EngineContainerSpecs
 {
+	using System.Collections.Generic;
 	using Chirpy;
 	using ChirpyInterface;
 	using Machine.Specifications;
@@ -13,7 +14,7 @@
 		static Mock<IEngine> engineMock;
 		static string contents;
 		static string filename;
-		static string result;
+		static List<EngineResult> result;
 
 		Establish context = () =>
 			{
@@ -21,7 +22,7 @@
 
 				engineMock
 					.Setup(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
-					.Returns("output");
+					.Returns(new List<EngineResult> {new EngineResult {Contents = "output"}});
 
 				engineContainer = new EngineContainer(Engines);
 
@@ -34,6 +35,6 @@
 		It should_call_Process_on_the_engine = () =>
 			engineMock.Verify(e => e.Process(contents, filename), Times.Once());
 
-		It should_return_the_output_of_the_engine = () => result.ShouldEqual("output");
+		It should_return_the_output_of_the_engine = () => result[0].Contents.ShouldEqual("output");
 	}
 }

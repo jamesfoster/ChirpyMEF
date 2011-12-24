@@ -1,13 +1,12 @@
 ﻿namespace ChirpyTest.EngineSpecs.YuiCssCompressorEngineSpecs
 {
 	using Chirpy.Engines;
-	using ChirpyInterface;
 	using Machine.Specifications;
 
 	[Subject(typeof(YuiCssCompressorEngine))]
 	public class When_processing_a_simple_css_file
 	{
-		static IEngine engine;
+		static YuiCssCompressorEngine engine;
 		static string contents;
 		static string filename;
 		static string result;

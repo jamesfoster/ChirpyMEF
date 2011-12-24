@@ -43,7 +43,6 @@ namespace ChirpyTest.ContainerSpecs
 		It the_EngineResolver_should_not_be_null = () => chirp.EngineResolver.ShouldNotBeNull();
 		It the_FileHandler_should_not_be_null = () => chirp.FileHandler.ShouldNotBeNull();
 		It the_TaskList_should_not_be_null = () => chirp.TaskList.ShouldNotBeNull();
-		It the_ProjectItemManager_should_not_be_null = () => chirp.ProjectItemManager.ShouldNotBeNull();
 
 		It the_dotless_engine_should_exist = () => chirp.EngineResolver.GetEngineByName("Dotless").ShouldNotBeNull();
 		It the_config_engine_should_exist = () => chirp.EngineResolver.GetEngineByName("Config").ShouldNotBeNull();
