@@ -2,7 +2,7 @@ namespace Chirpy.Imports
 {
 	using EnvDTE;
 
-	public interface IInternalProjectItemManager
+	public interface IProjectItemManager
 	{
 		void SolutionOpened();
 		void ProjectAdded(Project project);

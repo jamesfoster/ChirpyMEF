@@ -45,7 +45,6 @@
     <Compile Include="IEngine.cs" />
     <Compile Include="IEngineMetadata.cs" />
     <Compile Include="IFileHandler.cs" />
-    <Compile Include="IProjectItemManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleEngineBase.cs" />
   </ItemGroup>

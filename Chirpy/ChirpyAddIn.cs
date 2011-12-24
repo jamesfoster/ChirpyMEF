@@ -21,7 +21,7 @@
 		protected MefComposer Composer { get; set; }
 
 		[Import] protected Chirp Chirp { get; set; }
-		[Import] protected IInternalProjectItemManager ProjectItemManager { get; set; }
+		[Import] protected IProjectItemManager ProjectItemManager { get; set; }
 		[Import] protected ITaskList TaskList { get; set; }
 
 		protected DocumentEvents DocumentEvents { get; set; }

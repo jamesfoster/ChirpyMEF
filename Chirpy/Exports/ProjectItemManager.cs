@@ -2,27 +2,19 @@ namespace Chirpy.Exports
 {
 	using System.Collections.Generic;
 	using System.ComponentModel.Composition;
-	using System.Diagnostics;
 	using System.Linq;
-	using ChirpyInterface;
 	using EnvDTE;
 	using EnvDTE80;
 	using Extensions;
 	using Imports;
 
 	[Export(typeof(IProjectItemManager))]
-	[Export(typeof(IInternalProjectItemManager))]
-	public class ProjectItemManager : IInternalProjectItemManager, IProjectItemManager
+	public class ProjectItemManager : IProjectItemManager
 	{
 		[Import] public DTE2 App { get; set; }
 		[Import] public Chirp Chirp { get; set; }
 
 		public List<ProjectItem> HandledFiles { get; set; }
-
-		public void AddFile(string filename, string dependsUpon, string contents)
-		{
-			throw new System.NotImplementedException();
-		}
 
 		public void SolutionOpened()
 		{

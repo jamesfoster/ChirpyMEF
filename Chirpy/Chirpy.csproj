@@ -72,7 +72,7 @@
     <Compile Include="ErrorListProviderWrapper.cs" />
     <Compile Include="IErrorListProvider.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Imports\IInternalProjectItemManager.cs" />
+    <Compile Include="Imports\IProjectItemManager.cs" />
     <Compile Include="Imports\ITaskList.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\OutputWindowLogger.cs" />
