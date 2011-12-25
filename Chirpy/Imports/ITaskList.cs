@@ -1,5 +1,6 @@
 namespace Chirpy.Imports
 {
+	using ChirpyInterface;
 	using EnvDTE;
 	using Microsoft.VisualStudio.Shell;
 
@@ -25,6 +26,8 @@ namespace Chirpy.Imports
 		/// <param name="column">The position in the line where the error appears</param>
 		/// <param name="category">The category of the error</param>
 		void Add(Project project, string message, string filename, int line, int column, TaskErrorCategory category);
+
+		void Add(ChirpyException exception);
 
 		/// <summary>
 		/// Removes any errors for the specified file.

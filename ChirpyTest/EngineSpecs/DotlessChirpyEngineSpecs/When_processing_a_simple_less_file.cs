@@ -1,32 +1,31 @@
 ﻿namespace ChirpyTest.EngineSpecs.DotlessChirpyEngineSpecs
 {
+	using System.Collections.Generic;
 	using Chirpy.Engines;
+	using ChirpyInterface;
 	using Machine.Specifications;
 
 	[Subject(typeof(DotlessEngine))]
-	public class When_processing_a_simple_less_file
+	public class When_processing_a_simple_less_file : DotlessEngine_context
 	{
-		static DotlessEngine engine;
-		static string contents;
-		static string filename;
-		static string result;
+		static List<EngineResult> result;
 
 		Establish context = () =>
 			{
-				engine = new DotlessEngine();
-
-				contents = @"
+				Contents = @"
 @abc: 123px;
 
 .test {
   width: @abc;
 }
 ";
-				filename = "demo.less";
+				Filename = "demo.less";
 			};
 
-		Because of = () => { result = engine.Process(contents, filename); };
+		Because of = () => { result = Engine.Process(Contents, Filename); };
 
-		It should_parse_the_less_into_css = () => result.Trim().ShouldEqual(".test {\n  width: 123px;\n}");
+		It should_contain_one_result = () => result.Count.ShouldEqual(1);
+		It the_contents_should_not_be_null = () => result[0].Contents.ShouldNotBeNull();
+		It should_parse_the_less_into_css = () => result[0].Contents.Trim().ShouldEqual(".test {\n  width: 123px;\n}");
 	}
 }

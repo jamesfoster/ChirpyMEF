@@ -8,6 +8,7 @@ namespace Chirpy
 	using System.Linq;
 	using ChirpyInterface;
 	using Imports;
+	using Microsoft.VisualStudio.Shell;
 
 	[Export]
 	public class Chirp
@@ -52,6 +53,7 @@ namespace Chirpy
 		public IEnumerable<string> Run(string filename)
 		{
 			var engine = EngineResolver.GetEngineByFilename(filename);
+			var result = new List<string>();
 
 			if (engine == null)
 				return null;
@@ -60,53 +62,59 @@ namespace Chirpy
 			{
 				var contents = FileHandler.GetContents(filename);
 
-				var result = engine.Process(contents, filename);
+				var engineResults = engine.Process(contents, filename);
 
-				if(result == null)
+				if(engineResults == null)
 					return null;
 
-				SetOutputFileNames(result.Where(r => string.IsNullOrEmpty(r.FileName)), filename, engine);
-
-				foreach (var engineResult in result)
+				foreach (var engineResult in engineResults)
 				{
+					if (engineResult.Exceptions != null && engineResult.Exceptions.Any())
+					{
+						foreach (var exception in engineResult.Exceptions)
+						{
+							TaskList.Add(exception);
+						}
+						continue;
+					}
+
+					if (engineResult.Contents == null)
+						continue;
+
 					var outputFilename = engineResult.FileName;
+
+					if (string.IsNullOrEmpty(outputFilename))
+						outputFilename = GetOutputFileName(engineResult, filename, engine);
 
 					outputFilename = FileHandler.GetAbsoluteFileName(outputFilename, filename);
 
 					FileHandler.SaveFile(outputFilename, engineResult.Contents);
+
+					result.Add(outputFilename);
 				}
 
-				return result.Select(r => r.FileName);
-			}
-			catch (ChirpyException e)
-			{
-				// TaskList.Add(e);
-
-				Console.WriteLine("{0}:{1} - {2}\n{3}", e.Message, e.FileName, e.LineNumber, e.Line);
+				return result;
 			}
 			catch (Exception e)
 			{
-				// TaskList.Add(filename, e.Message);
+				TaskList.Add(e.Message, filename, 0, 0, TaskErrorCategory.Error);
 
 				Console.WriteLine("{0}", e.Message);
 			}
 			return null;
 		}
 
-		void SetOutputFileNames(IEnumerable<EngineResult> result, string filename, IEngine engine)
+		string GetOutputFileName(EngineResult result, string filename, IEngine engine)
 		{
 			var engineContainer = engine as EngineContainer;
 			var inputExtension = ExtensionResolver.GetExtensionFromCategory(engineContainer.Category);
 
 			Debug.Assert(filename.EndsWith(inputExtension));
 
-			foreach (var engineResult in result)
-			{
-				var outputCategory = engineResult.Category ?? engineContainer.OutputCategory;
-				var outpuExtension = ExtensionResolver.GetExtensionFromCategory(outputCategory);
+			var outputCategory = result.Category ?? engineContainer.OutputCategory;
+			var outpuExtension = ExtensionResolver.GetExtensionFromCategory(outputCategory);
 
-				engineResult.FileName = filename.Substring(0, filename.Length - inputExtension.Length) + outpuExtension;
-			}
+			return filename.Substring(0, filename.Length - inputExtension.Length) + outpuExtension;
 		}
 
 		void SaveDependancies(string filename, string contents, IEngine engine)

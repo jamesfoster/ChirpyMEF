@@ -9,12 +9,20 @@ namespace ChirpyInterface
 
 		List<EngineResult> IEngine.Process(string contents, string filename)
 		{
-			var output = Process(contents, filename);
+			var result = new List<EngineResult>();
 
-			return new List<EngineResult>
-			       	{
-			       		new EngineResult {Contents = output}
-			       	};
+			try
+			{
+				var output = Process(contents, filename);
+
+				result.Add(new EngineResult {Contents = output});
+			}
+			catch (ChirpyException cex)
+			{
+				result.Add(new EngineResult {Exceptions = new List<ChirpyException> {cex}});
+			}
+
+			return result;
 		}
 	}
 }
