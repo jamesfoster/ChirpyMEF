@@ -2,7 +2,6 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 {
 	using Chirpy.Engines;
 	using Machine.Specifications;
-	using Moq;
 	using It = Machine.Specifications.It;
 
 	[Subject(typeof(ConfigEngine))]
@@ -26,16 +25,15 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 
 		Because of = () => { Result = Engine.Process(Contents, Filename); };
 
-		It should_add_EngineResult_for_demo1_js = () =>
-			Result.ShouldContain(r => r.FileName == "demo1.js");
+		It should_have_2_results = () => Result.Count.ShouldEqual(2);
+		It result_1_filename_should_be_demo1_js = () => Result[0].FileName.ShouldEqual("demo1.js");
+		It result_1_should_have_contents_of_abc_and_def = () => Result[0].Contents.ShouldEqual("contents of 'abc.js'\ncontents of 'def.js'");
+		It result_1_extension_chould_be_null = () => Result[0].Extension.ShouldBeNull();
+		It result_1_exceptions_should_be_empty = () => Result[0].Exceptions.ShouldBeEmpty();
 
-		It demo1_should_have_contents_of_abc_and_def = () =>
-			Result.ShouldContain(r => r.FileName == "demo1.js" && r.Contents == "contents of 'abc.js'\ncontents of 'def.js'");
-
-		It should_add_EngineResult_for_demo2_js = () =>
-			Result.ShouldContain(r => r.FileName == "demo2.js");
-
-		It demo2_should_have_contents_of_ghi = () =>
-			Result.ShouldContain(r => r.FileName == "demo2.js" && r.Contents == "contents of 'ghi.js'");
+		It result_2_filename_should_be_demo1_js = () => Result[1].FileName.ShouldEqual("demo2.js");
+		It result_2_should_have_contents_of_ghi = () => Result[1].Contents.ShouldEqual("contents of 'ghi.js'");
+		It result_2_extension_chould_be_null = () => Result[1].Extension.ShouldBeNull();
+		It result_2_exceptions_should_be_empty = () => Result[1].Exceptions.ShouldBeEmpty();
 	}
 }

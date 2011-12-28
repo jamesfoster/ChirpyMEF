@@ -31,6 +31,10 @@ namespace ChirpyTest.EngineSpecs.YuiJavascriptCompressorEngineSpecs
 
 		Because of = () => { result = engine.Process(contents, filename); };
 
-		It should_compress_the_javascript = () => result[0].Contents.ShouldEqual("(function(){function a(b){alert(\"hello \"+b)}a(\"world\")})();");
+		It should_contain_one_result = () => result.Count.ShouldEqual(1);
+		It the_extension_should_be_min_css = () => result[0].Extension.ShouldEqual("min.js");
+		It the_contents_should_be_compressed = () => result[0].Contents.ShouldEqual("(function(){function a(b){alert(\"hello \"+b)}a(\"world\")})();");
+		It the_filename_should_be_null = () => result[0].FileName.ShouldBeNull();
+		It the_exceptions_should_be_empty = () => result[0].Exceptions.ShouldBeEmpty();
 	}
 }

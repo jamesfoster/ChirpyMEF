@@ -28,5 +28,9 @@ namespace ChirpyTest.EngineSpecs.DotlessChirpyEngineSpecs
 		It line_should_be_the_line_with_the_error = () => result[0].Exceptions[0].Line.ShouldEqual("  width: @abc;");
 		It line_number_should_be_3 = () => result[0].Exceptions[0].LineNumber.ShouldEqual(3);
 		It position_should_be_10 = () => result[0].Exceptions[0].Position.ShouldEqual(9);
+		
+		It the_extension_should_be_null = () => result[0].Extension.ShouldBeNull();
+		It the_contents_should_be_null = () => result[0].Contents.ShouldBeNull();
+		It the_filename_should_be_null = () => result[0].FileName.ShouldBeNull();
 	}
 }

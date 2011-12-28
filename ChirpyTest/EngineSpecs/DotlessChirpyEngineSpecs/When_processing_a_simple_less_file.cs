@@ -25,7 +25,9 @@
 		Because of = () => { result = Engine.Process(Contents, Filename); };
 
 		It should_contain_one_result = () => result.Count.ShouldEqual(1);
-		It the_contents_should_not_be_null = () => result[0].Contents.ShouldNotBeNull();
-		It should_parse_the_less_into_css = () => result[0].Contents.Trim().ShouldEqual(".test {\n  width: 123px;\n}");
+		It the_extension_should_be_min_css = () => result[0].Extension.ShouldEqual("css");
+		It the_contents_should_be_the_parsed_css = () => result[0].Contents.Trim().ShouldEqual(".test {\n  width: 123px;\n}");
+		It the_filename_should_be_null = () => result[0].FileName.ShouldBeNull();
+		It the_exceptions_should_be_empty = () => result[0].Exceptions.ShouldBeEmpty();
 	}
 }

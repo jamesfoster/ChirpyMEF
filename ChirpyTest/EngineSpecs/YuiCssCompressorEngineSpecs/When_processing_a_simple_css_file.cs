@@ -31,7 +31,10 @@
 
 		Because of = () => { result = engine.Process(contents, filename); };
 
-		It the_extension_should_be_min_css; // = () => result[0].Extension.ShouldEqual("min.css");
-		It should_compress_the_css = () => result[0].Contents.ShouldEqual(".test{width:100px;height:200px}\n.test2{color:#123456}");
+		It should_contain_one_result = () => result.Count.ShouldEqual(1);
+		It the_extension_should_be_min_css = () => result[0].Extension.ShouldEqual("min.css");
+		It the_contents_should_be_compressed = () => result[0].Contents.ShouldEqual(".test{width:100px;height:200px}\n.test2{color:#123456}");
+		It the_filename_should_be_null = () => result[0].FileName.ShouldBeNull();
+		It the_exceptions_should_be_empty = () => result[0].Exceptions.ShouldBeEmpty();
 	}
 }

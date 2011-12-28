@@ -15,7 +15,7 @@ namespace Chirpy.Engines
 
 		public override string Process(string contents, string filename, out string outputExtension)
 		{
-			outputExtension = "js";
+			outputExtension = "min.js";
 
 			return Yahoo.Yui.Compressor.JavaScriptCompressor.Compress(contents);
 		}

@@ -15,7 +15,7 @@ namespace Chirpy.Engines
 
 		public override string Process(string contents, string filename, out string outputExtension)
 		{
-			outputExtension = "css";
+			outputExtension = "min.css";
 
 			return Yahoo.Yui.Compressor.CssCompressor.Compress(contents);
 		}
