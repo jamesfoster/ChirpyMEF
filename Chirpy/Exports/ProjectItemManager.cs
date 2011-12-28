@@ -14,16 +14,11 @@ namespace Chirpy.Exports
 		[Import] public DTE2 App { get; set; }
 		[Import] public Chirp Chirp { get; set; }
 
-		public List<ProjectItem> HandledFiles { get; set; }
-
 		public void SolutionOpened()
 		{
-			HandledFiles = new List<ProjectItem>();
-
 			foreach (var projectItem in AllProjectItems())
 			{
-				if (Chirp.CheckDependancies(projectItem))
-					HandledFiles.Add(projectItem);
+				Chirp.CheckDependancies(projectItem);
 			}
 		}
 
