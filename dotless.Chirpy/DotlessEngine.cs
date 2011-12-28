@@ -9,7 +9,7 @@
 	using Core.Stylizers;
 
 	[Export(typeof (IEngine))]
-	[EngineMetadata("Dotless", "1.2.1.0", "less", "css")]
+	[EngineMetadata("Dotless", "1.2.1.0", "less")]
 	public class DotlessEngine : SingleEngineBase
 	{
 		public override List<string> GetDependancies(string contents, string filename)
@@ -21,11 +21,13 @@
 				});
 		}
 
-		public override string Process(string contents, string filename)
+		public override string Process(string contents, string filename, out string outputExtension)
 		{
+			outputExtension = "css";
+
 			return Try(p => p.Parse(contents, filename).AppendCSS());
 		}
-	
+
 
 		T Try<T>(Func<Parser, T> action)
 		{

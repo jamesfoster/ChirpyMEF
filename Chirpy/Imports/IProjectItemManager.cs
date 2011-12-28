@@ -9,7 +9,7 @@ namespace Chirpy.Imports
 		void ProjectRemoved(Project project);
 		void ItemAdded(ProjectItem projectItem);
 		void ItemSaved(ProjectItem projectItem);
-		void ItemRenamed(ProjectItem projectItem);
+		void ItemRenamed(ProjectItem projectItem, string oldname);
 		void ItemRemoved(ProjectItem projectItem);
 	}
 }

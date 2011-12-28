@@ -1,6 +1,5 @@
 namespace ChirpyTest.EngineSpecs.DotlessChirpyEngineSpecs
 {
-	using System;
 	using System.Collections.Generic;
 	using Chirpy.Engines;
 	using ChirpyInterface;

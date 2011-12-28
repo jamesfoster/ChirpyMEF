@@ -5,7 +5,7 @@ namespace Chirpy.Engines
 	using ChirpyInterface;
 
 	[Export(typeof (IEngine))]
-	[EngineMetadata("YUI CSS Compressor", "1.6.0.2", "yui.css", "css", true, Minifier = true)]
+	[EngineMetadata("YUI CSS Compressor", "1.6.0.2", "yui.css", true, Minifier = true)]
 	public class YuiCssCompressorEngine : SingleEngineBase
 	{
 		public override List<string> GetDependancies(string contents, string filename)
@@ -13,8 +13,10 @@ namespace Chirpy.Engines
 			return null;
 		}
 
-		public override string Process(string contents, string filename)
+		public override string Process(string contents, string filename, out string outputExtension)
 		{
+			outputExtension = "css";
+
 			return Yahoo.Yui.Compressor.CssCompressor.Compress(contents);
 		}
 	}

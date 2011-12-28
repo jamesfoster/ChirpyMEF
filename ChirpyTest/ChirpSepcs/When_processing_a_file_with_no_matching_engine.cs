@@ -21,7 +21,7 @@ namespace ChirpyTest.ChirpSepcs
 				AddFile("ghi", Filename);
 			};
 
-		Because of = () => Chirp.Run(Filename);
+		Because of = () => Chirp.Run(ProjectItemMock.Object);
 
 		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("jkl.abc.def"));
 		It should_not_call_Engine_Process = () =>

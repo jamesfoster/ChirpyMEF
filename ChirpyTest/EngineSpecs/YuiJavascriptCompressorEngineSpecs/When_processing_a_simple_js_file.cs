@@ -1,15 +1,17 @@
 namespace ChirpyTest.EngineSpecs.YuiJavascriptCompressorEngineSpecs
 {
+	using System.Collections.Generic;
 	using Chirpy.Engines;
+	using ChirpyInterface;
 	using Machine.Specifications;
 
 	[Subject(typeof(YuiJavascriptCompressorEngine))]
 	public class When_processing_a_simple_js_file
 	{
-		static YuiJavascriptCompressorEngine engine;
+		static IEngine engine;
 		static string contents;
 		static string filename;
-		static string result;
+		static List<EngineResult> result;
 
 		Establish context = () =>
 			{
@@ -29,6 +31,6 @@ namespace ChirpyTest.EngineSpecs.YuiJavascriptCompressorEngineSpecs
 
 		Because of = () => { result = engine.Process(contents, filename); };
 
-		It should_compress_the_javascript = () => result.ShouldEqual("(function(){function a(b){alert(\"hello \"+b)}a(\"world\")})();");
+		It should_compress_the_javascript = () => result[0].Contents.ShouldEqual("(function(){function a(b){alert(\"hello \"+b)}a(\"world\")})();");
 	}
 }

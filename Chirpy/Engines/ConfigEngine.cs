@@ -7,7 +7,7 @@ namespace Chirpy.Engines
 	using ChirpyInterface;
 
 	[Export(typeof(IEngine))]
-	[EngineMetadata("Config", "2.0", "config", "", true)]
+	[EngineMetadata("Config", "2.0", "config", true)]
 	public class ConfigEngine : IEngine
 	{
 		[Import] public IFileHandler FileHandler { get; set; }
@@ -32,21 +32,22 @@ namespace Chirpy.Engines
 				fileGroups = new[] {new XElement("FileGroup", new XAttribute("Path", filename), doc)};
 
 			return fileGroups
-				.Select(fileGroup => GetEngineResult(fileGroup, filename))
+				.SelectMany(fileGroup => GetEngineResult(fileGroup, filename))
 				.ToList();
 		}
 
-		EngineResult GetEngineResult(XElement fileGroup, string filename)
+		IEnumerable<EngineResult> GetEngineResult(XElement fileGroup, string filename)
 		{
-			var fileGroupPath = fileGroup.Attribute("Path") == null ? null : (string) fileGroup.Attribute("Path");
-
-			if (string.IsNullOrEmpty(fileGroupPath))
+			if (fileGroup.Attribute("Path") == null)
 			{
-				// log error
-				// TaskList.Add(filename);
+				var result = new EngineResult();
+				result.AddException("FileGroup element requires a Path attribute", filename);
 
-				return null;
+				yield return result;
+				yield break;
 			}
+
+			var fileGroupPath =  (string) fileGroup.Attribute("Path");
 
 			var files = GetFiles(fileGroup);
 
@@ -56,11 +57,23 @@ namespace Chirpy.Engines
 				                  	.Select(file => FileHandler.GetAbsoluteFileName(file, filename))
 				                  	.Select(path => FileHandler.GetContents(path)));
 
-			return new EngineResult
-			       	{
-			       		FileName = fileGroupPath,
-			       		Contents = fileGroupContents
-			       	};
+			yield return new EngineResult
+			             	{
+			             		FileName = fileGroupPath,
+			             		Contents = fileGroupContents
+			             	};
+
+			var engine = EngineResolver.GetEngineByFilename(fileGroupPath);
+
+			if(engine == null)
+				yield break;
+
+			var engineResults = engine.Process(fileGroupContents, fileGroupPath);
+
+			foreach (var engineResult in engineResults)
+			{
+				yield return engineResult;
+			}
 		}
 
 		static IEnumerable<string> GetFiles(XElement element)

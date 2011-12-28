@@ -5,21 +5,25 @@ namespace ChirpyInterface
 	public abstract class SingleEngineBase : IEngine
 	{
 		public abstract List<string> GetDependancies(string contents, string filename);
-		public abstract string Process(string contents, string filename);
+		public abstract string Process(string contents, string filename, out string outputExtension);
 
 		List<EngineResult> IEngine.Process(string contents, string filename)
 		{
-			var result = new List<EngineResult>();
+			var engineResult = new EngineResult();
+			var result = new List<EngineResult> {engineResult};
 
 			try
 			{
-				var output = Process(contents, filename);
+				string outputExtension;
 
-				result.Add(new EngineResult {Contents = output});
+				var output = Process(contents, filename, out outputExtension);
+
+				engineResult.Contents = output;
+				engineResult.Extension = outputExtension;
 			}
 			catch (ChirpyException cex)
 			{
-				result.Add(new EngineResult {Exceptions = new List<ChirpyException> {cex}});
+				engineResult.Exceptions.Add(cex);
 			}
 
 			return result;

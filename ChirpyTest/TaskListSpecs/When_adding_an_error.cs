@@ -7,7 +7,7 @@ namespace ChirpyTest.TaskListSpecs
 
 	class When_adding_an_error : TaskList_context
 	{
-		Because of = () => TaskList.Add("Error", "error.txt", 3, 5, TaskErrorCategory.Error);
+		Because of = () => TaskList.Add("Error", "error.txt", "Error on this line!", 3, 5, TaskErrorCategory.Error);
 
 		It should_find_the_ProjectItem = () =>
 			SolutionMock.Verify(s => s.FindProjectItem("error.txt"));
@@ -34,7 +34,7 @@ namespace ChirpyTest.TaskListSpecs
 			TaskList.TaskProjects[TaskList.Tasks[0]].ShouldBeTheSameAs(ProjectMock.Object);
 
 		It the_error_message_should_be_correct = () =>
-			TaskList.Tasks[0].Text.ShouldEqual("Error");
+			TaskList.Tasks[0].Text.ShouldEqual("Error\nError on this line!");
 
 		It the_file_name_should_be_correct = () =>
 			TaskList.Tasks[0].Document.ShouldEqual("error.txt");

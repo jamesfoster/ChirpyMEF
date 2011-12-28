@@ -11,7 +11,6 @@ namespace Chirpy
 
 		public string Name { get; private set; }
 		public string Category { get; private set; }
-		public string OutputCategory { get; private set; }
 		public bool[] Internal { get; private set; }
 		public bool Minifier { get; private set; }
 
@@ -29,7 +28,6 @@ namespace Chirpy
 
 			Name = metadata.Name;
 			Category = metadata.Category;
-			OutputCategory = metadata.OutputCategory;
 			Minifier = metadata.Minifier;
 
 			Internal = engines.Select(e => e.Metadata.Internal)

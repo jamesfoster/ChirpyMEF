@@ -32,17 +32,5 @@
 		/// <param name="filename">The file name.</param>
 		/// <returns></returns>
 		string GetBaseFileName(string filename);
-
-		/// <summary>
-		/// Adds the specified file into a queue to be refreshed
-		/// </summary>
-		/// <param name="filename">The file name.</param>
-		void Refresh(string filename);
-
-		/// <summary>
-		/// Adds the specified files into a queue to be refreshed
-		/// </summary>
-		/// <param name="filenames">The files to be refreshed.</param>
-		void RefreshMany(List<string> filenames);
 	}
 }

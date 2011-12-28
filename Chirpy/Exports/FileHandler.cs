@@ -30,17 +30,9 @@ namespace Chirpy.Exports
 
 		public string GetBaseFileName(string filename)
 		{
-			throw new System.NotImplementedException();
-		}
-
-		public void Refresh(string filename)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public void RefreshMany(List<string> filenames)
-		{
-			throw new System.NotImplementedException();
+			var baseFileName = Path.GetFileNameWithoutExtension(filename);
+			var directory = Path.GetDirectoryName(filename);
+			return Path.Combine(directory, baseFileName);
 		}
 	}
 }

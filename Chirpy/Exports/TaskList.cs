@@ -4,6 +4,7 @@ namespace Chirpy.Exports
 	using System.Collections.Generic;
 	using System.ComponentModel.Composition;
 	using System.Linq;
+	using ChirpyInterface;
 	using EnvDTE;
 	using EnvDTE80;
 	using Extensions;
@@ -36,7 +37,17 @@ namespace Chirpy.Exports
 				ErrorListProvider.Show();
 		}
 
-		public void Add(string message, string filename, int line, int column, TaskErrorCategory category)
+		public void Add(ChirpyException exception)
+		{
+			Add(exception.Message, exception.FileName, exception.Line, exception.LineNumber, exception.Position, TaskErrorCategory.Error);
+		}
+
+		public void Add(string message, string filename, TaskErrorCategory category)
+		{
+			Add(message, filename, null, null, null, category);
+		}
+
+		public void Add(string message, string filename, string line, int? lineNumber, int? column, TaskErrorCategory category)
 		{
 			if (message == null) return;
 			if (filename == null) return;
@@ -45,21 +56,24 @@ namespace Chirpy.Exports
 
 			if (projectItem == null) return;
 
-			Add(projectItem.ContainingProject, message, filename, line, column, category);
+			Add(projectItem.ContainingProject, message, filename, line, lineNumber, column, category);
 		}
 
-		public void Add(Project project, string message, string filename, int line, int column, TaskErrorCategory category)
+		public void Add(Project project, string message, string filename, string line, int? lineNumber, int? column, TaskErrorCategory category)
 		{
 			if (message == null) return;
 			if (filename == null) return;
 			if (project == null) return;
 
+			if(!string.IsNullOrEmpty(line))
+				message = string.Format("{0}\n{1}", message, line);
+
 			var task = new ErrorTask
 			           	{
 			           		ErrorCategory = category,
 			           		Document = filename,
-			           		Line = line,
-			           		Column = column,
+			           		Line = lineNumber ?? 0,
+			           		Column = column ?? 0,
 			           		Text = message
 			           	};
 

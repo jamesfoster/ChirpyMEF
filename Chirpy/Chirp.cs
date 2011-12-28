@@ -7,6 +7,8 @@ namespace Chirpy
 	using System.Diagnostics;
 	using System.Linq;
 	using ChirpyInterface;
+	using EnvDTE;
+	using Extensions;
 	using Imports;
 	using Microsoft.VisualStudio.Shell;
 
@@ -20,7 +22,7 @@ namespace Chirpy
 		[Import] public ITaskList TaskList { get; set; }
 		[Import] public IFileHandler FileHandler { get; set; }
 
-		public Dictionary<string, List<string>> Dependancies { get; set; }
+		public Dictionary<string, List<ProjectItem>> Dependancies { get; set; }
 
 		public Chirp(IEngineResolver engineResolver, ITaskList taskList, IFileHandler fileHandler, IExtensionResolver extensionResolver)
 			: this()
@@ -33,11 +35,13 @@ namespace Chirpy
 
 		Chirp()
 		{
-			Dependancies = new Dictionary<string, List<string>>();
+			Dependancies = new Dictionary<string, List<ProjectItem>>();
 		}
 
-		public bool CheckDependancies(string filename)
+		public bool CheckDependancies(ProjectItem projectItem)
 		{
+			var filename = projectItem.FileName();
+
 			var engine = EngineResolver.GetEngineByFilename(filename);
 
 			if (engine == null)
@@ -45,31 +49,62 @@ namespace Chirpy
 
 			var contents = FileHandler.GetContents(filename);
 
-			SaveDependancies(filename, contents, engine);
+			SaveDependancies(projectItem, filename, contents, engine);
 
 			return true;
 		}
 
-		public IEnumerable<string> Run(string filename)
+		public void RemoveDependancies(ProjectItem projectItem)
 		{
+			var filename = projectItem.FileName();
+
+			Dependancies.Remove(filename);
+
+			RemoveDependanciesForFile(projectItem);
+		}
+
+		public IEnumerable<FileAssociation> Run(ProjectItem projectItem)
+		{
+			var filename = projectItem.FileName();
 			var engine = EngineResolver.GetEngineByFilename(filename);
-			var result = new List<string>();
+			var result = new List<FileAssociation>();
 
 			if (engine == null)
 				return null;
 
+			ProcessEngine(projectItem, filename, engine, result);
+
+			return result;
+		}
+
+		public IEnumerable<FileAssociation> RunDependancies(string filename)
+		{
+			var dependancies = Dependancies[filename];
+
+			var result = new List<FileAssociation>();
+
+			foreach (var dependancy in dependancies)
+			{
+				result.AddRange(Run(dependancy));
+			}
+
+			return result;
+		}
+
+		void ProcessEngine(ProjectItem projectItem, string filename, IEngine engine, ICollection<FileAssociation> result)
+		{
 			try
 			{
 				var contents = FileHandler.GetContents(filename);
 
 				var engineResults = engine.Process(contents, filename);
 
-				if(engineResults == null)
-					return null;
+				if (engineResults == null)
+					return;
 
 				foreach (var engineResult in engineResults)
 				{
-					if (engineResult.Exceptions != null && engineResult.Exceptions.Any())
+					if (engineResult.Exceptions.Any())
 					{
 						foreach (var exception in engineResult.Exceptions)
 						{
@@ -83,64 +118,76 @@ namespace Chirpy
 
 					var outputFilename = engineResult.FileName;
 
-					if (string.IsNullOrEmpty(outputFilename))
+					if (!string.IsNullOrEmpty(engineResult.Extension))
 						outputFilename = GetOutputFileName(engineResult, filename, engine);
 
 					outputFilename = FileHandler.GetAbsoluteFileName(outputFilename, filename);
 
 					FileHandler.SaveFile(outputFilename, engineResult.Contents);
 
-					result.Add(outputFilename);
+					result.Add(new FileAssociation(outputFilename, projectItem));
 				}
-
-				return result;
 			}
 			catch (Exception e)
 			{
-				TaskList.Add(e.Message, filename, 0, 0, TaskErrorCategory.Error);
+				TaskList.Add(e.Message, filename, TaskErrorCategory.Error);
 
 				Console.WriteLine("{0}", e.Message);
 			}
-			return null;
 		}
 
 		string GetOutputFileName(EngineResult result, string filename, IEngine engine)
 		{
-			var engineContainer = engine as EngineContainer;
-			var inputExtension = ExtensionResolver.GetExtensionFromCategory(engineContainer.Category);
-
-			Debug.Assert(filename.EndsWith(inputExtension));
-
-			var outputCategory = result.Category ?? engineContainer.OutputCategory;
-			var outpuExtension = ExtensionResolver.GetExtensionFromCategory(outputCategory);
-
-			return filename.Substring(0, filename.Length - inputExtension.Length) + outpuExtension;
-		}
-
-		void SaveDependancies(string filename, string contents, IEngine engine)
-		{
-			// remove dependancies for file
-			foreach (var key in Dependancies.Keys.ToArray())
+			string baseFileName;
+			if(!string.IsNullOrEmpty(result.FileName))
 			{
-				var files = Dependancies[key];
-				if(files.Remove(filename) && files.Count == 0)
-					Dependancies.Remove(key);
+				baseFileName = FileHandler.GetBaseFileName(result.FileName);
+			}
+			else
+			{
+				var engineContainer = engine as EngineContainer;
+				var inputExtension = ExtensionResolver.GetExtensionFromCategory(engineContainer.Category);
+
+				Debug.Assert(filename.EndsWith(inputExtension));
+
+				baseFileName = filename.Substring(0, filename.Length - inputExtension.Length);
 			}
 
-			// add dependancies
+			return string.Format("{0}.{1}", baseFileName, result.Extension);
+		}
+
+		void SaveDependancies(ProjectItem projectItem, string filename, string contents, IEngine engine)
+		{
+			RemoveDependanciesForFile(projectItem);
+
 			var dependancies = engine.GetDependancies(contents, filename);
 
 			if(dependancies == null)
 				return;
 
+			AddDependanciesForFile(projectItem, filename, dependancies);
+		}
+
+		void AddDependanciesForFile(ProjectItem projectItem, string filename, IEnumerable<string> dependancies)
+		{
 			foreach (var s in dependancies)
 			{
 				var dependancy = FileHandler.GetAbsoluteFileName(s, relativeTo: filename);
 
-				if(Dependancies.ContainsKey(dependancy))
-					Dependancies[dependancy].Add(filename);
+				if (Dependancies.ContainsKey(dependancy))
+					Dependancies[dependancy].Add(projectItem);
 				else
-					Dependancies[dependancy] = new List<string> {filename};
+					Dependancies[dependancy] = new List<ProjectItem> {projectItem};
+			}
+		}
+
+		void RemoveDependanciesForFile(ProjectItem projectItem)
+		{
+			foreach (var key in Dependancies.Keys.ToArray())
+			{
+				var files = Dependancies[key];
+				if (files.Remove(projectItem) && files.Count == 0)
+					Dependancies.Remove(key);
 			}
 		}
 	}

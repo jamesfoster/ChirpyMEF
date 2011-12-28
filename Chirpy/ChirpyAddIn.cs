@@ -235,7 +235,7 @@
 
 		void ItemRenamed(ProjectItem projectItem, string oldname)
 		{
-			ProjectItemManager.ItemRenamed(projectItem);
+			ProjectItemManager.ItemRenamed(projectItem, oldname);
 		}
 
 		void BuildDone(vsBuildScope scope, vsBuildAction action)

@@ -6,6 +6,7 @@ namespace ChirpyTest.ChirpSepcs
 	using Chirpy;
 	using Chirpy.Imports;
 	using ChirpyInterface;
+	using EnvDTE;
 	using Machine.Specifications;
 	using Moq;
 
@@ -16,6 +17,7 @@ namespace ChirpyTest.ChirpSepcs
 		protected static Mock<IExtensionResolver> ExtensionResolverMock;
 		protected static Mock<ITaskList> TaskListMock;
 		protected static Mock<IFileHandler> FileHandlerMock;
+		protected static Mock<ProjectItem> ProjectItemMock;
 		protected static string Filename;
 		protected static string Category;
 		protected static string SubCategory;
@@ -28,6 +30,7 @@ namespace ChirpyTest.ChirpSepcs
 				ExtensionResolverMock = new Mock<IExtensionResolver>();
 				FileHandlerMock = new Mock<IFileHandler>();
 				TaskListMock = new Mock<ITaskList>();
+				ProjectItemMock = new Mock<ProjectItem>();
 
 				engines = new List<Lazy<IEngine, IEngineMetadata>>();
 				files  = new Dictionary<string, string>();
@@ -60,6 +63,10 @@ namespace ChirpyTest.ChirpSepcs
 				ExtensionResolverMock
 					.Setup(r => r.GetExtensionFromCategory(Moq.It.IsAny<string>()))
 					.Returns<string>(s => "." + s);
+
+				ProjectItemMock
+					.Setup(pi => pi.get_FileNames(Moq.It.IsAny<short>()))
+					.Returns<short>(s => Filename);
 			};
 
 		protected static void AddFile(string contents, string filename)
@@ -70,7 +77,7 @@ namespace ChirpyTest.ChirpSepcs
 		protected static Mock<IEngine> AddEngine(string name, string version, string category, string outputCategory)
 		{
 			var engineMock = new Mock<IEngine>();
-			var metadata = new EngineMetadataAttribute(name, version, category, outputCategory);
+			var metadata = new EngineMetadataAttribute(name, version, category);
 
 			engines.Add(new Lazy<IEngine, IEngineMetadata>(() => engineMock.Object, metadata));
 

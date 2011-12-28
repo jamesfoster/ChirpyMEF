@@ -26,7 +26,7 @@
 					.Returns(new List<EngineResult> {new EngineResult {Contents = "mno"}});
 			};
 
-		Because of = () => Chirp.Run(Filename);
+		Because of = () => Chirp.Run(ProjectItemMock.Object);
 
 		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("jkl.abc.def"));
 		It should_call_Engine_Process = () => engineMock.Verify(e => e.Process("ghi", "jkl.abc.def"));

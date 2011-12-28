@@ -70,6 +70,7 @@
     <Compile Include="Chirp.cs" />
     <Compile Include="ChirpyAddIn.cs" />
     <Compile Include="ErrorListProviderWrapper.cs" />
+    <Compile Include="FileAssociation.cs" />
     <Compile Include="IErrorListProvider.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Imports\IProjectItemManager.cs" />

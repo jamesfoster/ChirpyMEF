@@ -22,11 +22,14 @@ namespace Chirpy.Exports
 
 			foreach (var projectItem in AllProjectItems())
 			{
-				var filename = projectItem.FileName();
-
-				if (Chirp.CheckDependancies(filename))
+				if (Chirp.CheckDependancies(projectItem))
 					HandledFiles.Add(projectItem);
 			}
+		}
+
+		IEnumerable<ProjectItem> AllProjectItems(Project project)
+		{
+			return AllProjectItemsRecursive(project.ProjectItems);
 		}
 
 		IEnumerable<ProjectItem> AllProjectItems()
@@ -73,7 +76,10 @@ namespace Chirpy.Exports
 
 		public void ProjectRemoved(Project project)
 		{
-
+			foreach (var projectItem in AllProjectItems(project))
+			{
+				Chirp.RemoveDependancies(projectItem);
+			}
 		}
 
 		public void ItemAdded(ProjectItem projectItem)
@@ -85,22 +91,35 @@ namespace Chirpy.Exports
 		{
 			var filename = projectItem.FileName();
 
-			var files = Chirp.Run(filename);
+			var fileAssociations = Chirp.RunDependancies(filename);
 
-			foreach (var file in files)
-			{
-				projectItem.ProjectItems.AddFromFile(file);
-			}
+			ProcessFileAssociations(fileAssociations);
 		}
 
-		public void ItemRenamed(ProjectItem projectItem)
+		public void ItemRenamed(ProjectItem projectItem, string oldname)
 		{
+			Chirp.RunDependancies(oldname);
 
+			Chirp.RemoveDependancies(projectItem);
+			Chirp.CheckDependancies(projectItem);
 		}
 
 		public void ItemRemoved(ProjectItem projectItem)
 		{
+			Chirp.Run(projectItem);
 
+			Chirp.RemoveDependancies(projectItem);
+		}
+
+		static void ProcessFileAssociations(IEnumerable<FileAssociation> fileAssociations)
+		{
+			if (fileAssociations == null)
+				return;
+
+			foreach (var fileAssociation in fileAssociations)
+			{
+				fileAssociation.Parent.ProjectItems.AddFromFile(fileAssociation.FileName);
+			}
 		}
 	}
 }
