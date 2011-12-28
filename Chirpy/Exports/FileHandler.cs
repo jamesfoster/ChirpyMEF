@@ -1,6 +1,6 @@
 namespace Chirpy.Exports
 {
-	using System.Collections.Generic;
+	using System;
 	using System.ComponentModel.Composition;
 	using System.IO;
 	using ChirpyInterface;
@@ -23,9 +23,17 @@ namespace Chirpy.Exports
 
 		public string GetAbsoluteFileName(string path, string relativeTo)
 		{
-			var relativeDirectory = Path.GetDirectoryName(relativeTo) ?? "";
+			if (Path.IsPathRooted(path))
+				return path;
 
-			return Path.Combine(relativeDirectory, path);
+			if (!Path.IsPathRooted(relativeTo))
+				throw new InvalidOperationException(string.Format("Unable to get absolute path of '{0}' relative to '{1}'", path, relativeTo));
+
+			var relativeDirectory = Path.GetDirectoryName(relativeTo);
+
+			var relativePath = Path.Combine(relativeDirectory, path);
+
+			return Path.GetFullPath(relativePath);
 		}
 
 		public string GetBaseFileName(string filename)
