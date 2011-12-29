@@ -72,6 +72,9 @@ namespace Chirpy.Engines
 
 			foreach (var engineResult in engineResults)
 			{
+				if(string.IsNullOrEmpty(engineResult.FileName))
+					engineResult.FileName = fileGroupPath;
+
 				yield return engineResult;
 			}
 		}
