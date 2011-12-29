@@ -19,7 +19,6 @@ namespace ChirpyTest.ChirpSepcs
 		protected static Mock<IFileHandler> FileHandlerMock;
 		protected static Mock<ProjectItem> ProjectItemMock;
 		protected static string Filename;
-		protected static string Category;
 		protected static string SubCategory;
 		static IList<Lazy<IEngine, IEngineMetadata>> engines;
 		static IDictionary<string, string> files;
@@ -39,15 +38,23 @@ namespace ChirpyTest.ChirpSepcs
 					.Setup(h => h.GetContents(Moq.It.IsAny<string>()))
 					.Returns<string>(s => files.ContainsKey(s) ? files[s] : null);
 
+				FileHandlerMock
+					.Setup(h => h.GetAbsoluteFileName(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
+					.Returns<string, string>((path, relativeTo) => path);
+
 				Chirp = new Chirp(EngineResolverMock.Object, TaskListMock.Object, FileHandlerMock.Object, ExtensionResolverMock.Object);
 
 				EngineResolverMock
 					.Setup(r => r.GetEngine(Moq.It.IsAny<string>()))
 					.Returns<string>(
-						cat => new EngineContainer(
-							engines
-							.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase))
-							));
+						cat =>
+							{
+								var es = engines.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase));
+								if(!es.Any())
+									return null;
+
+								return new EngineContainer(es);
+							});
 
 				EngineResolverMock
 					.Setup(r => r.GetEngineByFilename(Moq.It.IsAny<string>()))
@@ -55,9 +62,11 @@ namespace ChirpyTest.ChirpSepcs
 						fn =>
 							{
 								var cat = fn.Substring(fn.IndexOf('.') + 1);
-								return new EngineContainer(
-									engines.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase))
-									);
+								var es = engines.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase));
+								if(!es.Any())
+									return null;
+
+								return new EngineContainer(es);
 							});
 
 				ExtensionResolverMock
@@ -74,7 +83,7 @@ namespace ChirpyTest.ChirpSepcs
 			files[filename] = contents;
 		}
 
-		protected static Mock<IEngine> AddEngine(string name, string version, string category, string outputCategory)
+		protected static Mock<IEngine> AddEngine(string name, string version, string category)
 		{
 			var engineMock = new Mock<IEngine>();
 			var metadata = new EngineMetadataAttribute(name, version, category);

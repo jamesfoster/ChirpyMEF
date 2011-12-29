@@ -66,7 +66,10 @@ namespace Chirpy.Exports
 
 		public void ProjectAdded(Project project)
 		{
-
+			foreach (var projectItem in AllProjectItems(project))
+			{
+				Chirp.CheckDependancies(projectItem);
+			}
 		}
 
 		public void ProjectRemoved(Project project)
@@ -79,14 +82,14 @@ namespace Chirpy.Exports
 
 		public void ItemAdded(ProjectItem projectItem)
 		{
+			Chirp.CheckDependancies(projectItem);
+
 			ItemSaved(projectItem);
 		}
 
 		public void ItemSaved(ProjectItem projectItem)
 		{
-			var filename = projectItem.FileName();
-
-			var fileAssociations = Chirp.RunDependancies(filename);
+			var fileAssociations = Chirp.Run(projectItem);
 
 			ProcessFileAssociations(fileAssociations);
 		}

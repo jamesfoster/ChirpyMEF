@@ -58,7 +58,8 @@ namespace Chirpy
 		{
 			var filename = projectItem.FileName();
 
-			Dependancies.Remove(filename);
+			if (Dependancies.ContainsKey(filename))
+				Dependancies.Remove(filename);
 
 			RemoveDependanciesForFile(projectItem);
 		}
@@ -74,18 +75,26 @@ namespace Chirpy
 
 			ProcessEngine(projectItem, filename, engine, result);
 
+			RunDependancies(filename);
+
 			return result;
 		}
 
 		public IEnumerable<FileAssociation> RunDependancies(string filename)
 		{
+			if(!Dependancies.ContainsKey(filename))
+				return null;
+
 			var dependancies = Dependancies[filename];
 
 			var result = new List<FileAssociation>();
 
 			foreach (var dependancy in dependancies)
 			{
-				result.AddRange(Run(dependancy));
+				var fileAssociations = Run(dependancy);
+
+				if (fileAssociations != null)
+					result.AddRange(fileAssociations);
 			}
 
 			return result;
