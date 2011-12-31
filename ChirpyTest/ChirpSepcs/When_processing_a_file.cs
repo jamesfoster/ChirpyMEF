@@ -37,5 +37,14 @@
 		It should_return_1_FileAssociation = () => result.Count().ShouldEqual(1);
 		It FileAssociation_Parent_should_be_the_ProjectItem = () => result.ElementAt(0).Parent.ShouldBeTheSameAs(ProjectItemMock.Object);
 		It FileAssociation_FileName_should_be_the_output_file_name = () => result.ElementAt(0).FileName.ShouldEqual("jkl.xyz");
+
+		It should_log_success = () =>
+			LoggerMock.Verify(l => l.Log(Moq.It.IsAny<string>()));
+
+		It the_log_message_should_contain_the_filename = () =>
+			LoggerMock.Verify(l => l.Log(Moq.It.Is<string>(s => s.Contains("abc.xyz"))));
+
+		It the_log_message_should_contain_the_engine_name = () =>	
+			LoggerMock.Verify(l => l.Log(Moq.It.Is<string>(s => s.Contains("DemoEngine"))));
 	}
 }

@@ -10,6 +10,7 @@ namespace Chirpy
 	using EnvDTE;
 	using Extensions;
 	using Imports;
+	using Logging;
 
 	[Export]
 	public class Chirp
@@ -20,19 +21,11 @@ namespace Chirpy
 		[Import] public IExtensionResolver ExtensionResolver { get; set; }
 		[Import] public ITaskList TaskList { get; set; }
 		[Import] public IFileHandler FileHandler { get; set; }
+		[Import] public ILogger Logger { get; set; }
 
 		public Dictionary<string, List<ProjectItem>> Dependancies { get; set; }
 
-		public Chirp(IEngineResolver engineResolver, ITaskList taskList, IFileHandler fileHandler, IExtensionResolver extensionResolver)
-			: this()
-		{
-			EngineResolver = engineResolver;
-			TaskList = taskList;
-			FileHandler = fileHandler;
-			ExtensionResolver = extensionResolver;
-		}
-
-		Chirp()
+		public Chirp()
 		{
 			Dependancies = new Dictionary<string, List<ProjectItem>>();
 		}
@@ -134,6 +127,8 @@ namespace Chirpy
 					FileHandler.SaveFile(outputFilename, engineResult.Contents);
 
 					result.Add(new FileAssociation(outputFilename, projectItem));
+
+					Logger.Log(string.Format("{0} > {1}", ((EngineContainer) engine).Name, outputFilename));
 				}
 			}
 			catch (Exception e)

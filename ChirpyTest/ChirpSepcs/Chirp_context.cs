@@ -5,6 +5,7 @@ namespace ChirpyTest.ChirpSepcs
 	using System.Linq;
 	using Chirpy;
 	using Chirpy.Imports;
+	using Chirpy.Logging;
 	using ChirpyInterface;
 	using EnvDTE;
 	using Machine.Specifications;
@@ -17,6 +18,7 @@ namespace ChirpyTest.ChirpSepcs
 		protected static Mock<IExtensionResolver> ExtensionResolverMock;
 		protected static Mock<ITaskList> TaskListMock;
 		protected static Mock<IFileHandler> FileHandlerMock;
+		protected static Mock<ILogger> LoggerMock;
 		protected static Mock<ProjectItem> ProjectItemMock;
 		protected static string Filename;
 		protected static string SubCategory;
@@ -27,8 +29,9 @@ namespace ChirpyTest.ChirpSepcs
 			{
 				EngineResolverMock = new Mock<IEngineResolver>();
 				ExtensionResolverMock = new Mock<IExtensionResolver>();
-				FileHandlerMock = new Mock<IFileHandler>();
 				TaskListMock = new Mock<ITaskList>();
+				LoggerMock = new Mock<ILogger>();
+				FileHandlerMock = new Mock<IFileHandler>();
 				ProjectItemMock = new Mock<ProjectItem>();
 
 				engines = new List<Lazy<IEngine, IEngineMetadata>>();
@@ -42,7 +45,14 @@ namespace ChirpyTest.ChirpSepcs
 					.Setup(h => h.GetAbsoluteFileName(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
 					.Returns<string, string>((path, relativeTo) => path);
 
-				Chirp = new Chirp(EngineResolverMock.Object, TaskListMock.Object, FileHandlerMock.Object, ExtensionResolverMock.Object);
+				Chirp = new Chirp
+				        	{
+				        		EngineResolver = EngineResolverMock.Object,
+				        		TaskList = TaskListMock.Object,
+				        		FileHandler = FileHandlerMock.Object,
+				        		ExtensionResolver = ExtensionResolverMock.Object,
+				        		Logger = LoggerMock.Object
+				        	};
 
 				EngineResolverMock
 					.Setup(r => r.GetEngine(Moq.It.IsAny<string>()))
