@@ -41,6 +41,7 @@
     <Compile Include="EngineMetadataAttribute.cs" />
     <Compile Include="ChirpyException.cs" />
     <Compile Include="EngineResult.cs" />
+    <Compile Include="ErrorCategory.cs" />
     <Compile Include="IEngineResolver.cs" />
     <Compile Include="IEngine.cs" />
     <Compile Include="IEngineMetadata.cs" />

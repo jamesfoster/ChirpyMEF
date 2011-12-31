@@ -1,5 +1,6 @@
 namespace ChirpyTest.TaskListSpecs
 {
+	using ChirpyInterface;
 	using Machine.Specifications;
 	using Microsoft.VisualStudio.Shell;
 	using Microsoft.VisualStudio.Shell.Interop;
@@ -7,7 +8,7 @@ namespace ChirpyTest.TaskListSpecs
 
 	class When_adding_an_error : TaskList_context
 	{
-		Because of = () => TaskList.Add("Error", "error.txt", "Error on this line!", 3, 5, TaskErrorCategory.Error);
+		Because of = () => TaskList.Add("Error", "error.txt", "Error on this line!", 3, 5, ErrorCategory.Error);
 
 		It should_find_the_ProjectItem = () =>
 			SolutionMock.Verify(s => s.FindProjectItem("error.txt"));

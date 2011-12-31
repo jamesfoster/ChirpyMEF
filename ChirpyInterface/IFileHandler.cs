@@ -1,5 +1,6 @@
 ﻿namespace ChirpyInterface
 {
+	using System;
 	using System.Collections.Generic;
 
 	public interface IFileHandler
@@ -32,5 +33,12 @@
 		/// <param name="filename">The file name.</param>
 		/// <returns></returns>
 		string GetBaseFileName(string filename);
+		
+		/// <summary>
+		/// Determines whether the file exists or not
+		/// </summary>
+		/// <param name="filename">The file name.</param>
+		/// <returns>true if the file exists, otherwise false</returns>
+		bool FileExists(string filename);
 	}
 }

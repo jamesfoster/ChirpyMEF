@@ -38,30 +38,35 @@ namespace Chirpy.Engines
 
 		IEnumerable<EngineResult> GetEngineResult(XElement fileGroup, string filename)
 		{
+			var result = new EngineResult();
+
 			if (fileGroup.Attribute("Path") == null)
 			{
-				var result = new EngineResult();
-				result.AddException("FileGroup element requires a Path attribute", filename);
+				result.AddException("FileGroup element requires a Path attribute", filename, ErrorCategory.Error);
 
 				yield return result;
 				yield break;
 			}
 
-			var fileGroupPath =  (string) fileGroup.Attribute("Path");
+			var fileGroupPath = (string) fileGroup.Attribute("Path");
 
-			var files = GetFiles(fileGroup);
+			var files = GetFiles(fileGroup).ToLookup(FileHandler.FileExists);
 
-			// get the contents of all files and join them together
+			foreach (var file in files[false])
+			{
+				result.AddException(string.Format("File does not exist '{0}'", file), filename, ErrorCategory.Warning);
+			}
+
+			// get the contents of all existing files and join them together
 			var fileGroupContents =
-				string.Join("\n", files
+				string.Join("\n", files[true]
 				                  	.Select(file => FileHandler.GetAbsoluteFileName(file, filename))
 				                  	.Select(path => FileHandler.GetContents(path)));
 
-			yield return new EngineResult
-			             	{
-			             		FileName = fileGroupPath,
-			             		Contents = fileGroupContents
-			             	};
+			result.FileName = fileGroupPath;
+			result.Contents = fileGroupContents;
+
+			yield return result;
 
 			var engine = EngineResolver.GetEngineByFilename(fileGroupPath);
 

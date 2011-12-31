@@ -3,7 +3,6 @@
 	using System;
 	using System.ComponentModel.Composition;
 	using System.Linq;
-	using ChirpyInterface;
 	using EnvDTE;
 	using EnvDTE80;
 	using Exports;
@@ -20,9 +19,9 @@
 
 		protected MefComposer Composer { get; set; }
 
-		[Import] protected Chirp Chirp { get; set; }
-		[Import] protected IProjectItemManager ProjectItemManager { get; set; }
-		[Import] protected ITaskList TaskList { get; set; }
+		[Import] public Chirp Chirp { get; set; }
+		[Import] public IProjectItemManager ProjectItemManager { get; set; }
+		[Import] public ITaskList TaskList { get; set; }
 
 		protected DocumentEvents DocumentEvents { get; set; }
 		protected BuildEvents BuildEvents { get; set; }

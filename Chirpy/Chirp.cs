@@ -10,7 +10,6 @@ namespace Chirpy
 	using EnvDTE;
 	using Extensions;
 	using Imports;
-	using Microsoft.VisualStudio.Shell;
 
 	[Export]
 	public class Chirp
@@ -139,7 +138,7 @@ namespace Chirpy
 			}
 			catch (Exception e)
 			{
-				TaskList.Add(e.Message, filename, TaskErrorCategory.Error);
+				TaskList.Add(e.Message, filename, ErrorCategory.Error);
 
 				Console.WriteLine("{0}", e.Message);
 			}

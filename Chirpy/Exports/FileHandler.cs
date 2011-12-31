@@ -42,5 +42,10 @@ namespace Chirpy.Exports
 			var directory = Path.GetDirectoryName(filename);
 			return Path.Combine(directory, baseFileName);
 		}
+
+		public bool FileExists(string filename)
+		{
+			return File.Exists(filename);
+		}
 	}
 }

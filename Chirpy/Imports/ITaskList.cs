@@ -8,7 +8,7 @@ namespace Chirpy.Imports
 	{
 		void Add(ChirpyException exception);
 
-		void Add(string message, string filename, TaskErrorCategory category);
+		void Add(string message, string filename, ErrorCategory category);
 
 		/// <summary>
 		/// Adds a TaskList error for the specified file.
@@ -19,7 +19,7 @@ namespace Chirpy.Imports
 		/// <param name="lineNumber">The line number</param>
 		/// <param name="column">The position in the line where the error appears</param>
 		/// <param name="category">The category of the error</param>
-		void Add(string message, string filename, string line, int? lineNumber, int? column, TaskErrorCategory category);
+		void Add(string message, string filename, string line, int? lineNumber, int? column, ErrorCategory category);
 
 		/// <summary>
 		/// Adds a TaskList error for the specified file in the specified project.
@@ -31,7 +31,7 @@ namespace Chirpy.Imports
 		/// <param name="lineNumber">The line number</param>
 		/// <param name="column">The position in the line where the error appears</param>
 		/// <param name="category">The category of the error</param>
-		void Add(Project project, string message, string filename, string line, int? lineNumber, int? column, TaskErrorCategory category);
+		void Add(Project project, string message, string filename, string line, int? lineNumber, int? column, ErrorCategory category);
 
 		/// <summary>
 		/// Removes any errors for the specified file.

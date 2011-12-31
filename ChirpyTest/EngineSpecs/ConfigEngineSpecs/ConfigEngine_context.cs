@@ -14,25 +14,36 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 		protected static string Contents;
 		protected static string Filename;
 		protected static List<EngineResult> Result;
+		static IDictionary<string, string> files;
 
 		Establish context = () =>
 			{
-				var configEngine = new ConfigEngine();
-				Engine = configEngine;
-
 				EngineResolverMock = new Mock<IEngineResolver>();
 				FileHandlerMock = new Mock<IFileHandler>();
+				files = new Dictionary<string, string>();
 
-				configEngine.EngineResolver = EngineResolverMock.Object;
-				configEngine.FileHandler = FileHandlerMock.Object;
+				Engine = new ConfigEngine
+				         	{
+				         		EngineResolver = EngineResolverMock.Object,
+				         		FileHandler = FileHandlerMock.Object
+				         	};
 
 				FileHandlerMock
 					.Setup(h => h.GetAbsoluteFileName(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
-					.Returns<string, string>((f, s) => f);
+					.Returns<string, string>((path, relativeTo) => path);
 
 				FileHandlerMock
 					.Setup(h => h.GetContents(Moq.It.IsAny<string>()))
-					.Returns<string>(f => string.Format("contents of '{0}'", f));
+					.Returns<string>(s => files.ContainsKey(s) ? files[s] : null);
+
+				FileHandlerMock
+					.Setup(h => h.FileExists(Moq.It.IsAny<string>()))
+					.Returns<string>(s => files.ContainsKey(s));
 			};
+
+		protected static void AddFile(string contents, string filename)
+		{
+			files[filename] = contents;
+		}
 	}
 }

@@ -19,16 +19,16 @@
 			Exceptions.Add(exception);
 		}
 
-		public void AddException(string message, string filename, int lineNumber, int position, string line)
+		public void AddException(string message, string filename, int lineNumber, int position, string line, ErrorCategory category)
 		{
-			var exception = new ChirpyException(message, filename, lineNumber, position, line);
+			var exception = new ChirpyException(message, filename, lineNumber, position, line, category);
 
 			AddException(exception);
 		}
 
-		public void AddException(string message, string filename)
+		public void AddException(string message, string filename, ErrorCategory category)
 		{
-			var exception = new ChirpyException(message, filename);
+			var exception = new ChirpyException(message, filename, category);
 
 			AddException(exception);
 		}

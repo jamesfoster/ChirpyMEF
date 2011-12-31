@@ -39,15 +39,15 @@ namespace Chirpy.Exports
 
 		public void Add(ChirpyException exception)
 		{
-			Add(exception.Message, exception.FileName, exception.Line, exception.LineNumber, exception.Position, TaskErrorCategory.Error);
+			Add(exception.Message, exception.FileName, exception.Line, exception.LineNumber, exception.Position, exception.Category);
 		}
 
-		public void Add(string message, string filename, TaskErrorCategory category)
+		public void Add(string message, string filename, ErrorCategory category)
 		{
 			Add(message, filename, null, null, null, category);
 		}
 
-		public void Add(string message, string filename, string line, int? lineNumber, int? column, TaskErrorCategory category)
+		public void Add(string message, string filename, string line, int? lineNumber, int? column, ErrorCategory category)
 		{
 			if (message == null) return;
 			if (filename == null) return;
@@ -59,7 +59,7 @@ namespace Chirpy.Exports
 			Add(projectItem.ContainingProject, message, filename, line, lineNumber, column, category);
 		}
 
-		public void Add(Project project, string message, string filename, string line, int? lineNumber, int? column, TaskErrorCategory category)
+		public void Add(Project project, string message, string filename, string line, int? lineNumber, int? column, ErrorCategory category)
 		{
 			if (message == null) return;
 			if (filename == null) return;
@@ -70,7 +70,7 @@ namespace Chirpy.Exports
 
 			var task = new ErrorTask
 			           	{
-			           		ErrorCategory = category,
+			           		ErrorCategory = GetTaskErrorCategory(category),
 			           		Document = filename,
 			           		Line = lineNumber ?? 0,
 			           		Column = column ?? 0,
@@ -78,6 +78,23 @@ namespace Chirpy.Exports
 			           	};
 
 			Add(project, task);
+		}
+
+		static TaskErrorCategory GetTaskErrorCategory(ErrorCategory category)
+		{
+			switch (category)
+			{
+				case ErrorCategory.Error:
+					return TaskErrorCategory.Error;
+
+				case ErrorCategory.Message:
+					return TaskErrorCategory.Message;
+
+				case ErrorCategory.Warning:
+					return TaskErrorCategory.Warning;
+			}
+
+			throw new InvalidOperationException(string.Format("Unexpected error category '{0}'", category));
 		}
 
 		void Add(Project project, ErrorTask task)
