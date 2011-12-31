@@ -8,10 +8,12 @@ namespace ChirpyTest.ContainerSpecs
 	using Chirpy.Exports;
 	using ChirpyInterface;
 	using Machine.Specifications;
+	using System.ComponentModel.Composition;
 
 	[Subject(typeof(Chirp))]
-	public class When_composing_a_Chirp_object
+	public class When_composing_a_ChirpAddIn_object : AddIn_context
 	{
+		static ChirpyAddIn chirpAddIn;
 		static Chirp chirp;
 		static CompositionContainer compositionContainer;
 		static EngineResolver engineResolver;
@@ -19,7 +21,7 @@ namespace ChirpyTest.ContainerSpecs
 
 		Establish context = () =>
 			{
-				var assembly = typeof (Chirp).Assembly;
+				var assembly = typeof (ChirpyAddIn).Assembly;
 
 				var catelog = new AssemblyCatalog(assembly);
 
@@ -35,14 +37,25 @@ namespace ChirpyTest.ContainerSpecs
 			{
 				compositionContainer.Compose(new CompositionBatch());
 
-				chirp = compositionContainer.GetExportedValue<Chirp>();
+				StaticPart.App = AppMock.Object;
+
+				chirpAddIn = new ChirpyAddIn();
+				
+				compositionContainer.ComposeParts(chirpAddIn);
+
+				chirp = chirpAddIn.Chirp;
 
 				engineResolver = chirp.EngineResolver as EngineResolver;
 			};
 
+		It the_Chirp_should_not_be_null = () => chirpAddIn.Chirp.ShouldNotBeNull();
+		It the_ProjectItemManager_shoud_not_be_null = () => chirpAddIn.ProjectItemManager.ShouldNotBeNull();
+		It the_TaskList_should_not_be_null = () => chirpAddIn.TaskList.ShouldNotBeNull();
+
 		It the_EngineResolver_should_not_be_null = () => chirp.EngineResolver.ShouldNotBeNull();
 		It the_FileHandler_should_not_be_null = () => chirp.FileHandler.ShouldNotBeNull();
-		It the_TaskList_should_not_be_null = () => chirp.TaskList.ShouldNotBeNull();
+		It the_Logger_should_not_be_null = () => chirp.Logger.ShouldNotBeNull();
+		It the_ExtensionResolver_should_not_be_null = () => chirp.ExtensionResolver.ShouldNotBeNull();
 
 		It the_dotless_engine_should_exist = () => chirp.EngineResolver.GetEngineByName("Dotless").ShouldNotBeNull();
 		It the_config_engine_should_exist = () => chirp.EngineResolver.GetEngineByName("Config").ShouldNotBeNull();

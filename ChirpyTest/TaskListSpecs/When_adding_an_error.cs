@@ -51,5 +51,7 @@ namespace ChirpyTest.TaskListSpecs
 
 		It the_hierarchy_should_be_correct = () =>
 			TaskList.Tasks[0].HierarchyItem.ShouldBeTheSameAs(VsHierarchyMock.Object);
+
+		It should_activate_the_error_list_window = () => ErrorWindowMock.Verify(w => w.Activate());
 	}
 }
