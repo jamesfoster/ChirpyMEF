@@ -17,7 +17,7 @@ namespace Chirpy
 	{
 		protected CompositionContainer Container;
 
-		[Import] public IEngineResolver EngineResolver { get; set; }
+		[Import] public IInternalEngineResolver EngineResolver { get; set; }
 		[Import] public IExtensionResolver ExtensionResolver { get; set; }
 		[Import] public ITaskList TaskList { get; set; }
 		[Import] public IFileHandler FileHandler { get; set; }
@@ -92,7 +92,7 @@ namespace Chirpy
 			return result;
 		}
 
-		void ProcessEngine(ProjectItem projectItem, string filename, IEngine engine, ICollection<FileAssociation> result)
+		void ProcessEngine(ProjectItem projectItem, string filename, EngineContainer engine, ICollection<FileAssociation> result)
 		{
 			try
 			{
@@ -128,7 +128,7 @@ namespace Chirpy
 
 					result.Add(new FileAssociation(outputFilename, projectItem));
 
-					Logger.Log(string.Format("{0} > {1}", ((EngineContainer) engine).Name, outputFilename));
+					Logger.Log(string.Format("{0} > {1}", engine.Name, outputFilename));
 				}
 			}
 			catch (Exception e)
@@ -139,7 +139,7 @@ namespace Chirpy
 			}
 		}
 
-		string GetOutputFileName(EngineResult result, string filename, IEngine engine)
+		string GetOutputFileName(EngineResult result, string filename, EngineContainer engine)
 		{
 			string baseFileName;
 			if(!string.IsNullOrEmpty(result.FileName))
@@ -148,8 +148,7 @@ namespace Chirpy
 			}
 			else
 			{
-				var engineContainer = engine as EngineContainer;
-				var inputExtension = ExtensionResolver.GetExtensionFromCategory(engineContainer.Category);
+				var inputExtension = ExtensionResolver.GetExtensionFromCategory(engine.Category);
 
 				Debug.Assert(filename.EndsWith(inputExtension));
 
@@ -159,7 +158,7 @@ namespace Chirpy
 			return string.Format("{0}.{1}", baseFileName, result.Extension);
 		}
 
-		void SaveDependancies(ProjectItem projectItem, string filename, string contents, IEngine engine)
+		void SaveDependancies(ProjectItem projectItem, string filename, string contents, EngineContainer engine)
 		{
 			RemoveDependanciesForFile(projectItem);
 

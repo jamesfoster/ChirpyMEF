@@ -11,8 +11,8 @@ namespace ChirpyTest.EngineResolverSpecs
 
 	public class EngineResolver_context
 	{
-		protected static EngineResolver engineResolver;
-		protected static Mock<IExtensionResolver> extensionResolverMock;
+		protected static EngineResolver EngineResolver;
+		protected static Mock<IExtensionResolver> ExtensionResolverMock;
 		static List<Lazy<IEngine, IEngineMetadata>> engines;
 		static Dictionary<string, string> extensions;
 
@@ -20,15 +20,15 @@ namespace ChirpyTest.EngineResolverSpecs
 			{
 				engines = new List<Lazy<IEngine, IEngineMetadata>>();
 				extensions = new Dictionary<string, string>();
-				extensionResolverMock = new Mock<IExtensionResolver>();
+				ExtensionResolverMock = new Mock<IExtensionResolver>();
 
-				engineResolver = new EngineResolver {Engines = engines, ExtensionResolver = extensionResolverMock.Object};
+				EngineResolver = new EngineResolver {Engines = engines, ExtensionResolver = ExtensionResolverMock.Object};
 
-				extensionResolverMock
+				ExtensionResolverMock
 					.Setup(r => r.GetCategoryFromExtension(Moq.It.IsAny<string>()))
 					.Returns<string>(s => extensions.ContainsValue(s) ? extensions.FirstOrDefault(e => e.Value == s).Key : null);
 
-				extensionResolverMock
+				ExtensionResolverMock
 					.Setup(r => r.GetExtensionFromCategory(Moq.It.IsAny<string>()))
 					.Returns<string>(s => extensions.ContainsKey(s) ? extensions[s] : null);
 			};

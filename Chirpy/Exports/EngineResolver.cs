@@ -8,7 +8,8 @@ namespace Chirpy.Exports
 	using Imports;
 
 	[Export(typeof (IEngineResolver))]
-	public class EngineResolver : IEngineResolver
+	[Export(typeof (IInternalEngineResolver))]
+	public class EngineResolver : IInternalEngineResolver, IEngineResolver
 	{
 		[ImportMany]
 		public IEnumerable<Lazy<IEngine, IEngineMetadata>> Engines { get; set; }
@@ -40,7 +41,22 @@ namespace Chirpy.Exports
 					e => ExtensionResolver.GetExtensionFromCategory(e));
 		}
 
-		public IEngine GetEngine(string category)
+		IEngine IEngineResolver.GetEngine(string category)
+		{
+			return GetEngine(category);
+		}
+
+		IEngine IEngineResolver.GetEngineByName(string name)
+		{
+			return GetEngineByName(name);
+		}
+
+		IEngine IEngineResolver.GetEngineByFilename(string filename)
+		{
+			return GetEngineByFilename(filename);
+		}
+
+		public EngineContainer GetEngine(string category)
 		{
 			var engine = LoadFromCacheByCategory(category);
 
@@ -68,7 +84,7 @@ namespace Chirpy.Exports
 			return SaveCacheByCategory(category, engines);
 		}
 
-		public IEngine GetEngineByName(string name)
+		public EngineContainer GetEngineByName(string name)
 		{
 			var engine = LoadFromCache(name);
 
@@ -96,7 +112,7 @@ namespace Chirpy.Exports
 			return SaveCache(name, engines);
 		}
 
-		public IEngine GetEngineByFilename(string filename)
+		public EngineContainer GetEngineByFilename(string filename)
 		{
 			var engines = Engines
 				.Where(e => e.Metadata.Category.Contains("."))

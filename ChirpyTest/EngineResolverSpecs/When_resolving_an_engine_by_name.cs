@@ -16,7 +16,7 @@ namespace ChirpyTest.EngineResolverSpecs
 				AddEngine("DemoEngine2", "1.0", "b");
 			};
 
-		Because of = () => { result = engineResolver.GetEngineByName("DemoEngine2"); };
+		Because of = () => { result = EngineResolver.GetEngineByName("DemoEngine2"); };
 
 		It should_not_be_null = () => result.ShouldNotBeNull();
 		It should_be_DemoEngine1 = () => ((EngineContainer)result).Name.ShouldEqual("DemoEngine2");

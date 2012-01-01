@@ -14,7 +14,7 @@ namespace ChirpyTest.ChirpSepcs
 	public class Chirp_context
 	{
 		protected static Chirp Chirp;
-		protected static Mock<IEngineResolver> EngineResolverMock;
+		protected static Mock<IInternalEngineResolver> EngineResolverMock;
 		protected static Mock<IExtensionResolver> ExtensionResolverMock;
 		protected static Mock<ITaskList> TaskListMock;
 		protected static Mock<IFileHandler> FileHandlerMock;
@@ -25,7 +25,7 @@ namespace ChirpyTest.ChirpSepcs
 
 		Establish context = () =>
 			{
-				EngineResolverMock = new Mock<IEngineResolver>();
+				EngineResolverMock = new Mock<IInternalEngineResolver>();
 				ExtensionResolverMock = new Mock<IExtensionResolver>();
 				TaskListMock = new Mock<ITaskList>();
 				LoggerMock = new Mock<ILogger>();
