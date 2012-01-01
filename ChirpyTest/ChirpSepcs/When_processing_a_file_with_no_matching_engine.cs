@@ -22,7 +22,7 @@ namespace ChirpyTest.ChirpSepcs
 
 		Because of = () => { result = Chirp.Run(ProjectItemMocks["abc.def"].Object); };
 
-		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("abc.def"));
+		It should_get_the_engine = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("abc.def"));
 
 		It should_not_call_Engine_Process = () =>
 			engineMock.Verify(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Never());

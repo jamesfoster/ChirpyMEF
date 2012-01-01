@@ -40,9 +40,9 @@ namespace ChirpyTest.ChirpSepcs
 				Chirp.CheckDependancies(ProjectItemMocks["file3.abc"].Object);
 			};
 
-		It should_call_EngineResolver_GetEngines_for_file1 = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("file1.abc"));
-		It should_call_EngineResolver_GetEngines_for_file2 = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("file2.abc"));
-		It should_call_EngineResolver_GetEngines_for_file3 = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("file3.abc"));
+		It should_get_the_engine_for_file1 = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("file1.abc"));
+		It should_get_the_engine_for_file2 = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("file2.abc"));
+		It should_get_the_engine_for_file3 = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("file3.abc"));
 		It should_call_Engine_GetDependancies_for_file1 = () => engineMock.Verify(e => e.GetDependancies("def", "file1.abc"));
 		It should_call_Engine_GetDependancies_for_file2 = () => engineMock.Verify(e => e.GetDependancies("def", "file2.abc"));
 		It should_call_Engine_GetDependancies_for_file3 = () => engineMock.Verify(e => e.GetDependancies("def", "file3.abc"));

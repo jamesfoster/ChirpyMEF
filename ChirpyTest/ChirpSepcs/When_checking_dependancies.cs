@@ -26,7 +26,7 @@ namespace ChirpyTest.ChirpSepcs
 
 		Because of = () => { result = Chirp.CheckDependancies(ProjectItemMocks["file1.abc"].Object); };
 
-		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("file1.abc"));
+		It should_get_the_engine = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("file1.abc"));
 		It should_call_Engine_GetDependancies = () => engineMock.Verify(e => e.GetDependancies("def", "file1.abc"));
 		It should_get_the_contents_of_the_file = () => FileHandlerMock.Verify(h => h.GetContents("file1.abc"));
 

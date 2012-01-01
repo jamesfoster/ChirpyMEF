@@ -36,7 +36,7 @@ namespace ChirpyTest.ChirpSepcs
 
 		Because of = () => { result = Chirp.RunDependancies(dependancyFilename); };
 
-		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("abc.def"));
+		It should_get_the_engine = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("abc.def"));
 		It should_call_Engine_Process = () => engineMock.Verify(e => e.Process("ghi", "abc.def"));
 		It should_get_the_contents_of_the_file = () => FileHandlerMock.Verify(h => h.GetContents("abc.def"));
 		It should_save_the_output_to_the_output_file = () => FileHandlerMock.Verify(h => h.SaveFile("abc.xyz", "jkl"));
