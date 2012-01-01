@@ -19,9 +19,7 @@ namespace ChirpyTest.ChirpSepcs
 		protected static Mock<ITaskList> TaskListMock;
 		protected static Mock<IFileHandler> FileHandlerMock;
 		protected static Mock<ILogger> LoggerMock;
-		protected static Mock<ProjectItem> ProjectItemMock;
-		protected static string Filename;
-		protected static string SubCategory;
+		protected static IDictionary<string, Mock<ProjectItem>> ProjectItemMocks;
 		static IList<Lazy<IEngine, IEngineMetadata>> engines;
 		static IDictionary<string, string> files;
 
@@ -32,7 +30,7 @@ namespace ChirpyTest.ChirpSepcs
 				TaskListMock = new Mock<ITaskList>();
 				LoggerMock = new Mock<ILogger>();
 				FileHandlerMock = new Mock<IFileHandler>();
-				ProjectItemMock = new Mock<ProjectItem>();
+				ProjectItemMocks = new Dictionary<string, Mock<ProjectItem>>();
 
 				engines = new List<Lazy<IEngine, IEngineMetadata>>();
 				files  = new Dictionary<string, string>();
@@ -82,15 +80,18 @@ namespace ChirpyTest.ChirpSepcs
 				ExtensionResolverMock
 					.Setup(r => r.GetExtensionFromCategory(Moq.It.IsAny<string>()))
 					.Returns<string>(s => "." + s);
-
-				ProjectItemMock
-					.Setup(pi => pi.get_FileNames(Moq.It.IsAny<short>()))
-					.Returns<short>(s => Filename);
 			};
 
 		protected static void AddFile(string contents, string filename)
 		{
 			files[filename] = contents;
+
+			var projectItemMock = new Mock<ProjectItem>();
+			projectItemMock
+				.Setup(pi => pi.get_FileNames(Moq.It.IsAny<short>()))
+				.Returns<short>(s => filename);
+
+			ProjectItemMocks[filename] = projectItemMock;
 		}
 
 		protected static Mock<IEngine> AddEngine(string name, string version, string category)

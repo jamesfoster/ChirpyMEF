@@ -17,14 +17,12 @@ namespace ChirpyTest.ChirpSepcs
 			{
 				engineMock = AddEngine("DemoEngine", "1.0", "xxx.xxx");
 
-				Filename = "jkl.abc.def";
-
-				AddFile("ghi", Filename);
+				AddFile("ghi", "abc.def");
 			};
 
-		Because of = () => { result = Chirp.Run(ProjectItemMock.Object); };
+		Because of = () => { result = Chirp.Run(ProjectItemMocks["abc.def"].Object); };
 
-		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("jkl.abc.def"));
+		It should_call_EngineResolver_GetEngines = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("abc.def"));
 
 		It should_not_call_Engine_Process = () =>
 			engineMock.Verify(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Never());
