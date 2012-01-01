@@ -38,12 +38,12 @@ namespace ChirpyTest.EngineResolverSpecs
 			extensions[category] = extension;
 		}
 
-		protected static Mock<IEngine> AddEngine(string name, string version, string category, string outputCategory)
+		protected static Mock<IEngine> AddEngine(string name, string version, string category)
 		{
-			return AddEngine(name, version, category, outputCategory, false);
+			return AddEngine(name, version, category, false);
 		}
 
-		protected static Mock<IEngine> AddEngine(string name, string version, string category, string outputCategory, bool @internal)
+		protected static Mock<IEngine> AddEngine(string name, string version, string category, bool @internal)
 		{
 			var engineMock = new Mock<IEngine>();
 			var metadata = new EngineMetadataAttribute(name, version, category, @internal);
