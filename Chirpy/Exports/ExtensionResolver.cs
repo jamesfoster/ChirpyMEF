@@ -8,12 +8,10 @@ namespace Chirpy.Exports
 	{
 		public string GetExtensionFromCategory(string category)
 		{
-			return "." + category;
-		}
+			if(!category.Contains("."))
+				return ".chirp." + category;
 
-		public string GetCategoryFromExtension(string extension)
-		{
-			return extension.Trim('.');
+			return "." + category;
 		}
 	}
 }

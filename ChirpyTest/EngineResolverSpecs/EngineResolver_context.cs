@@ -2,7 +2,6 @@ namespace ChirpyTest.EngineResolverSpecs
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
 	using Chirpy.Exports;
 	using Chirpy.Imports;
 	using ChirpyInterface;
@@ -23,10 +22,6 @@ namespace ChirpyTest.EngineResolverSpecs
 				ExtensionResolverMock = new Mock<IExtensionResolver>();
 
 				EngineResolver = new EngineResolver {Engines = engines, ExtensionResolver = ExtensionResolverMock.Object};
-
-				ExtensionResolverMock
-					.Setup(r => r.GetCategoryFromExtension(Moq.It.IsAny<string>()))
-					.Returns<string>(s => extensions.ContainsValue(s) ? extensions.FirstOrDefault(e => e.Value == s).Key : null);
 
 				ExtensionResolverMock
 					.Setup(r => r.GetExtensionFromCategory(Moq.It.IsAny<string>()))
