@@ -1,4 +1,4 @@
-﻿namespace Chirpy
+namespace Chirpy.Composition
 {
 	using System;
 	using System.ComponentModel.Composition;
@@ -46,7 +46,7 @@
 				Directory.CreateDirectory(pluginDirectory);
 
 			var assemblyCatalog = new AssemblyCatalog(typeof (Chirp).Assembly);
-			var directoryCatalog = new DirectoryCatalog(pluginDirectory);
+			var directoryCatalog = new DirectoryWatcherCatalog(pluginDirectory);
 			var catalog = new AggregateCatalog(assemblyCatalog, directoryCatalog);
 
 			var container = new CompositionContainer(catalog);

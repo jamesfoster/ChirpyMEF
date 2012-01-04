@@ -69,6 +69,8 @@
   <ItemGroup>
     <Compile Include="Chirp.cs" />
     <Compile Include="ChirpyAddIn.cs" />
+    <Compile Include="Composition\DirectoryCatalogWatcher.cs" />
+    <Compile Include="Composition\MefComposer.cs" />
     <Compile Include="ErrorListProviderWrapper.cs" />
     <Compile Include="FileAssociation.cs" />
     <Compile Include="IErrorListProvider.cs" />
@@ -78,7 +80,6 @@
     <Compile Include="Imports\ITaskList.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\OutputWindowLogger.cs" />
-    <Compile Include="MefComposer.cs" />
     <Compile Include="Extensions\ProjectItemExtensions.cs" />
     <Compile Include="StaticPart.cs" />
     <Compile Include="Engines\YuiCssCompressorEngine.cs" />

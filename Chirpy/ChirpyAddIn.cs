@@ -3,6 +3,7 @@
 	using System;
 	using System.ComponentModel.Composition;
 	using System.Linq;
+	using Composition;
 	using EnvDTE;
 	using EnvDTE80;
 	using Exports;
