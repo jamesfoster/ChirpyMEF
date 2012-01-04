@@ -1,12 +1,15 @@
 namespace Chirpy.Composition
 {
 	using System;
+	using System.Collections.Generic;
 	using System.ComponentModel.Composition;
 	using System.ComponentModel.Composition.Hosting;
 	using System.IO;
 
 	public class MefComposer : IDisposable
 	{
+		readonly object Lock = new object();
+
 		protected CompositionContainer Container { get; set; }
 		protected bool IsDisposed { get; set; }
 
@@ -17,7 +20,16 @@ namespace Chirpy.Composition
 
 		public Lazy<T> GetExport<T>()
 		{
+			ThrowIfDisposed();
+
 			return Container.GetExport<T>();
+		}
+
+		public IEnumerable<Lazy<T>> GetExports<T>()
+		{
+			ThrowIfDisposed();
+
+			return Container.GetExports<T>();
 		}
 
 		public static MefComposer ComposeWithPlugins(object part)
@@ -65,7 +77,7 @@ namespace Chirpy.Composition
 
 		public void Dispose()
 		{
-			lock(this)
+			lock(Lock)
 			{
 				if (IsDisposed)
 					return;
@@ -75,6 +87,13 @@ namespace Chirpy.Composition
 				if(Container != null)
 					Container.Dispose();
 			}
+		}
+
+		void ThrowIfDisposed()
+		{
+			if(!IsDisposed) return;
+
+			throw new ObjectDisposedException(GetType().ToString());
 		}
 	}
 }
