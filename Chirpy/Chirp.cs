@@ -62,12 +62,10 @@ namespace Chirpy
 			var engine = EngineResolver.GetEngineByFilename(filename);
 			var result = new List<FileAssociation>();
 
-			if (engine == null)
-				return null;
+			if (engine != null)
+				result.AddRange(ProcessEngine(projectItem, filename, engine));
 
-			ProcessEngine(projectItem, filename, engine, result);
-
-			RunDependancies(filename);
+			result.AddRange(RunDependancies(filename));
 
 			return result;
 		}
@@ -92,50 +90,51 @@ namespace Chirpy
 			return result;
 		}
 
-		void ProcessEngine(ProjectItem projectItem, string filename, EngineContainer engine, ICollection<FileAssociation> result)
+		IEnumerable<FileAssociation> ProcessEngine(ProjectItem projectItem, string filename, EngineContainer engine)
 		{
+			List<EngineResult> engineResults = null;
 			try
 			{
 				var contents = FileHandler.GetContents(filename);
 
-				var engineResults = engine.Process(contents, filename);
-
-				if (engineResults == null)
-					return;
-
-				foreach (var engineResult in engineResults)
-				{
-					if (engineResult.Exceptions.Any())
-					{
-						foreach (var exception in engineResult.Exceptions)
-						{
-							TaskList.Add(exception);
-						}
-						continue;
-					}
-
-					if (engineResult.Contents == null)
-						continue;
-
-					var outputFilename = engineResult.FileName;
-
-					if (!string.IsNullOrEmpty(engineResult.Extension))
-						outputFilename = GetOutputFileName(engineResult, filename, engine);
-
-					outputFilename = FileHandler.GetAbsoluteFileName(outputFilename, filename);
-
-					FileHandler.SaveFile(outputFilename, engineResult.Contents);
-
-					result.Add(new FileAssociation(outputFilename, projectItem));
-
-					Logger.Log(string.Format("{0} > {1}", engine.Name, outputFilename));
-				}
+				engineResults = engine.Process(contents, filename);
 			}
 			catch (Exception e)
 			{
 				TaskList.Add(e.Message, filename, ErrorCategory.Error);
 
 				Console.WriteLine("{0}", e.Message);
+			}
+
+			if (engineResults == null)
+				yield break;
+
+			foreach (var engineResult in engineResults)
+			{
+				if (engineResult.Exceptions.Any())
+				{
+					foreach (var exception in engineResult.Exceptions)
+					{
+						TaskList.Add(exception);
+					}
+					continue;
+				}
+
+				if (engineResult.Contents == null)
+					continue;
+
+				var outputFilename = engineResult.FileName;
+
+				if (!string.IsNullOrEmpty(engineResult.Extension))
+					outputFilename = GetOutputFileName(engineResult, filename, engine);
+
+				outputFilename = FileHandler.GetAbsoluteFileName(outputFilename, filename);
+
+				FileHandler.SaveFile(outputFilename, engineResult.Contents);
+
+				yield return new FileAssociation(outputFilename, projectItem);
+
+				Logger.Log(string.Format("{0} > {1}", engine.Name, outputFilename));
 			}
 		}
 
