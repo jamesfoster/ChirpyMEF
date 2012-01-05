@@ -20,13 +20,21 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 	</FileGroup>
 </Root>
 ";
-				Filename = "demo.chirp.config";
+				Filename = "folder/demo.chirp.config";
 
-				AddFile("abc", "abc.js");
-				AddFile("ghi", "ghi.js");
+				AddFile("abc", "folder/abc.js");
+				AddFile("ghi", "folder/ghi.js");
 			};
 
 		Because of = () => { Result = Engine.Process(Contents, Filename); };
+
+		It should_get_absolute_filename_for_abc =() => FileHandlerMock.Verify(h => h.GetAbsoluteFileName("abc.js", Filename));
+		It should_get_absolute_filename_for_def =() => FileHandlerMock.Verify(h => h.GetAbsoluteFileName("def.js", Filename));
+		It should_get_absolute_filename_for_ghi =() => FileHandlerMock.Verify(h => h.GetAbsoluteFileName("ghi.js", Filename));
+
+		It should_check_abc_exists =() => FileHandlerMock.Verify(h => h.FileExists("folder/abc.js"));
+		It should_check_def_exists =() => FileHandlerMock.Verify(h => h.FileExists("folder/def.js"));
+		It should_check_ghi_exists =() => FileHandlerMock.Verify(h => h.FileExists("folder/ghi.js"));
 
 		It should_have_2_results = () => Result.Count.ShouldEqual(2);
 		It result_1_filename_should_be_demo1_js = () => Result[0].FileName.ShouldEqual("demo1.js");

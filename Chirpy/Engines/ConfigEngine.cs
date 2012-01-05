@@ -50,18 +50,18 @@ namespace Chirpy.Engines
 
 			var fileGroupPath = (string) fileGroup.Attribute("Path");
 
-			var files = GetFiles(fileGroup).ToLookup(FileHandler.FileExists);
+			var files = GetFiles(fileGroup)
+				.Select(file => FileHandler.GetAbsoluteFileName(file, filename))
+				.ToLookup(FileHandler.FileExists);
 
+			// add a warning for each missing file
 			foreach (var file in files[false])
 			{
 				result.AddException(string.Format("File does not exist '{0}'", file), filename, ErrorCategory.Warning);
 			}
 
 			// get the contents of all existing files and join them together
-			var fileGroupContents =
-				string.Join("\n", files[true]
-				                  	.Select(file => FileHandler.GetAbsoluteFileName(file, filename))
-				                  	.Select(path => FileHandler.GetContents(path)));
+			var fileGroupContents = string.Join("\n", files[true].Select(file => FileHandler.GetContents(file)));
 
 			result.FileName = fileGroupPath;
 			result.Contents = fileGroupContents;

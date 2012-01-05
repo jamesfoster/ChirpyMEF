@@ -1,6 +1,7 @@
 namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 {
 	using System.Collections.Generic;
+	using System.IO;
 	using Chirpy.Engines;
 	using ChirpyInterface;
 	using Machine.Specifications;
@@ -30,7 +31,11 @@ namespace ChirpyTest.EngineSpecs.ConfigChirpyEngineSpecs
 
 				FileHandlerMock
 					.Setup(h => h.GetAbsoluteFileName(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
-					.Returns<string, string>((path, relativeTo) => path);
+					.Returns<string, string>((path, relativeTo) =>
+						{
+							var directory = Path.GetDirectoryName(relativeTo);
+							return Path.Combine(directory, path).Replace('\\', '/');
+						});
 
 				FileHandlerMock
 					.Setup(h => h.GetContents(Moq.It.IsAny<string>()))
