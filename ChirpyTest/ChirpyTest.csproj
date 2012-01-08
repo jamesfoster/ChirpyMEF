@@ -81,6 +81,7 @@
     <Compile Include="EngineResolverSpecs\When_resolving_an_engine_by_name.cs" />
     <Compile Include="EngineResolverSpecs\When_resolving_an_engine_if_both_internal_and_external_exist.cs" />
     <Compile Include="EngineSpecs\ConfigEngineSpecs\ConfigEngine_context.cs" />
+    <Compile Include="FileHandler_context.cs" />
     <Compile Include="EngineSpecs\ConfigEngineSpecs\When_processing_a_config_file_if_file_doesnt_exist.cs" />
     <Compile Include="EngineSpecs\ConfigEngineSpecs\When_processing_a_simple_config_file.cs" />
     <Compile Include="EngineSpecs\DotlessChirpyEngineSpecs\DotlessEngine_context.cs" />
@@ -94,6 +95,17 @@
     <Compile Include="FileHandlerSpecs\When_getting_the_base_file_name.cs" />
     <Compile Include="FileHandlerSpecs\When_getting_the_base_file_name_with_multiple_extensions.cs" />
     <Compile Include="FileHandlerSpecs\When_not_possible_to_get_the_absolute_path_of_a_file.cs" />
+    <Compile Include="JavascriptRunnerSpecs\Logging_a_standard_message.cs" />
+    <Compile Include="JavascriptRunnerSpecs\When_calling_console_error.cs" />
+    <Compile Include="JavascriptRunnerSpecs\When_calling_console_log.cs" />
+    <Compile Include="JavascriptRunnerSpecs\When_calling_console_warn.cs" />
+    <Compile Include="JavascriptRunnerSpecs\When_calling_multiple_require.cs" />
+    <Compile Include="JavascriptRunnerSpecs\When_calling_require.cs" />
+    <Compile Include="JavascriptRunnerSpecs\When_logging_an_error.cs" />
+    <Compile Include="JavascriptRunnerSpecs\When_logging_a_message.cs" />
+    <Compile Include="JavascriptRunnerSpecs\When_getting_a_property.cs" />
+    <Compile Include="JavascriptRunnerSpecs\When_logging_a_warning.cs" />
+    <Compile Include="JavascriptRunnerSpecs\When_setting_a_property.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskListSpecs\TaskList_context.cs" />
     <Compile Include="TaskListSpecs\When_adding_an_error.cs" />

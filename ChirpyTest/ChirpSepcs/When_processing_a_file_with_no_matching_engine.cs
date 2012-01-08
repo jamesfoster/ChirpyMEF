@@ -17,7 +17,7 @@ namespace ChirpyTest.ChirpSepcs
 			{
 				engineMock = AddEngine("DemoEngine", "1.0", "xxx.xxx");
 
-				AddFile("ghi", "abc.def");
+				AddProjectItem("ghi", "abc.def");
 			};
 
 		Because of = () => { result = Chirp.Run(ProjectItemMocks["abc.def"].Object); };

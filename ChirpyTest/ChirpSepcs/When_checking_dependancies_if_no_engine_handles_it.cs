@@ -9,7 +9,7 @@ namespace ChirpyTest.ChirpSepcs
 	{
 		static bool result;
 
-		Establish context = () => AddFile("def", "file1.abc");
+		Establish context = () => AddProjectItem("def", "file1.abc");
 
 		Because of = () => { result = Chirp.CheckDependancies(ProjectItemMocks["file1.abc"].Object); };
 

@@ -11,17 +11,15 @@ namespace ChirpyTest.ChirpSepcs
 	using Machine.Specifications;
 	using Moq;
 
-	public class Chirp_context
+	public class Chirp_context : FileHandler_context
 	{
 		protected static Chirp Chirp;
 		protected static Mock<IInternalEngineResolver> EngineResolverMock;
 		protected static Mock<IExtensionResolver> ExtensionResolverMock;
 		protected static Mock<ITaskList> TaskListMock;
-		protected static Mock<IFileHandler> FileHandlerMock;
 		protected static Mock<ILogger> LoggerMock;
 		protected static IDictionary<string, Mock<ProjectItem>> ProjectItemMocks;
 		static IList<Lazy<IEngine, IEngineMetadata>> engines;
-		static IDictionary<string, string> files;
 
 		Establish context = () =>
 			{
@@ -29,19 +27,9 @@ namespace ChirpyTest.ChirpSepcs
 				ExtensionResolverMock = new Mock<IExtensionResolver>();
 				TaskListMock = new Mock<ITaskList>();
 				LoggerMock = new Mock<ILogger>();
-				FileHandlerMock = new Mock<IFileHandler>();
 				ProjectItemMocks = new Dictionary<string, Mock<ProjectItem>>();
 
 				engines = new List<Lazy<IEngine, IEngineMetadata>>();
-				files  = new Dictionary<string, string>();
-
-				FileHandlerMock
-					.Setup(h => h.GetContents(Moq.It.IsAny<string>()))
-					.Returns<string>(s => files.ContainsKey(s) ? files[s] : null);
-
-				FileHandlerMock
-					.Setup(h => h.GetAbsoluteFileName(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
-					.Returns<string, string>((path, relativeTo) => path);
 
 				Chirp = new Chirp
 				        	{
@@ -82,9 +70,9 @@ namespace ChirpyTest.ChirpSepcs
 					.Returns<string>(s => "." + s);
 			};
 
-		protected static void AddFile(string contents, string filename)
+		protected static void AddProjectItem(string contents, string filename)
 		{
-			files[filename] = contents;
+			AddFile(contents, filename);
 
 			var projectItemMock = new Mock<ProjectItem>();
 			projectItemMock

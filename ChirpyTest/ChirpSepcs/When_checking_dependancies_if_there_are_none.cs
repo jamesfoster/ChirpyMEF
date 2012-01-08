@@ -17,7 +17,7 @@ namespace ChirpyTest.ChirpSepcs
 			{
 				engineMock = AddEngine("DemoEngine", "1.0", "abc");
 
-				AddFile("def", "file1.abc");
+				AddProjectItem("def", "file1.abc");
 
 				engineMock
 					.Setup(e => e.GetDependancies(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))

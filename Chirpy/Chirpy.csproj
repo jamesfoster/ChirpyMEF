@@ -78,6 +78,7 @@
     <Compile Include="Imports\IInternalEngineResolver.cs" />
     <Compile Include="Imports\IProjectItemManager.cs" />
     <Compile Include="Imports\ITaskList.cs" />
+    <Compile Include="Javascript\JavascriptRunner.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\OutputWindowLogger.cs" />
     <Compile Include="Extensions\ProjectItemExtensions.cs" />

@@ -18,7 +18,7 @@
 			{
 				engineMock = AddEngine("DemoEngine", "1.0", "def");
 
-				AddFile("ghi", "abc.def");
+				AddProjectItem("ghi", "abc.def");
 
 				engineMock
 					.Setup(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
