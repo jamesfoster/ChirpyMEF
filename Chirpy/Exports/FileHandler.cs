@@ -10,7 +10,10 @@ namespace Chirpy.Exports
 	{
 		public string GetContents(string filename)
 		{
-			if(!File.Exists(filename))
+			if (!Path.IsPathRooted(filename))
+				return null;
+
+			if (!File.Exists(filename))
 				return null;
 
 			return File.ReadAllText(filename);
