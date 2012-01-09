@@ -28,7 +28,7 @@ namespace ChirpyTest.JavascriptRunnerSpecs
 		Because of = () => { Result = JavascriptRunner.Execute(Script); };
 		
 		It should_get_the_full_path_of_the_file = () =>
-			FileHandlerMock.Verify(h => h.GetAbsoluteFileName("foo", null));
+			FileHandlerMock.Verify(h => h.GetAbsoluteFileName("foo", ""));
 
 		It should_get_the_contents_of_the_file = () =>
 			FileHandlerMock.Verify(h => h.GetContents("foo"));

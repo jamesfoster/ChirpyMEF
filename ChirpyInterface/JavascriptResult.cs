@@ -8,14 +8,11 @@ namespace ChirpyInterface
 	{
 		readonly object @lock = new object();
 
-		public IFileHandler FileHandler { get; set; }
 		public Dictionary<string, object> Properties { get; set; }
 		public List<ChirpyException> Messages { get; set; }
 
-		public JavascriptResult(IFileHandler fileHandler, IDictionary<string, object> properties)
+		public JavascriptResult(IDictionary<string, object> properties)
 		{
-			FileHandler = fileHandler;
-
 			if(properties == null)
 				Properties = new Dictionary<string, object>();
 			else
@@ -43,29 +40,19 @@ namespace ChirpyInterface
 			}
 		}
 
-		public void LogMessage(string message, int? lineNumber = null, int? column = null, string line = null, string filename = null)
+		public void LogMessage(string message, int? lineNumber = null, int? column = null, string filename = null, string line = null)
 		{
-			Messages.Add(new ChirpyException(message, line, lineNumber, column, filename, ErrorCategory.Message));
+			Messages.Add(new ChirpyException(message, filename, lineNumber, column, line, ErrorCategory.Message));
 		}
 
-		public void LogWarning(string message, int? lineNumber = null, int? column = null, string line = null, string filename = null)
+		public void LogWarning(string message, int? lineNumber = null, int? column = null, string filename = null, string line = null)
 		{
-			Messages.Add(new ChirpyException(message, line, lineNumber, column, filename, ErrorCategory.Warning));
+			Messages.Add(new ChirpyException(message, filename, lineNumber, column, line, ErrorCategory.Warning));
 		}
 
-		public void LogError(string message, int? lineNumber = null, int? column = null, string line = null, string filename = null)
+		public void LogError(string message, int? lineNumber = null, int? column = null, string filename = null, string line = null)
 		{
-			Messages.Add(new ChirpyException(message, line, lineNumber, column, filename, ErrorCategory.Error));
-		}
-
-		public string GetFullUri(string path, string relativeTo)
-		{
-			return FileHandler.GetAbsoluteFileName(path, relativeTo);
-		}
-
-		public string Download(string path)
-		{
-			return FileHandler.GetContents(path);
+			Messages.Add(new ChirpyException(message, filename, lineNumber, column, line, ErrorCategory.Error));
 		}
 	}
 }
