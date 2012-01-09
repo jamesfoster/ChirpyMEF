@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Chirp.cs" />
     <Compile Include="ChirpyAddIn.cs" />
+    <Compile Include="Engines\CssLintEngine.cs" />
     <Compile Include="Composition\DirectoryCatalogWatcher.cs" />
     <Compile Include="Composition\MefComposer.cs" />
     <Compile Include="ErrorListProviderWrapper.cs" />
