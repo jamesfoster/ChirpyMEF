@@ -110,6 +110,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskListSpecs\TaskList_context.cs" />
     <Compile Include="TaskListSpecs\When_adding_an_error.cs" />
+    <Compile Include="WebFileHandlerSpecs\When_downloading_a_file.cs" />
+    <Compile Include="WebFileHandlerSpecs\When_getting_the_absolute_path_of_a_url.cs" />
+    <Compile Include="WebFileHandlerSpecs\When_getting_the_absolute_path_of_local_file.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

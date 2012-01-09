@@ -76,6 +76,7 @@
     <Compile Include="Composition\DirectoryCatalogWatcher.cs" />
     <Compile Include="Composition\MefComposer.cs" />
     <Compile Include="ErrorListProviderWrapper.cs" />
+    <Compile Include="Exports\WebFileHandler.cs" />
     <Compile Include="FileAssociation.cs" />
     <Compile Include="IErrorListProvider.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
