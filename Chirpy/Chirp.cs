@@ -65,7 +65,10 @@ namespace Chirpy
 			if (engine != null)
 				result.AddRange(ProcessEngine(projectItem, filename, engine));
 
-			result.AddRange(RunDependancies(filename));
+			var associations = RunDependancies(filename);
+
+			if (associations != null)
+				result.AddRange(associations);
 
 			return result;
 		}

@@ -27,6 +27,6 @@ namespace ChirpyTest.ChirpSepcs
 		It should_not_call_Engine_Process = () =>
 			engineMock.Verify(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Never());
 
-		It should_return_no_FileAssociations = () => result.ShouldBeNull();
+		It should_return_no_FileAssociations = () => result.ShouldBeEmpty();
 	}
 }
