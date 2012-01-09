@@ -7,13 +7,13 @@ namespace Chirpy.Javascript
 	public class JavascriptExternal : ObjectInstance
 	{
 		public JavascriptResult JavascriptResult { get; set; }
-		public IFileHandler FileHandler { get; set; }
+		public IWebFileHandler WebFileHandler { get; set; }
 
-		public JavascriptExternal(ScriptEngine engine, JavascriptResult javascriptResult, IFileHandler fileHandler)
+		public JavascriptExternal(ScriptEngine engine, JavascriptResult javascriptResult, IWebFileHandler webFileHandler)
 			: base(engine)
 		{
 			JavascriptResult = javascriptResult;
-			FileHandler = fileHandler;
+			WebFileHandler = webFileHandler;
 
 			PopulateFunctions();
 		}
@@ -51,13 +51,13 @@ namespace Chirpy.Javascript
 		[JSFunction]
 		public string GetFullUri(string path, string relativeTo)
 		{
-			return FileHandler.GetAbsoluteFileName(path, relativeTo);
+			return WebFileHandler.GetAbsoluteFileName(path, relativeTo);
 		}
 
 		[JSFunction]
 		public string Download(string path)
 		{
-			return FileHandler.GetContents(path);
+			return WebFileHandler.GetContents(path);
 		}
 	}
 }

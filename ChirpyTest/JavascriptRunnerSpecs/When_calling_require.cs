@@ -4,10 +4,11 @@ namespace ChirpyTest.JavascriptRunnerSpecs
 	using Chirpy.Javascript;
 	using ChirpyInterface;
 	using Machine.Specifications;
+	using Moq;
 	using It = Machine.Specifications.It;
 
 	[Subject(typeof (JavascriptRunner))]
-	public class When_calling_require : FileHandler_context
+	public class When_calling_require : WebFileHandler_context
 	{
 		static IJavascriptRunner JavascriptRunner;
 		static string Script;
@@ -17,7 +18,7 @@ namespace ChirpyTest.JavascriptRunnerSpecs
 			{
 				JavascriptRunner = new JavascriptRunner
 				                   	{
-				                   		FileHandler = FileHandlerMock.Object
+				                   		WebFileHandler = WebFileHandlerMock.Object
 				                   	};
 
 				AddFile("external.Set('bar', 'baz')", "foo");
@@ -26,12 +27,12 @@ namespace ChirpyTest.JavascriptRunnerSpecs
 			};
 
 		Because of = () => { Result = JavascriptRunner.Execute(Script); };
-		
+
 		It should_get_the_full_path_of_the_file = () =>
-			FileHandlerMock.Verify(h => h.GetAbsoluteFileName("foo", ""));
+			WebFileHandlerMock.Verify(h => h.GetAbsoluteFileName("foo", ""));
 
 		It should_get_the_contents_of_the_file = () =>
-			FileHandlerMock.Verify(h => h.GetContents("foo"));
+			WebFileHandlerMock.Verify(h => h.GetContents("foo"));
 
 		It should_add_a_property = () =>
 			Result.Properties.Count.ShouldEqual(1);

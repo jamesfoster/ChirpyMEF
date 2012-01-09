@@ -6,7 +6,7 @@ namespace ChirpyTest.JavascriptRunnerSpecs
 	using Machine.Specifications;
 
 	[Subject(typeof (JavascriptRunner))]
-	public class When_calling_multiple_require : FileHandler_context
+	public class When_calling_multiple_require : WebFileHandler_context
 	{
 		static IJavascriptRunner JavascriptRunner;
 		static string Script;
@@ -16,7 +16,7 @@ namespace ChirpyTest.JavascriptRunnerSpecs
 			{
 				JavascriptRunner = new JavascriptRunner
 				                   	{
-				                   		FileHandler = FileHandlerMock.Object
+				                   		WebFileHandler = WebFileHandlerMock.Object
 				                   	};
 
 				Script = @"require('folder/a');";
@@ -28,16 +28,16 @@ namespace ChirpyTest.JavascriptRunnerSpecs
 		Because of = () => { Result = JavascriptRunner.Execute(Script); };
 		
 		It should_get_the_full_path_of_a = () =>
-			FileHandlerMock.Verify(h => h.GetAbsoluteFileName("folder/a", ""));
+			WebFileHandlerMock.Verify(h => h.GetAbsoluteFileName("folder/a", ""));
 		
 		It should_get_the_full_path_of_b = () =>
-			FileHandlerMock.Verify(h => h.GetAbsoluteFileName("b", "folder/a"));
+			WebFileHandlerMock.Verify(h => h.GetAbsoluteFileName("b", "folder/a"));
 		
 		It should_get_the_contents_of_a = () =>
-			FileHandlerMock.Verify(h => h.GetContents("folder/a"));
+			WebFileHandlerMock.Verify(h => h.GetContents("folder/a"));
 
 		It should_get_the_contents_of_b = () =>
-			FileHandlerMock.Verify(h => h.GetContents("folder/b"));
+			WebFileHandlerMock.Verify(h => h.GetContents("folder/b"));
 
 		It should_add_a_property = () =>
 			Result.Properties.Count.ShouldEqual(1);

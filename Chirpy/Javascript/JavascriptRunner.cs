@@ -7,14 +7,14 @@ namespace Chirpy.Javascript
 	[Export(typeof(IJavascriptRunner))]
 	public class JavascriptRunner : IJavascriptRunner
 	{
-		[Import] public IFileHandler FileHandler { get; set; }
+		[Import] public IWebFileHandler WebFileHandler { get; set; }
 
 		public JavascriptResult Execute(string script, Dictionary<string, object> properties)
 		{
 			var scriptEngine = new Jurassic.ScriptEngine();
 
 			var result = new JavascriptResult(properties);
-			var external = new JavascriptExternal(scriptEngine, result, FileHandler);
+			var external = new JavascriptExternal(scriptEngine, result, WebFileHandler);
 
 			scriptEngine.EnableDebugging = true;
 			scriptEngine.SetGlobalValue("external", external);

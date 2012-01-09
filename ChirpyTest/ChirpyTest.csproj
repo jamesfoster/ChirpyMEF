@@ -113,6 +113,7 @@
     <Compile Include="WebFileHandlerSpecs\When_downloading_a_file.cs" />
     <Compile Include="WebFileHandlerSpecs\When_getting_the_absolute_path_of_a_url.cs" />
     <Compile Include="WebFileHandlerSpecs\When_getting_the_absolute_path_of_local_file.cs" />
+    <Compile Include="WebFileHandler_context.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
