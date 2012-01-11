@@ -22,7 +22,7 @@ namespace ChirpyTest.JavascriptRunnerSpecs
 
 		Behaves_like<Logging_a_standard_message> Logging_a_standard_message;
 
-		It message_category_should_be_Message = () =>
+		It message_category_should_be_Error = () =>
 			Result.Messages[0].Category.ShouldEqual(ErrorCategory.Error);
 	}
 }

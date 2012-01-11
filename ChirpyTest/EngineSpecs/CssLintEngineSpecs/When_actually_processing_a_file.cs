@@ -9,6 +9,7 @@ namespace ChirpyTest.EngineSpecs.CssLintEngineSpecs
 	using It = Machine.Specifications.It;
 
 	[Subject(typeof (CssLintEngine))]
+	[Tags("Web", "Integration")]
 	public class When_actually_processing_a_file
 	{
 		static CssLintEngine engine;

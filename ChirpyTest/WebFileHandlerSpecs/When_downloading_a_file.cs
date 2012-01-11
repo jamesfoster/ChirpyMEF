@@ -4,6 +4,7 @@ namespace ChirpyTest.WebFileHandlerSpecs
 	using Machine.Specifications;
 
 	[Subject(typeof(WebFileHandler))]
+	[Tags("Web", "Integration")]
 	public class When_downloading_a_file
 	{
 		static WebFileHandler webFileHandler;
