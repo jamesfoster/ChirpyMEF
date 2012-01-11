@@ -108,6 +108,7 @@
     <Compile Include="JavascriptRunnerSpecs\When_getting_a_property.cs" />
     <Compile Include="JavascriptRunnerSpecs\When_logging_a_warning.cs" />
     <Compile Include="JavascriptRunnerSpecs\When_setting_a_property.cs" />
+    <Compile Include="JavascriptRunnerSpecs\When_throwing_an_exception.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskListSpecs\TaskList_context.cs" />
     <Compile Include="TaskListSpecs\When_adding_an_error.cs" />

@@ -76,7 +76,7 @@ catch(x)
 {
 	var line = x.line || 0;
 	var column = x.col || x.column || 0;
-	external.LogError(line, column, x.message);
+	external.LogError(x.message, line, column);
 }
 ";
 		}
