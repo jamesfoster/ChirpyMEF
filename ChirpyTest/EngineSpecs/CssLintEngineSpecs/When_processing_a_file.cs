@@ -40,7 +40,7 @@
 
 		It should_call_Execute = () =>
 			JavascriptRunnerMock.Verify(j => j.Execute(
-				Moq.It.Is<string>(s => s.Contains("require('http://csslint.net/js/csslint.js');")),
+				Moq.It.Is<string>(s => s.Contains("require('http://csslint.net/js/csslint.js'")),
 				Moq.It.IsAny<Dictionary<string, object>>()));
 
 		It result_should_contain_1_exception = () =>

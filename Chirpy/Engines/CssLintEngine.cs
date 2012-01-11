@@ -23,13 +23,14 @@
 			properties["css"] = contents;
 
 			const string script = @"
-require('http://csslint.net/js/csslint.js');
+var exports = require('http://csslint.net/js/csslint.js', null, 'exports.CSSLint = CSSLint;');
+var CSSLint = exports.CSSLint;
 
 var css = external.Get('css');
 
 var result = CSSLint.verify(css);
 
-foreach(var i in result.messages)
+for(var i = 0; i < result.messages.length; i++)
 {
 	var message = result.messages[i];
 	var messageText = message.message + ': ' + message.evidence;

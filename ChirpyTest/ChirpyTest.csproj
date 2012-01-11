@@ -81,6 +81,7 @@
     <Compile Include="EngineResolverSpecs\When_resolving_an_engine_by_name.cs" />
     <Compile Include="EngineResolverSpecs\When_resolving_an_engine_if_both_internal_and_external_exist.cs" />
     <Compile Include="EngineSpecs\ConfigEngineSpecs\ConfigEngine_context.cs" />
+    <Compile Include="EngineSpecs\CssLintEngineSpecs\When_actually_processing_a_file.cs" />
     <Compile Include="EngineSpecs\CssLintEngineSpecs\When_processing_a_file.cs" />
     <Compile Include="FileHandler_context.cs" />
     <Compile Include="EngineSpecs\ConfigEngineSpecs\When_processing_a_config_file_if_file_doesnt_exist.cs" />
