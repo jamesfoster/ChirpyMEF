@@ -1,12 +1,9 @@
 namespace ChirpyTest.ChirpSepcs
 {
-	using System;
 	using System.Collections.Generic;
-	using System.Linq;
 	using Chirpy;
 	using Chirpy.Imports;
 	using Chirpy.Logging;
-	using ChirpyInterface;
 	using EnvDTE;
 	using Machine.Specifications;
 	using Moq;
@@ -28,7 +25,6 @@ namespace ChirpyTest.ChirpSepcs
 				TaskListMock = new Mock<ITaskList>();
 				LoggerMock = new Mock<ILogger>();
 				ProjectItemMocks = new Dictionary<string, Mock<ProjectItem>>();
-
 
 				Chirp = new Chirp
 				        	{

@@ -15,8 +15,6 @@ namespace Chirpy
 	[Export]
 	public class Chirp
 	{
-		protected CompositionContainer Container;
-
 		[Import] public IInternalEngineResolver EngineResolver { get; set; }
 		[Import] public IExtensionResolver ExtensionResolver { get; set; }
 		[Import] public ITaskList TaskList { get; set; }
@@ -143,19 +141,17 @@ namespace Chirpy
 
 		string GetOutputFileName(EngineResult result, string filename, EngineContainer engine)
 		{
-			string baseFileName;
-			if(!string.IsNullOrEmpty(result.FileName))
-			{
-				baseFileName = FileHandler.GetBaseFileName(result.FileName);
-			}
-			else
-			{
-				var inputExtension = ExtensionResolver.GetExtensionFromCategory(engine.Category);
+			var baseFileName = filename;
 
-				Debug.Assert(filename.EndsWith(inputExtension));
+			if (!string.IsNullOrEmpty(result.FileName))
+				baseFileName = result.FileName;
 
+			var inputExtension = ExtensionResolver.GetExtensionFromCategory(engine.Category);
+
+			if (baseFileName.EndsWith(inputExtension))
 				baseFileName = filename.Substring(0, filename.Length - inputExtension.Length);
-			}
+			else
+				baseFileName = FileHandler.GetBaseFileName(baseFileName);
 
 			return string.Format("{0}.{1}", baseFileName, result.Extension);
 		}
