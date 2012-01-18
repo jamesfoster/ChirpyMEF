@@ -15,7 +15,7 @@ namespace ChirpyTest.ChirpSepcs
 
 		Establish context = () =>
 			{
-				engineMock = AddEngine("DemoEngine", "1.0", "abc");
+				engineMock = EngineResolverContext.AddEngine("DemoEngine", "1.0", "abc");
 
 				AddProjectItem("def", "file1.abc");
 
@@ -26,9 +26,9 @@ namespace ChirpyTest.ChirpSepcs
 
 		Because of = () => { result = Chirp.CheckDependancies(ProjectItemMocks["file1.abc"].Object); };
 
-		It should_get_the_engine = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("file1.abc"));
+		It should_get_the_engine = () => EngineResolverContext.Mock.Verify(r => r.GetEngineByFilename("file1.abc"));
 		It should_call_Engine_GetDependancies = () => engineMock.Verify(e => e.GetDependancies("def", "file1.abc"));
-		It should_get_the_contents_of_the_file = () => FileHandlerMock.Verify(h => h.GetContents("file1.abc"));
+		It should_get_the_contents_of_the_file = () => FileHandlerContext.Mock.Verify(h => h.GetContents("file1.abc"));
 
 		It should_return_true = () => result.ShouldBeTrue();
 

@@ -17,7 +17,7 @@ namespace ChirpyTest.ChirpSepcs
 
 		Establish context = () =>
 			{
-				engineMock = AddEngine("DemoEngine", "1.0", "def");
+				engineMock = EngineResolverContext.AddEngine("DemoEngine", "1.0", "def");
 
 				dependancyFilename = "pqr";
 
@@ -36,10 +36,10 @@ namespace ChirpyTest.ChirpSepcs
 
 		Because of = () => { result = Chirp.RunDependancies(dependancyFilename); };
 
-		It should_get_the_engine = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("abc.def"));
+		It should_get_the_engine = () => EngineResolverContext.Mock.Verify(r => r.GetEngineByFilename("abc.def"));
 		It should_call_Engine_Process = () => engineMock.Verify(e => e.Process("ghi", "abc.def"));
-		It should_get_the_contents_of_the_file = () => FileHandlerMock.Verify(h => h.GetContents("abc.def"));
-		It should_save_the_output_to_the_output_file = () => FileHandlerMock.Verify(h => h.SaveFile("abc.xyz", "jkl"));
+		It should_get_the_contents_of_the_file = () => FileHandlerContext.Mock.Verify(h => h.GetContents("abc.def"));
+		It should_save_the_output_to_the_output_file = () => FileHandlerContext.Mock.Verify(h => h.SaveFile("abc.xyz", "jkl"));
 
 		It should_return_1_FileAssociation = () => result.Count().ShouldEqual(1);
 		It FileAssociation_Parent_should_be_the_ProjectItem = () => result.ElementAt(0).Parent.ShouldBeTheSameAs(ProjectItemMocks["abc.def"].Object);

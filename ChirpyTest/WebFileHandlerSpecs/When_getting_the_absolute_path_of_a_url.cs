@@ -4,16 +4,18 @@
 	using Machine.Specifications;
 
 	[Subject(typeof(WebFileHandler))]
-	public class When_getting_the_absolute_path_of_a_url : FileHandler_context
+	public class When_getting_the_absolute_path_of_a_url
 	{
 		static WebFileHandler webFileHandler;
 		static string result;
 
 		Establish context = () =>
 			{
+				FileHandlerContext.context();
+
 				webFileHandler = new WebFileHandler
 				                 	{
-				                 		FileHandler = FileHandlerMock.Object
+				                 		FileHandler = FileHandlerContext.Mock.Object
 				                 	};
 			};
 

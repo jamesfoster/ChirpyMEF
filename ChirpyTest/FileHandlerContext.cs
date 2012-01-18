@@ -6,17 +6,17 @@ namespace ChirpyTest
 	using Machine.Specifications;
 	using Moq;
 
-	public class FileHandler_context
+	public class FileHandlerContext
 	{
-		protected static Mock<IFileHandler> FileHandlerMock;
+		public static Mock<IFileHandler> Mock;
 		static IDictionary<string, string> files;
 
-		Establish context = () =>
+		public static Establish context = () =>
 			{
-				FileHandlerMock = new Mock<IFileHandler>();
+				Mock = new Mock<IFileHandler>();
 				files = new Dictionary<string, string>();
 
-				FileHandlerMock
+				Mock
 					.Setup(h => h.GetAbsoluteFileName(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
 					.Returns<string, string>((path, relativeTo) =>
 						{
@@ -31,16 +31,16 @@ namespace ChirpyTest
 							return Path.Combine(relDirectory, path).Replace('\\', '/');
 						});
 
-				FileHandlerMock
+				Mock
 					.Setup(h => h.GetContents(Moq.It.IsAny<string>()))
 					.Returns<string>(s => files.ContainsKey(s) ? files[s] : null);
 
-				FileHandlerMock
+				Mock
 					.Setup(h => h.FileExists(Moq.It.IsAny<string>()))
 					.Returns<string>(s => files.ContainsKey(s));
 			};
 
-		protected static void AddFile(string contents, string filename)
+		public static void AddFile(string contents, string filename)
 		{
 			files[filename] = contents;
 		}

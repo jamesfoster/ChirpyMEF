@@ -14,7 +14,7 @@ namespace ChirpyTest.ChirpSepcs
 
 		Establish context = () =>
 			{
-				engineMock = AddEngine("DemoEngine", "1.0", "abc");
+				engineMock = EngineResolverContext.AddEngine("DemoEngine", "1.0", "abc");
 
 				AddProjectItem("def", "file1.abc");
 				AddProjectItem("def", "file2.abc");
@@ -40,15 +40,15 @@ namespace ChirpyTest.ChirpSepcs
 				Chirp.CheckDependancies(ProjectItemMocks["file3.abc"].Object);
 			};
 
-		It should_get_the_engine_for_file1 = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("file1.abc"));
-		It should_get_the_engine_for_file2 = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("file2.abc"));
-		It should_get_the_engine_for_file3 = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("file3.abc"));
+		It should_get_the_engine_for_file1 = () => EngineResolverContext.Mock.Verify(r => r.GetEngineByFilename("file1.abc"));
+		It should_get_the_engine_for_file2 = () => EngineResolverContext.Mock.Verify(r => r.GetEngineByFilename("file2.abc"));
+		It should_get_the_engine_for_file3 = () => EngineResolverContext.Mock.Verify(r => r.GetEngineByFilename("file3.abc"));
 		It should_call_Engine_GetDependancies_for_file1 = () => engineMock.Verify(e => e.GetDependancies("def", "file1.abc"));
 		It should_call_Engine_GetDependancies_for_file2 = () => engineMock.Verify(e => e.GetDependancies("def", "file2.abc"));
 		It should_call_Engine_GetDependancies_for_file3 = () => engineMock.Verify(e => e.GetDependancies("def", "file3.abc"));
-		It should_get_the_contents_of_file1 = () => FileHandlerMock.Verify(h => h.GetContents("file1.abc"));
-		It should_get_the_contents_of_file2 = () => FileHandlerMock.Verify(h => h.GetContents("file2.abc"));
-		It should_get_the_contents_of_file3 = () => FileHandlerMock.Verify(h => h.GetContents("file3.abc"));
+		It should_get_the_contents_of_file1 = () => FileHandlerContext.Mock.Verify(h => h.GetContents("file1.abc"));
+		It should_get_the_contents_of_file2 = () => FileHandlerContext.Mock.Verify(h => h.GetContents("file2.abc"));
+		It should_get_the_contents_of_file3 = () => FileHandlerContext.Mock.Verify(h => h.GetContents("file3.abc"));
 
 		It should_have_3_dependancies = () => Chirp.Dependancies.Count.ShouldEqual(3);
 

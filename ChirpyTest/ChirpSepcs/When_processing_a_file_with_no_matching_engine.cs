@@ -15,14 +15,14 @@ namespace ChirpyTest.ChirpSepcs
 
 		Establish context = () =>
 			{
-				engineMock = AddEngine("DemoEngine", "1.0", "xxx.xxx");
+				engineMock = EngineResolverContext.AddEngine("DemoEngine", "1.0", "xxx.xxx");
 
 				AddProjectItem("ghi", "abc.def");
 			};
 
 		Because of = () => { result = Chirp.Run(ProjectItemMocks["abc.def"].Object); };
 
-		It should_get_the_engine = () => EngineResolverMock.Verify(r => r.GetEngineByFilename("abc.def"));
+		It should_get_the_engine = () => EngineResolverContext.Mock.Verify(r => r.GetEngineByFilename("abc.def"));
 
 		It should_not_call_Engine_Process = () =>
 			engineMock.Verify(e => e.Process(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Never());

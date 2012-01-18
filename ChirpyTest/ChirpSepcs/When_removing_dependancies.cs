@@ -14,7 +14,7 @@ namespace ChirpyTest.ChirpSepcs
 
 		Establish context = () =>
 			{
-				engineMock = AddEngine("DemoEngine", "1.0", "abc");
+				engineMock = EngineResolverContext.AddEngine("DemoEngine", "1.0", "abc");
 
 				AddProjectItem("def", "file1.abc");
 				AddProjectItem("def", "file2.abc");

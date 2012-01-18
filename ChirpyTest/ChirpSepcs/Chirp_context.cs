@@ -11,59 +11,33 @@ namespace ChirpyTest.ChirpSepcs
 	using Machine.Specifications;
 	using Moq;
 
-	public class Chirp_context : FileHandler_context
+	public class Chirp_context
 	{
 		protected static Chirp Chirp;
-		protected static Mock<IInternalEngineResolver> EngineResolverMock;
 		protected static Mock<IExtensionResolver> ExtensionResolverMock;
 		protected static Mock<ITaskList> TaskListMock;
 		protected static Mock<ILogger> LoggerMock;
 		protected static IDictionary<string, Mock<ProjectItem>> ProjectItemMocks;
-		static IList<Lazy<IEngine, IEngineMetadata>> engines;
 
 		Establish context = () =>
 			{
-				EngineResolverMock = new Mock<IInternalEngineResolver>();
+				FileHandlerContext.context();
+				EngineResolverContext.context();
+
 				ExtensionResolverMock = new Mock<IExtensionResolver>();
 				TaskListMock = new Mock<ITaskList>();
 				LoggerMock = new Mock<ILogger>();
 				ProjectItemMocks = new Dictionary<string, Mock<ProjectItem>>();
 
-				engines = new List<Lazy<IEngine, IEngineMetadata>>();
 
 				Chirp = new Chirp
 				        	{
-				        		EngineResolver = EngineResolverMock.Object,
+				        		EngineResolver = EngineResolverContext.Mock.Object,
 				        		TaskList = TaskListMock.Object,
-				        		FileHandler = FileHandlerMock.Object,
+				        		FileHandler = FileHandlerContext.Mock.Object,
 				        		ExtensionResolver = ExtensionResolverMock.Object,
 				        		Logger = LoggerMock.Object
 				        	};
-
-				EngineResolverMock
-					.Setup(r => r.GetEngine(Moq.It.IsAny<string>()))
-					.Returns<string>(
-						cat =>
-							{
-								var es = engines.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase));
-								if(!es.Any())
-									return null;
-
-								return new EngineContainer(es);
-							});
-
-				EngineResolverMock
-					.Setup(r => r.GetEngineByFilename(Moq.It.IsAny<string>()))
-					.Returns<string>(
-						fn =>
-							{
-								var cat = fn.Substring(fn.IndexOf('.') + 1);
-								var es = engines.Where(e => e.Metadata.Category.Equals(cat, StringComparison.InvariantCultureIgnoreCase));
-								if(!es.Any())
-									return null;
-
-								return new EngineContainer(es);
-							});
 
 				ExtensionResolverMock
 					.Setup(r => r.GetExtensionFromCategory(Moq.It.IsAny<string>()))
@@ -72,7 +46,7 @@ namespace ChirpyTest.ChirpSepcs
 
 		protected static void AddProjectItem(string contents, string filename)
 		{
-			AddFile(contents, filename);
+			FileHandlerContext.AddFile(contents, filename);
 
 			var projectItemMock = new Mock<ProjectItem>();
 			projectItemMock
@@ -80,16 +54,6 @@ namespace ChirpyTest.ChirpSepcs
 				.Returns<short>(s => filename);
 
 			ProjectItemMocks[filename] = projectItemMock;
-		}
-
-		protected static Mock<IEngine> AddEngine(string name, string version, string category)
-		{
-			var engineMock = new Mock<IEngine>();
-			var metadata = new EngineMetadataAttribute(name, version, category);
-
-			engines.Add(new Lazy<IEngine, IEngineMetadata>(() => engineMock.Object, metadata));
-
-			return engineMock;
 		}
 	}
 }
