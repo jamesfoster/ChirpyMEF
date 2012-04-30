@@ -23,7 +23,7 @@ namespace ChirpyTest.JavascriptRunnerSpecs
 		It should_add_a_message = () =>
 			Result.Messages.Count.ShouldEqual(1);
 
-		It message_category_should_be_Message = () =>
+		It message_category_should_be_Warning = () =>
 			Result.Messages[0].Category.ShouldEqual(ErrorCategory.Warning);
 
 		It message_should_be_foo = () =>
