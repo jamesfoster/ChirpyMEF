@@ -48,8 +48,6 @@ namespace Chirpy.Javascript
 	</head>
 	<body>
 		<script>
-			var window = {};
-
 			var module = window;
 
 			var onerror = window.onerror = function(msg, file, line){

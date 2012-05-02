@@ -40,17 +40,22 @@ namespace ChirpyInterface
 
 		public void LogMessage(string message, int? lineNumber = null, int? column = null, string filename = null, string line = null)
 		{
-			Messages.Add(new ChirpyException(message, filename, lineNumber, column, line, ErrorCategory.Message));
+			Log(ErrorCategory.Message, message, lineNumber, column, filename, line);
 		}
 
 		public void LogWarning(string message, int? lineNumber = null, int? column = null, string filename = null, string line = null)
 		{
-			Messages.Add(new ChirpyException(message, filename, lineNumber, column, line, ErrorCategory.Warning));
+			Log(ErrorCategory.Warning, message, lineNumber, column, filename, line);
 		}
 
 		public void LogError(string message, int? lineNumber = null, int? column = null, string filename = null, string line = null)
 		{
-			Messages.Add(new ChirpyException(message, filename, lineNumber, column, line, ErrorCategory.Error));
+			Log(ErrorCategory.Error, message, lineNumber, column, filename, line);
+		}
+
+		private void Log(ErrorCategory category, string message, int? lineNumber = null, int? column = null, string filename = null, string line = null)
+		{
+			Messages.Add(new ChirpyException(message, filename, lineNumber, column, line, category));
 		}
 	}
 }
