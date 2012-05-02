@@ -35,9 +35,9 @@ namespace Chirpy
 				.ToArray();
 		}
 
-		public List<string> GetDependancies(string contents, string filename)
+		public List<string> GetDependencies(string contents, string filename)
 		{
-			return Execute(e => e.GetDependancies(contents, filename));
+			return Execute(e => e.GetDependencies(contents, filename));
 		}
 
 		public List<EngineResult> Process(string contents, string filename)

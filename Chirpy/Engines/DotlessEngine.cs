@@ -12,7 +12,7 @@ namespace Chirpy.Engines
 	[EngineMetadata("Dotless", "1.2.1.0", "less", true)]
 	public class DotlessEngine : SingleEngineBase
 	{
-		public override List<string> GetDependancies(string contents, string filename)
+		public override List<string> GetDependencies(string contents, string filename)
 		{
 			return Try(p =>
 				{

@@ -24,7 +24,7 @@
 				.CreateComposerWithPlugins()
 				.GetExport<Chirp>();
 
-			Console.WriteLine(chirp.Value.RunDependancies(path));
+			Console.WriteLine(chirp.Value.RunDependencies(path));
 
 			Console.ReadLine();
 		}

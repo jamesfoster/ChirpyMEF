@@ -13,7 +13,7 @@ namespace Chirpy.Engines
 		[Import] public IFileHandler FileHandler { get; set; }
 		[Import] public IEngineResolver EngineResolver { get; set; }
 
-		public List<string> GetDependancies(string contents, string filename)
+		public List<string> GetDependencies(string contents, string filename)
 		{
 			var doc = GetXml(contents);
 

@@ -5,16 +5,16 @@ namespace ChirpyTest.ChirpSepcs
 	using It = Machine.Specifications.It;
 
 	[Subject(typeof (Chirp))]
-	public class When_checking_dependancies_if_no_engine_handles_it : Chirp_context
+	public class When_checking_dependencies_if_no_engine_handles_it : Chirp_context
 	{
 		static bool result;
 
 		Establish context = () => AddProjectItem("def", "file1.abc");
 
-		Because of = () => { result = Chirp.CheckDependancies(ProjectItemMocks["file1.abc"].Object); };
+		Because of = () => { result = Chirp.CheckDependencies(ProjectItemMocks["file1.abc"].Object); };
 
 		It should_return_false = () => result.ShouldBeFalse();
 
-		It should_have_0_dependancies = () => Chirp.Dependancies.Count.ShouldEqual(0);
+		It should_have_0_dependencies = () => Chirp.Dependencies.Count.ShouldEqual(0);
 	}
 }

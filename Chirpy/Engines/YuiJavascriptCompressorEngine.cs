@@ -8,7 +8,7 @@ namespace Chirpy.Engines
 	[EngineMetadata("YUI Javascript Compressor", "1.6.0.2", "yui.js", true, Minifier = true)]
 	public class YuiJavascriptCompressorEngine : SingleEngineBase
 	{
-		public override List<string> GetDependancies(string contents, string filename)
+		public override List<string> GetDependencies(string contents, string filename)
 		{
 			return null;
 		}

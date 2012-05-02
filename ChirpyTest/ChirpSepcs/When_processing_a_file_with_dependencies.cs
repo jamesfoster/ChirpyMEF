@@ -9,17 +9,17 @@ namespace ChirpyTest.ChirpSepcs
 	using It = Machine.Specifications.It;
 
 	[Subject(typeof (Chirp))]
-	public class When_processing_a_file_with_dependancies : Chirp_context
+	public class When_processing_a_file_with_dependencies : Chirp_context
 	{
 		static Mock<IEngine> engineMock;
-		static string dependancyFilename;
+		static string dependencyFilename;
 		static IEnumerable<FileAssociation> result;
 
 		Establish context = () =>
 			{
 				engineMock = EngineResolverContext.AddEngine("DemoEngine", "1.0", "def");
 
-				dependancyFilename = "pqr";
+				dependencyFilename = "pqr";
 
 				AddProjectItem("ghi", "abc.def");
 
@@ -28,13 +28,13 @@ namespace ChirpyTest.ChirpSepcs
 					.Returns(new List<EngineResult> {new EngineResult {Contents = "jkl", Extension = "xyz"}});
 
 				engineMock
-					.Setup(e => e.GetDependancies(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
-					.Returns(new List<string> {dependancyFilename});
+					.Setup(e => e.GetDependencies(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
+					.Returns(new List<string> {dependencyFilename});
 
-				Chirp.CheckDependancies(ProjectItemMocks["abc.def"].Object);
+				Chirp.CheckDependencies(ProjectItemMocks["abc.def"].Object);
 			};
 
-		Because of = () => { result = Chirp.RunDependancies(dependancyFilename); };
+		Because of = () => { result = Chirp.RunDependencies(dependencyFilename); };
 
 		It should_get_the_engine = () => EngineResolverContext.Mock.Verify(r => r.GetEngineByFilename("abc.def"));
 		It should_call_Engine_Process = () => engineMock.Verify(e => e.Process("ghi", "abc.def"));

@@ -4,7 +4,7 @@ namespace ChirpyInterface
 
 	public abstract class SingleEngineBase : IEngine
 	{
-		public abstract List<string> GetDependancies(string contents, string filename);
+		public abstract List<string> GetDependencies(string contents, string filename);
 		public abstract string Process(string contents, string filename, out string outputExtension);
 
 		List<EngineResult> IEngine.Process(string contents, string filename)

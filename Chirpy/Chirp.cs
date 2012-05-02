@@ -21,14 +21,14 @@ namespace Chirpy
 		[Import] public IFileHandler FileHandler { get; set; }
 		[Import] public ILogger Logger { get; set; }
 
-		public Dictionary<string, List<ProjectItem>> Dependancies { get; set; }
+		public Dictionary<string, List<ProjectItem>> Dependencies { get; set; }
 
 		public Chirp()
 		{
-			Dependancies = new Dictionary<string, List<ProjectItem>>();
+			Dependencies = new Dictionary<string, List<ProjectItem>>();
 		}
 
-		public bool CheckDependancies(ProjectItem projectItem)
+		public bool CheckDependencies(ProjectItem projectItem)
 		{
 			var filename = projectItem.FileName();
 
@@ -39,19 +39,19 @@ namespace Chirpy
 
 			var contents = FileHandler.GetContents(filename);
 
-			SaveDependancies(projectItem, filename, contents, engine);
+			SaveDependencies(projectItem, filename, contents, engine);
 
 			return true;
 		}
 
-		public void RemoveDependancies(ProjectItem projectItem)
+		public void RemoveDependencies(ProjectItem projectItem)
 		{
 			var filename = projectItem.FileName();
 
-			if (Dependancies.ContainsKey(filename))
-				Dependancies.Remove(filename);
+			if (Dependencies.ContainsKey(filename))
+				Dependencies.Remove(filename);
 
-			RemoveDependanciesForFile(projectItem);
+			RemoveDependenciesForFile(projectItem);
 		}
 
 		public IEnumerable<FileAssociation> Run(ProjectItem projectItem)
@@ -63,7 +63,7 @@ namespace Chirpy
 			if (engine != null)
 				result.AddRange(ProcessEngine(projectItem, filename, engine));
 
-			var associations = RunDependancies(filename);
+			var associations = RunDependencies(filename);
 
 			if (associations != null)
 				result.AddRange(associations);
@@ -71,18 +71,18 @@ namespace Chirpy
 			return result;
 		}
 
-		public IEnumerable<FileAssociation> RunDependancies(string filename)
+		public IEnumerable<FileAssociation> RunDependencies(string filename)
 		{
-			if(!Dependancies.ContainsKey(filename))
+			if(!Dependencies.ContainsKey(filename))
 				return null;
 
-			var dependancies = Dependancies[filename];
+			var dependencies = Dependencies[filename];
 
 			var result = new List<FileAssociation>();
 
-			foreach (var dependancy in dependancies)
+			foreach (var dependency in dependencies)
 			{
-				var fileAssociations = Run(dependancy);
+				var fileAssociations = Run(dependency);
 
 				if (fileAssociations != null)
 					result.AddRange(fileAssociations);
@@ -160,38 +160,38 @@ namespace Chirpy
 			return string.Format("{0}.{1}", baseFileName, result.Extension);
 		}
 
-		void SaveDependancies(ProjectItem projectItem, string filename, string contents, EngineContainer engine)
+		void SaveDependencies(ProjectItem projectItem, string filename, string contents, EngineContainer engine)
 		{
-			RemoveDependanciesForFile(projectItem);
+			RemoveDependenciesForFile(projectItem);
 
-			var dependancies = engine.GetDependancies(contents, filename);
+			var dependencies = engine.GetDependencies(contents, filename);
 
-			if(dependancies == null)
+			if(dependencies == null)
 				return;
 
-			AddDependanciesForFile(projectItem, filename, dependancies);
+			AddDependenciesForFile(projectItem, filename, dependencies);
 		}
 
-		void AddDependanciesForFile(ProjectItem projectItem, string filename, IEnumerable<string> dependancies)
+		void AddDependenciesForFile(ProjectItem projectItem, string filename, IEnumerable<string> dependencies)
 		{
-			foreach (var s in dependancies)
+			foreach (var s in dependencies)
 			{
-				var dependancy = FileHandler.GetAbsoluteFileName(s, relativeTo: filename);
+				var dependency = FileHandler.GetAbsoluteFileName(s, relativeTo: filename);
 
-				if (Dependancies.ContainsKey(dependancy))
-					Dependancies[dependancy].Add(projectItem);
+				if (Dependencies.ContainsKey(dependency))
+					Dependencies[dependency].Add(projectItem);
 				else
-					Dependancies[dependancy] = new List<ProjectItem> {projectItem};
+					Dependencies[dependency] = new List<ProjectItem> {projectItem};
 			}
 		}
 
-		void RemoveDependanciesForFile(ProjectItem projectItem)
+		void RemoveDependenciesForFile(ProjectItem projectItem)
 		{
-			foreach (var key in Dependancies.Keys.ToArray())
+			foreach (var key in Dependencies.Keys.ToArray())
 			{
-				var files = Dependancies[key];
+				var files = Dependencies[key];
 				if (files.Remove(projectItem) && files.Count == 0)
-					Dependancies.Remove(key);
+					Dependencies.Remove(key);
 			}
 		}
 	}

@@ -10,7 +10,7 @@
 	{
 		[Import] public IJavascriptRunner JavascriptRunner { get; set; }
 
-		public List<string> GetDependancies(string contents, string filename)
+		public List<string> GetDependencies(string contents, string filename)
 		{
 			return null;
 		}
