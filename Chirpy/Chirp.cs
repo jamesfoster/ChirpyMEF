@@ -116,6 +116,10 @@ namespace Chirpy
 				{
 					foreach (var exception in engineResult.Exceptions)
 					{
+            if (string.IsNullOrEmpty(exception.FileName)) 
+            {
+              exception.FileName = filename;
+            }
 						TaskList.Add(exception);
 					}
 					continue;
