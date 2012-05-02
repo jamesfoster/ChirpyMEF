@@ -29,28 +29,31 @@ namespace ChirpyInterface
 
 		public object Get(string name)
 		{
-			lock (@lock)
-			{
-				if (!Properties.ContainsKey(name))
-					return null;
+      object value;
+			if (Properties.TryGetValue(name, out value))
+				return value;
 
-				return Properties[name];
-			}
+      return null;
 		}
 
 		public void LogMessage(string message, int? lineNumber = null, int? column = null, string filename = null, string line = null)
 		{
-			Messages.Add(new ChirpyException(message, filename, lineNumber, column, line, ErrorCategory.Message));
-		}
+      Log(ErrorCategory.Message, message, lineNumber, column, filename, line);
+    }
 
 		public void LogWarning(string message, int? lineNumber = null, int? column = null, string filename = null, string line = null)
 		{
-			Messages.Add(new ChirpyException(message, filename, lineNumber, column, line, ErrorCategory.Warning));
-		}
+      Log(ErrorCategory.Warning, message, lineNumber, column, filename, line);
+    }
 
-		public void LogError(string message, int? lineNumber = null, int? column = null, string filename = null, string line = null)
+    public void LogError(string message, int? lineNumber = null, int? column = null, string filename = null, string line = null) 
+    {
+      Log(ErrorCategory.Error, message, lineNumber, column, filename, line);
+    }
+
+		private void Log(ErrorCategory category, string message, int? lineNumber = null, int? column = null, string filename = null, string line = null)
 		{
-			Messages.Add(new ChirpyException(message, filename, lineNumber, column, line, ErrorCategory.Error));
+      Messages.Add(new ChirpyException(message, filename, lineNumber, column, line, category));
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace Chirpy.Exports
 			if(!category.Contains("."))
 				return ".chirp." + category;
 
-			return "." + category;
+			return "." + category.TrimStart('.');
 		}
 	}
 }

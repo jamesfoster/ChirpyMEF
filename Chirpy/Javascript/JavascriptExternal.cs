@@ -30,12 +30,12 @@ namespace Chirpy.Javascript
 
 		public void LogWarning(string message, int lineNumber = 0, int column = 0, string filename = null, string line = null)
 		{
-			JavascriptResult.LogWarning(message, lineNumber, column, filename, line);
+      JavascriptResult.LogWarning(message, lineNumber, column, filename, line);
 		}
 
 		public void LogError(string message, int lineNumber = 0, int column = 0, string filename = null, string line = null)
 		{
-			JavascriptResult.LogError(message, lineNumber, column, filename, line);
+      JavascriptResult.LogError(message, lineNumber, column, filename, line);
 		}
 
 		public string GetFullUri(string path, string relativeTo)
