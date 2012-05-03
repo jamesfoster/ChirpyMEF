@@ -48,8 +48,6 @@ namespace Chirpy.Javascript
 	</head>
 	<body>
 		<script>
-			var module = window;
-
 			var onerror = window.onerror = function(msg, file, line){
 				external.LogError(msg, line, 0, file, null);
 			};
@@ -69,21 +67,28 @@ namespace Chirpy.Javascript
 			};
 
 			var require = window.require = (function() {
-				var required = {}, bases = [];
-				return function (path, presource, postsource) {
-					var key = external.GetFullUri(path, bases.length == 0 ? '' : bases[bases.length-1]);
+				var required = {};
+				return function _require(path, presource, postsource, root) {
+          if(!path) return undefined;
+          if(path.substr(path.lastIndexOf('.')+1).toLowerCase() !== 'js')
+            path += '.js';
 
-					if(!required[key])
+					var url = external.GetFullUri(path, root || '');
+          var key = '~/' + url;
+          var module = required[key];
+
+					if(!module)
 					{
-						required[key] = {};
-						var code = external.Download(key);
-						var func = new Function('exports', (presource || '') + ';\r\n' + code+ ';\r\n' + (postsource || ''));
+						module = required[key] = {exports:{}};
+						var code = external.Download(url);
+            code = (presource || '') + ';\r\n' + code+ ';\r\n' + (postsource || '');
+						var func = new Function('window', 'module', 'exports', 'require', 'external', code);
 
-						bases.push(key);
-						func(required[key]);
-						bases.pop();
+            func(module, module, module.exports, function (path) {
+              return _require(path, null, null, url);
+            });
 					}
-					return required[key];
+					return module.exports;
 				};
 			})();
 
