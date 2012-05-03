@@ -109,6 +109,11 @@ namespace Chirpy.Exports
 			Chirp.RemoveDependencies(projectItem);
 		}
 
+		public void ItemClosed(ProjectItem projectItem)
+		{
+      Chirp.TaskList.Remove(projectItem.FileName());
+		}
+
 		static void ProcessFileAssociations(IEnumerable<FileAssociation> fileAssociations)
 		{
 			if (fileAssociations == null)

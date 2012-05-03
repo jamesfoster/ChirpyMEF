@@ -110,7 +110,7 @@
 
 		void PrintLoadedEngines()
 		{
-			var engineResolver = Chirp.EngineResolver as EngineResolver;
+			var engineResolver = Chirp.EngineResolver as ChirpyInterface.IEngineResolver;
 			if (engineResolver == null)
 				return;
 
@@ -166,7 +166,8 @@
 			BuildEvents.OnBuildDone += BuildDone;
 
 			DocumentEvents.DocumentSaved += DocumentSaved;
-		}
+      DocumentEvents.DocumentClosing += DocumentClosed;
+    }
 
 		/// <summary>
 		/// Implements the OnDisconnection method of the IDTExtensibility2 interface. 
@@ -247,5 +248,10 @@
 		{
 			ProjectItemManager.ItemSaved(document.ProjectItem);
 		}
+
+    void DocumentClosed(Document document)
+    {
+      ProjectItemManager.ItemClosed(document.ProjectItem);
+    }
 	}
 }
