@@ -60,6 +60,8 @@ namespace Chirpy
 			var engine = EngineResolver.GetEngineByFilename(filename);
 			var result = new List<FileAssociation>();
 
+      TaskList.Remove(filename);
+
 			if (engine != null)
 				result.AddRange(ProcessEngine(projectItem, filename, engine));
 
@@ -114,15 +116,20 @@ namespace Chirpy
 			{
 				if (engineResult.Exceptions.Any())
 				{
+          var error = false;
 					foreach (var exception in engineResult.Exceptions)
 					{
 						if (string.IsNullOrEmpty(exception.FileName)) 
 						{
 							exception.FileName = filename;
 						}
+            error = error || exception.Category == ErrorCategory.Error;
 						TaskList.Add(exception);
 					}
-					continue;
+          if(error)
+          {
+					  continue;
+          }
 				}
 
 				if (engineResult.Contents == null)
