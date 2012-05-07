@@ -1,7 +1,6 @@
 namespace Chirpy
 {
 	using System;
-	using Exports;
 	using Microsoft.VisualStudio.Shell;
 
 	public class ErrorListProviderWrapper : IErrorListProvider

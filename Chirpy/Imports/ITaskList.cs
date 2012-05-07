@@ -2,7 +2,6 @@ namespace Chirpy.Imports
 {
 	using ChirpyInterface;
 	using EnvDTE;
-	using Microsoft.VisualStudio.Shell;
 
 	public interface ITaskList
 	{

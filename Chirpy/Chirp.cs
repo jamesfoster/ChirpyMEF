@@ -3,8 +3,6 @@ namespace Chirpy
 	using System;
 	using System.Collections.Generic;
 	using System.ComponentModel.Composition;
-	using System.ComponentModel.Composition.Hosting;
-	using System.Diagnostics;
 	using System.Linq;
 	using ChirpyInterface;
 	using EnvDTE;
@@ -60,7 +58,7 @@ namespace Chirpy
 			var engine = EngineResolver.GetEngineByFilename(filename);
 			var result = new List<FileAssociation>();
 
-      TaskList.Remove(filename);
+			TaskList.Remove(filename);
 
 			if (engine != null)
 				result.AddRange(ProcessEngine(projectItem, filename, engine));
@@ -75,7 +73,7 @@ namespace Chirpy
 
 		public IEnumerable<FileAssociation> RunDependencies(string filename)
 		{
-			if(!Dependencies.ContainsKey(filename))
+			if (!Dependencies.ContainsKey(filename))
 				return null;
 
 			var dependencies = Dependencies[filename];
@@ -116,20 +114,20 @@ namespace Chirpy
 			{
 				if (engineResult.Exceptions.Any())
 				{
-          var error = false;
+					var error = false;
 					foreach (var exception in engineResult.Exceptions)
 					{
-						if (string.IsNullOrEmpty(exception.FileName)) 
+						if (string.IsNullOrEmpty(exception.FileName))
 						{
 							exception.FileName = filename;
 						}
-            error = error || exception.Category == ErrorCategory.Error;
+						error = error || exception.Category == ErrorCategory.Error;
 						TaskList.Add(exception);
 					}
-          if(error)
-          {
-					  continue;
-          }
+					if (error)
+					{
+						continue;
+					}
 				}
 
 				if (engineResult.Contents == null)
@@ -173,7 +171,7 @@ namespace Chirpy
 
 			var dependencies = engine.GetDependencies(contents, filename);
 
-			if(dependencies == null)
+			if (dependencies == null)
 				return;
 
 			AddDependenciesForFile(projectItem, filename, dependencies);

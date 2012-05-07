@@ -6,14 +6,13 @@
 	using Composition;
 	using EnvDTE;
 	using EnvDTE80;
-	using Exports;
 	using Extensibility;
 	using Imports;
 	using Logging;
 
 	public class ChirpyAddIn : IDTExtensibility2
 	{
-		protected ILogger Logger { get; set; } 
+		protected ILogger Logger { get; set; }
 		protected DTE2 App { get; set; }
 		protected AddIn Instance { get; set; }
 		protected Events2 Events { get; set; }
@@ -53,7 +52,7 @@
 
 			Compose(); // Do not attempt to use [Import]s before this line!
 
-			if(Chirp == null)
+			if (Chirp == null)
 			{
 				Logger.Log("Unable to load.");
 				return;
@@ -65,7 +64,7 @@
 
 			Logger.Log("Ready");
 
-			if(App.Solution.IsOpen)
+			if (App.Solution.IsOpen)
 			{
 				SolutionOpened();
 
@@ -166,8 +165,8 @@
 			BuildEvents.OnBuildDone += BuildDone;
 
 			DocumentEvents.DocumentSaved += DocumentSaved;
-      DocumentEvents.DocumentClosing += DocumentClosed;
-    }
+			DocumentEvents.DocumentClosing += DocumentClosed;
+		}
 
 		/// <summary>
 		/// Implements the OnDisconnection method of the IDTExtensibility2 interface. 
@@ -221,7 +220,7 @@
 
 		void SolutionClosed()
 		{
-			
+
 		}
 
 		void ItemAdded(ProjectItem projectItem)
@@ -241,7 +240,7 @@
 
 		void BuildDone(vsBuildScope scope, vsBuildAction action)
 		{
-			
+
 		}
 
 		void DocumentSaved(Document document)
@@ -249,9 +248,9 @@
 			ProjectItemManager.ItemSaved(document.ProjectItem);
 		}
 
-    void DocumentClosed(Document document)
-    {
-      ProjectItemManager.ItemClosed(document.ProjectItem);
-    }
+		void DocumentClosed(Document document)
+		{
+			ProjectItemManager.ItemClosed(document.ProjectItem);
+		}
 	}
 }

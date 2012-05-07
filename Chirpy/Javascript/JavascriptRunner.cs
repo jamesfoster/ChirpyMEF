@@ -69,24 +69,24 @@ namespace Chirpy.Javascript
 			var require = window.require = (function() {
 				var required = {};
 				return function _require(path, presource, postsource, root) {
-          if(!path) return undefined;
-          if(path.substr(path.lastIndexOf('.')+1).toLowerCase() !== 'js')
-            path += '.js';
+					if(!path) return undefined;
+					if(path.substr(path.lastIndexOf('.') + 1).toLowerCase() !== 'js')
+						path += '.js';
 
 					var url = external.GetFullUri(path, root || '');
-          var key = '~/' + url;
-          var module = required[key];
+					var key = '~/' + url;
+					var module = required[key];
 
 					if(!module)
 					{
-						module = required[key] = {exports:{}};
+						module = required[key] = {exports: {}};
 						var code = external.Download(url);
-            code = (presource || '') + ';\r\n' + code+ ';\r\n' + (postsource || '');
+						code = (presource || '') + ';\r\n' + code+ ';\r\n' + (postsource || '');
 						var func = new Function('window', 'module', 'exports', 'require', 'external', code);
 
-            func(module, module, module.exports, function (path) {
-              return _require(path, null, null, url);
-            });
+						func(module, module, module.exports, function (path) {
+							return _require(path, null, null, url);
+						});
 					}
 					return module.exports;
 				};
